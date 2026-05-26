@@ -195,7 +195,8 @@ export default async function handler(req, res) {
       success_url: `${siteUrl}/reservation-confirmee.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/reservation.html?annule=1`,
 
-      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+      // Stripe exige expires_at >= 30 min dans le futur. On met 35 min pour la marge.
+      expires_at: Math.floor(Date.now() / 1000) + 35 * 60,
       locale: 'fr',
     });
 
@@ -214,9 +215,16 @@ export default async function handler(req, res) {
       checkoutUrl: session.url,
     });
   } catch (err) {
-    console.error('[api/creer-reservation]', err);
+    // On log côté serveur (visible dans Vercel > Logs)
+    console.error('[api/creer-reservation] erreur :', err);
+    // ET on renvoie le détail dans la réponse pour pouvoir débugger
+    // facilement depuis l'onglet Réseau du navigateur.
+    // (Tu pourras retirer le "detail" plus tard, une fois tout stable.)
     return res.status(500).json({
       error: 'Une erreur est survenue lors de la création de la réservation',
+      detail: err?.message || String(err),
+      code: err?.code || null,
+      stack: process.env.VERCEL_ENV === 'production' ? undefined : err?.stack,
     });
   }
 }
