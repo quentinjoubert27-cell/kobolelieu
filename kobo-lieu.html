@@ -1,0 +1,2254 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kōbō Le Lieu — Salles de réunion à Bordeaux · Chartrons</title>
+<meta name="description" content="Kōbō Le Lieu, deux salles de réunion à Bordeaux. À partir de 25€/h. Réservation en ligne.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Typo unifiée : Caprasimo (display chunky) + General Sans (body warm modern) + Caveat manuscrit -->
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Caveat:wght@400;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+
+<style>
+/* ========================================================================
+   KŌBŌ LE LIEU V3
+   Toute la typo unifiée autour de General Sans (warm, modern, friendly)
+   ======================================================================== */
+:root{
+  --blue: #01357b;
+  --blue-deep: #021f4a;
+  --blue-soft: #d8e2f2;
+  --blue-paper: #eef2fa;
+  --cream: #faf3e3;
+  --cream-2: #f5ebd1;
+  --sun: #f4c542;
+  --tomato: #e6543c;
+  --leaf: #4a7c3a;
+  --ink: #1a1612;
+
+  --display: "Caprasimo", "Cooper Black", serif;
+  --hand: "Caveat", cursive;
+  --italic: "Instrument Serif", serif;
+  --body: "General Sans", "Familjen Grotesk", system-ui, sans-serif;
+
+  --r-sm: 12px;
+  --r: 24px;
+  --r-lg: 48px;
+  --r-pill: 999px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  font-family: var(--body);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+img,svg{display:block;max-width:100%}
+::selection{background: var(--sun); color: var(--ink)}
+
+/* ============================== NAV (travaillée, "design object") ============================== */
+.nav-wrap{
+  position: sticky; top: 0; z-index: 100;
+  padding: 16px 20px 0;
+  background: linear-gradient(180deg, var(--cream) 60%, transparent);
+}
+.nav{
+  max-width: 1400px; margin: 0 auto;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: var(--r-pill);
+  padding: 8px 8px 8px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 0 rgba(0,0,0,.12);
+  border: 1.5px solid var(--ink);
+}
+.nav__logo{
+  font-family: var(--display);
+  font-size: 24px;
+  color: var(--cream);
+  line-height: 1;
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 400;
+}
+.nav__logo-dot{
+  width: 10px; height: 10px;
+  background: var(--sun);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.6;transform:scale(.85)}50%{opacity:1;transform:scale(1.1)}}
+
+.nav__divider{
+  width: 1px; height: 24px;
+  background: rgba(250,243,227,.2);
+}
+.nav__links{
+  display: flex; gap: 4px;
+  font-weight: 500; font-size: 14px;
+  flex: 1;
+  padding: 0 8px;
+}
+.nav__link{
+  position: relative;
+  padding: 10px 18px;
+  border-radius: var(--r-pill);
+  transition: background .3s, color .3s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.nav__link:hover{background: rgba(250,243,227,.1)}
+.nav__link--active{background: var(--cream); color: var(--ink)}
+.nav__link-dot{
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--sun);
+  display: inline-block;
+}
+.nav__phone{
+  font-family: var(--display);
+  font-size: 15px;
+  color: var(--sun);
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 12px;
+}
+.nav__cta{
+  background: var(--sun);
+  color: var(--ink);
+  padding: 12px 22px;
+  border-radius: var(--r-pill);
+  font-weight: 700; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1.5px solid var(--ink);
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
+  box-shadow: 0 2px 0 var(--ink);
+}
+.nav__cta:hover{
+  transform: translate(-1px, -3px);
+  box-shadow: 0 5px 0 var(--ink);
+}
+.nav__cta-arrow{display:inline-block; transition: transform .3s}
+.nav__cta:hover .nav__cta-arrow{transform: translateX(3px) rotate(-12deg)}
+
+/* World switch dans la nav */
+.world-switch{
+  display: inline-flex;
+  background: rgba(250,243,227,.08);
+  border-radius: var(--r-pill);
+  padding: 4px;
+  margin-right: 8px;
+  border: 1px solid rgba(250,243,227,.12);
+}
+.world-switch__btn{
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--cream); opacity: .65;
+  transition: all .3s;
+}
+.world-switch__btn--active{
+  background: var(--cream); color: var(--ink); opacity: 1;
+}
+
+/* ============================== MARQUEE (parfaite, sous la nav, fluide) ============================== */
+.marquee{
+  margin-top: 16px;
+  background: var(--blue);
+  color: var(--cream);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--r-pill);
+  margin-left: 20px; margin-right: 20px;
+  max-width: calc(1400px - 40px);
+  margin-left: auto; margin-right: auto;
+  overflow: hidden;
+  position: relative;
+}
+.marquee__track{
+  display: flex; gap: 0;
+  width: max-content;
+  animation: marqueeSlide 50s linear infinite;
+  padding: 12px 0;
+}
+.marquee__group{
+  display: flex; align-items: center; gap: 40px;
+  padding: 0 20px;
+}
+.marquee__item{
+  font-weight: 500; font-size: 13px;
+  display: inline-flex; align-items: center; gap: 12px;
+  white-space: nowrap;
+}
+.marquee__item-icon{
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  color: var(--sun);
+}
+.marquee__sep{
+  width: 6px; height: 6px;
+  background: var(--sun);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+@keyframes marqueeSlide{
+  from{transform: translateX(0)}
+  to{transform: translateX(-50%)}
+}
+
+/* ============================== HERO ============================== */
+.hero{
+  position: relative;
+  padding: 60px 28px 100px;
+  background: var(--cream);
+  overflow: hidden;
+}
+.hero__inner{
+  max-width: 1400px; margin: 0 auto;
+  position: relative; z-index: 2;
+}
+.hero__pill{
+  display: inline-flex; align-items: center; gap: 14px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 8px 8px 8px 18px;
+  border-radius: var(--r-pill);
+  font-weight: 500; font-size: 13px;
+  margin-bottom: 36px;
+  border: 1.5px solid var(--ink);
+}
+.hero__pill-badge{
+  background: var(--sun); color: var(--ink);
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  font-weight: 700; font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.hero__title{
+  font-family: var(--display);
+  font-size: clamp(56px, 11vw, 168px);
+  line-height: .94;
+  color: var(--blue);
+  letter-spacing: -.02em;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+.hero__title .accent{
+  display: inline-block;
+  font-family: var(--italic);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--tomato);
+  position: relative;
+}
+.hero__title .accent::after{
+  content: "";
+  position: absolute; left: -4%; right: -4%; bottom: 2%;
+  height: 18px;
+  background: var(--sun);
+  z-index: -1;
+  border-radius: 12px;
+  transform: rotate(-1deg);
+}
+.hero__title .word{display: inline-block; transition: transform .35s cubic-bezier(.34,1.56,.64,1)}
+.hero__title .word:hover{transform: rotate(-2deg) scale(1.03)}
+
+.hero__sub{
+  font-family: var(--italic);
+  font-style: italic;
+  font-size: clamp(22px, 2.4vw, 32px);
+  color: var(--ink); opacity: .85;
+  max-width: 700px;
+  margin-bottom: 16px;
+}
+.hero__address-row{
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 44px;
+}
+.hero__address{
+  font-family: var(--hand);
+  font-size: 28px;
+  color: var(--blue);
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 600;
+}
+.hero__address-icon{
+  width: 26px; height: 26px;
+  color: var(--blue);
+}
+
+.hero__actions{display: flex; gap: 14px; flex-wrap: wrap; align-items: center}
+.btn-primary{
+  background: var(--blue);
+  color: var(--cream);
+  padding: 18px 32px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 12px;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
+  border: 1.5px solid var(--ink);
+  box-shadow: 0 3px 0 var(--ink);
+}
+.btn-primary:hover{
+  transform: translate(-1px, -3px);
+  box-shadow: 0 6px 0 var(--ink);
+}
+.btn-secondary{
+  background: transparent;
+  color: var(--ink);
+  padding: 18px 32px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 12px;
+  border: 1.5px solid var(--ink);
+  transition: background .25s, color .25s;
+}
+.btn-secondary:hover{background: var(--ink); color: var(--cream)}
+
+.hero__trust{
+  display: flex; align-items: center; gap: 12px;
+  margin-left: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink); opacity: .7;
+}
+.hero__trust-stars{
+  color: var(--tomato);
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+/* Décors illustrés line-art */
+.hero__decor{
+  position: absolute; pointer-events: none;
+  animation: float 6s ease-in-out infinite;
+}
+.hero__decor--1{top: 10%; right: 7%; width: 110px}
+.hero__decor--2{top: 50%; right: 22%; width: 80px; animation-delay: 1s; animation-duration: 7s}
+.hero__decor--3{bottom: 15%; right: 5%; width: 130px; animation-delay: .5s; animation-duration: 8s}
+.hero__decor--4{top: 30%; left: 4%; width: 90px; animation-delay: 1.5s; animation-duration: 6.5s}
+@keyframes float{
+  0%,100%{transform: translateY(0) rotate(0deg)}
+  50%{transform: translateY(-22px) rotate(6deg)}
+}
+
+/* Hero — bandeau "Depuis 2022" qui défile en background */
+.hero__since{
+  position: absolute;
+  bottom: 24px; left: -10%; right: -10%;
+  display: flex;
+  font-family: var(--display);
+  font-size: 20px;
+  color: var(--blue); opacity: .12;
+  overflow: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.hero__since-track{
+  display: flex; gap: 40px;
+  width: max-content;
+  animation: marqueeSlide 60s linear infinite;
+}
+.hero__since-track span{display:inline-block; padding-right: 40px}
+
+/* ============================== STATS ROW (proof) ============================== */
+.stats{
+  background: var(--cream);
+  padding: 0 28px 100px;
+}
+.stats__inner{
+  max-width: 1400px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  background: var(--blue);
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 2px solid var(--ink);
+}
+.stat{
+  padding: 36px 28px;
+  color: var(--cream);
+  border-right: 1.5px solid rgba(250,243,227,.15);
+  position: relative;
+}
+.stat:last-child{border-right: 0}
+.stat__num{
+  font-family: var(--display);
+  font-size: 56px;
+  line-height: 1;
+  color: var(--sun);
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+.stat__num small{
+  font-size: 28px; opacity: .8;
+}
+.stat__label{
+  font-size: 14px;
+  opacity: .85;
+  font-weight: 500;
+}
+
+/* ============================== SECTION : SALLES ============================== */
+.salles-section{
+  padding: 100px 28px;
+  background: var(--cream);
+  position: relative;
+}
+.salles-section__head{
+  max-width: 1280px; margin: 0 auto 64px;
+  text-align: center;
+}
+.section-eyebrow{
+  font-family: var(--hand);
+  font-size: 30px;
+  color: var(--tomato);
+  margin-bottom: 6px;
+  font-weight: 600;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.section-eyebrow svg{width: 32px; height: 32px}
+.section-title{
+  font-family: var(--display);
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -.02em;
+  font-weight: 400;
+}
+.section-title .alt{
+  font-family: var(--italic); font-style: italic;
+  color: var(--blue); font-weight: 400;
+}
+.section-sub{
+  font-size: 18px; opacity: .7;
+  max-width: 580px; margin: 20px auto 0;
+  line-height: 1.55;
+}
+
+.salles{
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+}
+.salle{
+  background: var(--blue);
+  color: var(--cream);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: relative;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+  border: 2px solid var(--ink);
+}
+.salle--majorelle{
+  background: linear-gradient(135deg, #1b3a8c 0%, #4a72c8 60%, #c97a3a 100%);
+}
+.salle:hover{transform: translateY(-8px) rotate(-.5deg)}
+
+/* Carrousel photo */
+.salle__gallery{
+  height: 360px;
+  position: relative; overflow: hidden;
+  border-bottom: 2px solid var(--ink);
+}
+.salle__slides{
+  display: flex;
+  width: 100%; height: 100%;
+  transition: transform .6s cubic-bezier(.7,0,.3,1);
+}
+.salle__slide{
+  flex: 0 0 100%;
+  width: 100%; height: 100%;
+  position: relative;
+}
+.salle__slide-img{
+  width: 100%; height: 100%;
+  position: relative;
+}
+
+/* Placeholders très vivants */
+.salle--canopee .salle__slide-img.s1{background:
+  radial-gradient(circle at 30% 40%, #6b9c7d 0%, transparent 50%),
+  radial-gradient(circle at 70% 60%, #2d5a3f 0%, transparent 50%),
+  linear-gradient(135deg, #4d8a5e, #1f3a2b)}
+.salle--canopee .salle__slide-img.s2{background:
+  radial-gradient(circle at 60% 30%, #88b09a 0%, transparent 50%),
+  radial-gradient(circle at 30% 80%, #345b42 0%, transparent 55%),
+  linear-gradient(160deg, #5a8a6b, #2a4a35)}
+.salle--canopee .salle__slide-img.s3{background:
+  radial-gradient(circle at 40% 50%, #a8c4b2 0%, transparent 55%),
+  linear-gradient(45deg, #3a6a4f, #6a9c7d)}
+
+.salle--majorelle .salle__slide-img.s1{background:
+  radial-gradient(circle at 25% 35%, #6890d4 0%, transparent 55%),
+  radial-gradient(circle at 75% 75%, #e08842 0%, transparent 55%),
+  linear-gradient(135deg, #1f3f8c, #c97a3a)}
+.salle--majorelle .salle__slide-img.s2{background:
+  radial-gradient(circle at 70% 30%, #4a72c8 0%, transparent 55%),
+  radial-gradient(circle at 30% 70%, #d8924a 0%, transparent 55%),
+  linear-gradient(60deg, #2a52a8, #b8682a)}
+.salle--majorelle .salle__slide-img.s3{background:
+  radial-gradient(circle at 50% 50%, #98b8e0 0%, transparent 55%),
+  linear-gradient(120deg, #3a62b8, #c8804a)}
+
+.salle__slide-img::after{
+  content: "";
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: .5;
+  mix-blend-mode: overlay;
+}
+
+/* Galerie controls */
+.salle__gallery-nav{
+  position: absolute; top: 50%; left: 0; right: 0;
+  transform: translateY(-50%);
+  display: flex; justify-content: space-between;
+  padding: 0 16px;
+  z-index: 3;
+  pointer-events: none;
+}
+.salle__gallery-arrow{
+  width: 40px; height: 40px;
+  background: rgba(26,22,18,.7);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid var(--cream);
+  border-radius: 50%;
+  color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: auto;
+  transition: transform .2s, background .2s;
+  font-size: 18px; font-weight: 700;
+}
+.salle__gallery-arrow:hover{
+  background: var(--cream); color: var(--ink);
+  transform: scale(1.1);
+}
+.salle__gallery-dots{
+  position: absolute; bottom: 16px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 6px;
+  z-index: 3;
+}
+.salle__gallery-dot{
+  width: 8px; height: 8px;
+  background: rgba(250,243,227,.4);
+  border-radius: 50%;
+  transition: width .3s, background .3s;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,.2);
+}
+.salle__gallery-dot--active{
+  width: 24px; border-radius: 4px;
+  background: var(--cream);
+}
+.salle__gallery-counter{
+  position: absolute; bottom: 16px; right: 16px;
+  background: rgba(26,22,18,.7);
+  backdrop-filter: blur(8px);
+  color: var(--cream);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 11px;
+  z-index: 3;
+}
+
+.salle__sticker{
+  position: absolute; top: 24px; right: 24px;
+  background: var(--sun);
+  color: var(--ink);
+  padding: 10px 18px;
+  border-radius: var(--r-pill);
+  font-weight: 700; font-size: 13px;
+  z-index: 4;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--ink);
+  transform: rotate(4deg);
+  animation: stickerWiggle 4s ease-in-out infinite;
+}
+@keyframes stickerWiggle{
+  0%,100%{transform: rotate(4deg)}
+  50%{transform: rotate(-2deg)}
+}
+.salle__sticker .pulse{
+  width: 8px; height: 8px; background: var(--leaf); border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.salle__num{
+  position: absolute; top: 24px; left: 24px;
+  font-family: var(--display);
+  font-size: 64px; line-height: 1;
+  color: rgba(250,243,227,.5);
+  z-index: 4;
+  text-shadow: 0 0 20px rgba(0,0,0,.3);
+}
+
+.salle__body{padding: 36px 36px 40px}
+.salle__name{
+  font-family: var(--display);
+  font-size: 56px; line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -.01em;
+  font-weight: 400;
+}
+.salle__name .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--sun);
+  font-weight: 400;
+}
+.salle__tagline{
+  font-family: var(--hand);
+  font-size: 24px;
+  color: var(--sun);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.salle__desc{
+  font-size: 16px; line-height: 1.55;
+  opacity: .9; margin-bottom: 28px;
+  max-width: 480px;
+}
+.salle__specs{
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.salle__spec{
+  background: rgba(250,243,227,.15);
+  border: 1.5px solid rgba(250,243,227,.3);
+  border-radius: var(--r-pill);
+  padding: 10px 16px 10px 14px;
+  font-weight: 500; font-size: 13px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.salle__spec svg{width: 16px; height: 16px; flex-shrink: 0}
+
+.salle__cta-row{
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 24px;
+  border-top: 1.5px dashed rgba(250,243,227,.3);
+}
+.salle__price{
+  font-family: var(--display);
+  font-size: 38px;
+  display: flex; align-items: baseline; gap: 6px;
+  font-weight: 400;
+}
+.salle__price small{
+  font-family: var(--body); font-weight: 500; font-size: 14px; opacity: .8;
+}
+.salle__btn{
+  background: var(--cream);
+  color: var(--ink);
+  padding: 14px 22px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--ink);
+  transition: transform .2s;
+}
+.salle__btn:hover{transform: scale(1.05) rotate(-2deg)}
+.salle__btn .arrow{display: inline-block; transition: transform .3s}
+.salle__btn:hover .arrow{transform: translateX(4px)}
+
+/* ============================== ANNEXE ============================== */
+.annexe{
+  max-width: 1280px;
+  margin: 32px auto 0;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: var(--r-lg);
+  padding: 48px 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  position: relative; overflow: hidden;
+  border: 2px solid var(--ink);
+}
+.annexe::before{
+  content: "";
+  position: absolute;
+  top: -40%; right: -10%;
+  width: 50%; height: 200%;
+  background: radial-gradient(circle, rgba(244,197,66,.2), transparent 60%);
+  pointer-events: none;
+}
+.annexe__sticker{
+  background: var(--tomato);
+  color: var(--cream);
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 13px;
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+  border: 1.5px solid var(--cream);
+}
+.annexe__sticker svg{width: 14px; height: 14px}
+.annexe__title{
+  font-family: var(--display);
+  font-size: 56px; line-height: 1;
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+.annexe__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--sun); font-weight: 400;
+}
+.annexe__desc{
+  font-size: 16px; line-height: 1.55; opacity: .85;
+  max-width: 460px; margin-bottom: 28px;
+}
+.annexe__btn{
+  background: var(--sun);
+  color: var(--ink);
+  padding: 16px 28px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 12px;
+  border: 1.5px solid var(--cream);
+}
+.annexe__visual{
+  position: relative;
+  height: 280px;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 2px solid var(--cream);
+  background:
+    radial-gradient(circle at 30% 40%, #6b3a8c 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, #8c4a3a 0%, transparent 50%),
+    linear-gradient(135deg, #3a2b4f, #1a1410);
+}
+.annexe__visual::after{
+  content: ""; position: absolute; inset:0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: .5; mix-blend-mode: overlay;
+}
+
+/* ============================== RÉSERVATION ============================== */
+.reserve-section{
+  padding: 100px 28px;
+  background: var(--blue);
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+.reserve-section__decor{
+  position: absolute; pointer-events: none; opacity: .12;
+}
+.reserve-section__decor--1{top: 40px; right: 40px; width: 120px; color: var(--cream)}
+.reserve-section__decor--2{bottom: 60px; left: 40px; width: 140px; color: var(--cream)}
+
+.reserve-wrap{max-width: 1100px; margin: 0 auto; position: relative; z-index: 1}
+.reserve-head{text-align: center; margin-bottom: 56px}
+.reserve-head__eyebrow{
+  font-family: var(--hand); font-size: 30px;
+  color: var(--sun); margin-bottom: 8px;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.reserve-head__eyebrow svg{width: 32px; height: 32px}
+.reserve-head__title{
+  font-family: var(--display);
+  font-size: clamp(40px, 6vw, 80px); line-height: 1;
+  letter-spacing: -.02em;
+  font-weight: 400;
+}
+.reserve-head__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--sun); font-weight: 400;
+}
+
+.booker{
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: var(--r-lg);
+  padding: 40px;
+  border: 2px solid var(--ink);
+  box-shadow: 0 12px 0 var(--ink);
+}
+.booker__steps{
+  display: flex; gap: 4px; margin-bottom: 32px;
+  background: rgba(0,0,0,.05);
+  padding: 6px;
+  border-radius: var(--r-pill);
+}
+.booker__step{
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 13px;
+  text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  cursor: pointer;
+  transition: all .3s;
+}
+.booker__step--active{background: var(--blue); color: var(--cream)}
+.booker__step--done{color: var(--blue)}
+.booker__step--done::before{
+  content: ""; width: 16px; height: 16px;
+  background: var(--blue); color: var(--cream);
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3 8l3 3 7-7' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3 8l3 3 7-7' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  mask-size: contain; -webkit-mask-size: contain;
+}
+.booker__step-num{
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+.booker__step--active .booker__step-num{background: rgba(255,255,255,.3)}
+
+.booker__rooms{
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-bottom: 28px;
+}
+.booker__room{
+  border: 2px solid rgba(0,0,0,.1);
+  border-radius: var(--r);
+  padding: 24px;
+  background: #fff;
+  cursor: pointer;
+  transition: all .3s;
+  position: relative;
+}
+.booker__room--selected{
+  border-color: var(--blue);
+  background: var(--blue-paper);
+  box-shadow: 0 8px 0 var(--blue);
+  transform: translateY(-4px);
+}
+.booker__room--selected::after{
+  content: ""; position: absolute; top: 16px; right: 16px;
+  width: 28px; height: 28px;
+  background: var(--blue);
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M5 12l4 4 10-10' fill='none' stroke='%23faf3e3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 18px; background-position: center; background-repeat: no-repeat;
+}
+.booker__room-visual{
+  height: 80px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+}
+.booker__room--canopee .booker__room-visual{background: linear-gradient(135deg, #4d8a5e, #1f3a2b)}
+.booker__room--majorelle .booker__room-visual{background: linear-gradient(135deg, #1f3f8c, #c97a3a)}
+.booker__room--annexe .booker__room-visual{background: linear-gradient(135deg, #3a2b4f, #1a1410)}
+.booker__room-name{
+  font-family: var(--display); font-size: 22px; line-height: 1;
+  color: var(--ink); margin-bottom: 4px;
+  font-weight: 400;
+}
+.booker__room-cap{font-size: 13px; color: var(--ink); opacity: .6; margin-bottom: 6px}
+.booker__room-price{font-weight: 700; font-size: 14px; color: var(--blue)}
+
+.booker__calendar-wrap{
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+.booker__calendar{
+  background: #fff;
+  border: 2px solid rgba(0,0,0,.1);
+  border-radius: var(--r);
+  padding: 20px;
+}
+.booker__cal-head{
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.booker__cal-month{
+  font-family: var(--display); font-size: 22px;
+  font-weight: 400;
+}
+.booker__cal-nav{display: flex; gap: 8px}
+.booker__cal-arrow{
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1.5px solid rgba(0,0,0,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600;
+  transition: background .2s, transform .2s;
+}
+.booker__cal-arrow:hover{background: var(--blue); color: var(--cream); transform: scale(1.05)}
+.booker__cal-grid{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.booker__cal-day-name{
+  font-size: 11px; font-weight: 600;
+  color: var(--ink); opacity: .5;
+  text-align: center; padding: 8px 0;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.booker__cal-day{
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  font-weight: 500; font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.booker__cal-day:hover:not(.disabled){background: var(--blue-soft)}
+.booker__cal-day--available::after{
+  content: ""; position: absolute; bottom: 4px;
+  width: 3px; height: 3px; border-radius: 50%;
+  background: var(--leaf);
+}
+.booker__cal-day--selected{background: var(--blue); color: var(--cream); font-weight: 700}
+.booker__cal-day--selected::after{background: var(--cream)}
+.booker__cal-day.disabled{opacity: .25; cursor: not-allowed}
+.booker__cal-day.today{border: 2px solid var(--tomato)}
+
+.booker__slots-title{
+  font-family: var(--display); font-size: 22px;
+  margin-bottom: 12px;
+  font-weight: 400;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.booker__slots-sub{
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--cream-2);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.booker__slots-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.booker__slot{
+  background: #fff;
+  border: 1.5px solid rgba(0,0,0,.1);
+  border-radius: 10px;
+  padding: 12px 8px;
+  font-weight: 600; font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+  transition: all .2s;
+}
+.booker__slot:hover:not(.taken){border-color: var(--blue); transform: translateY(-2px)}
+.booker__slot--selected{background: var(--blue); color: var(--cream); border-color: var(--blue)}
+.booker__slot.taken{
+  opacity: .35;
+  text-decoration: line-through;
+  cursor: not-allowed;
+  background: rgba(0,0,0,.02);
+}
+.booker__slot.taken::after{
+  content: "Pris"; display: block;
+  font-size: 9px; font-weight: 500;
+  margin-top: 2px;
+  text-decoration: none;
+}
+
+.booker__summary{
+  background: var(--blue-paper);
+  border: 2px dashed var(--blue);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 24px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+.booker__summary-item small{
+  font-size: 11px; font-weight: 600; opacity: .6;
+  letter-spacing: .05em; text-transform: uppercase;
+  display: block; margin-bottom: 4px;
+}
+.booker__summary-item strong{
+  font-family: var(--display); font-size: 20px; font-weight: 400;
+  display: block;
+}
+.booker__total-row{
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1.5px dashed rgba(0,0,0,.15);
+}
+.booker__total-label{font-size: 14px; opacity: .6}
+.booker__total-amount{font-family: var(--display); font-size: 36px; color: var(--blue); font-weight: 400}
+
+.booker__cta{
+  width: 100%;
+  background: var(--blue);
+  color: var(--cream);
+  padding: 20px 32px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  border: 2px solid var(--ink);
+  box-shadow: 0 4px 0 var(--ink);
+  transition: transform .2s, box-shadow .2s;
+}
+.booker__cta:hover{transform: translateY(-2px); box-shadow: 0 6px 0 var(--ink)}
+.booker__cta:active{transform: translateY(2px); box-shadow: 0 0 0 var(--ink)}
+
+.booker__legend{
+  display: flex; justify-content: center; gap: 24px;
+  margin-top: 24px;
+  font-size: 12px; color: var(--ink); opacity: .6;
+}
+.booker__legend-item{display: flex; align-items: center; gap: 6px}
+.booker__legend-dot{width: 8px; height: 8px; border-radius: 50%}
+.booker__legend-dot--avail{background: var(--leaf)}
+.booker__legend-dot--taken{background: rgba(0,0,0,.3)}
+
+/* ============================== SERVICES (avec line-art illus) ============================== */
+.services{
+  padding: 100px 28px;
+  background: var(--cream);
+}
+.services__inner{max-width: 1280px; margin: 0 auto}
+.services__head{text-align: center; margin-bottom: 56px}
+.services__grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.svc{
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+  padding: 32px 24px;
+  text-align: center;
+  transition: transform .3s, box-shadow .3s;
+  box-shadow: 0 6px 0 var(--ink);
+  position: relative;
+}
+.svc:hover{
+  transform: translateY(-4px) rotate(-1deg);
+  box-shadow: 0 10px 0 var(--ink);
+}
+.svc:nth-child(1){background: var(--blue); color: var(--cream)}
+.svc:nth-child(2){background: var(--sun)}
+.svc:nth-child(3){background: var(--tomato); color: var(--cream)}
+.svc:nth-child(4){background: var(--cream-2)}
+
+.svc__illus{
+  width: 90px; height: 90px;
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.svc__illus svg{width: 100%; height: 100%}
+.svc__name{
+  font-family: var(--display);
+  font-size: 26px;
+  margin-bottom: 6px;
+  font-weight: 400;
+}
+.svc__desc{font-size: 13px; line-height: 1.5; opacity: .85}
+
+/* ============================== REVIEWS ============================== */
+.reviews{
+  padding: 100px 0;
+  background: var(--blue);
+  color: var(--cream);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  overflow: hidden;
+}
+.reviews__head{
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 56px;
+  padding: 0 28px;
+}
+.reviews__sub{
+  margin-top: 12px;
+  font-family: var(--italic); font-style: italic;
+  font-size: 20px; opacity: .8;
+}
+.reviews__stars{
+  font-size: 22px; margin-top: 8px;
+  color: var(--sun);
+  letter-spacing: 2px;
+}
+.reviews__stars small{font-size: 14px; opacity: .7; margin-left: 8px; letter-spacing: 0; color: var(--cream)}
+
+.reviews__track{
+  display: flex; gap: 20px;
+  width: max-content;
+  animation: marqueeSlide 60s linear infinite;
+  padding: 0 20px;
+}
+.review-card{
+  flex: 0 0 360px;
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: var(--r);
+  padding: 28px;
+  border: 1.5px solid var(--ink);
+}
+.review-card:nth-child(2n){background: var(--cream-2); transform: rotate(-1deg)}
+.review-card:nth-child(3n){background: var(--sun); transform: rotate(.7deg)}
+.review-card__stars{font-size: 16px; color: var(--tomato); margin-bottom: 12px; letter-spacing: 1px}
+.review-card__text{font-size: 14px; line-height: 1.55; margin-bottom: 16px}
+.review-card__author{
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 600; font-size: 13px;
+}
+.review-card__avatar{
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+}
+
+/* ============================== FAQ ============================== */
+.faq{padding: 100px 28px; background: var(--cream)}
+.faq__inner{max-width: 880px; margin: 0 auto}
+.faq__head{text-align: center; margin-bottom: 48px}
+.faq__list{display: flex; flex-direction: column; gap: 12px}
+.faq__item{
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.faq__q{
+  padding: 22px 28px;
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer;
+  font-family: var(--display); font-size: 22px;
+  line-height: 1.1;
+  font-weight: 400;
+}
+.faq__plus{
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--blue); color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 400; font-size: 20px; line-height: 1;
+  transition: transform .3s, background .3s;
+  flex-shrink: 0;
+}
+.faq__item.open .faq__plus{transform: rotate(45deg); background: var(--tomato)}
+.faq__a{
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease, padding .4s ease;
+  padding: 0 28px;
+}
+.faq__item.open .faq__a{
+  padding: 0 28px 24px;
+  max-height: 400px;
+}
+.faq__a p{font-size: 15px; line-height: 1.6; opacity: .85}
+
+/* ============================== BRIDGE VERS L'ÉCOSYSTÈME ============================== */
+.bridge{
+  padding: 120px 28px;
+  background: var(--ink);
+  color: var(--cream);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.bridge::before{
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(206,62,0,.15), transparent 50%),
+    radial-gradient(circle at 70% 50%, rgba(32,34,75,.3), transparent 50%);
+}
+.bridge__inner{position: relative; z-index: 1}
+.bridge__overline{
+  font-family: var(--hand); font-size: 30px;
+  color: var(--tomato); margin-bottom: 16px;
+  font-weight: 600;
+}
+.bridge__title{
+  font-family: var(--display);
+  font-size: clamp(48px, 8vw, 120px);
+  line-height: .95;
+  letter-spacing: -.02em;
+  font-weight: 400;
+}
+.bridge__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--sun); font-weight: 400;
+}
+.bridge__sub{
+  font-family: var(--italic); font-style: italic;
+  font-size: 22px;
+  opacity: .8;
+  max-width: 600px;
+  margin: 24px auto 40px;
+}
+.bridge__cta{
+  background: var(--sun);
+  color: var(--ink);
+  padding: 22px 38px;
+  border-radius: var(--r-pill);
+  font-weight: 700; font-size: 16px;
+  display: inline-flex; align-items: center; gap: 14px;
+  border: 2px solid var(--cream);
+  transition: transform .2s;
+}
+.bridge__cta:hover{transform: translateY(-3px) scale(1.03)}
+
+/* ============================== FOOTER ============================== */
+.foot{
+  background: var(--ink);
+  color: var(--cream);
+  padding: 80px 28px 40px;
+}
+.foot__inner{max-width: 1280px; margin: 0 auto}
+.foot__grid{
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+.foot__brand-name{
+  font-family: var(--display);
+  font-size: 56px;
+  color: var(--sun);
+  margin-bottom: 16px;
+  line-height: 1;
+  font-weight: 400;
+}
+.foot__brand-desc{
+  font-family: var(--italic); font-style: italic;
+  font-size: 18px; opacity: .8;
+  max-width: 320px;
+}
+.foot h4{
+  font-family: var(--display);
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: var(--sun);
+  font-weight: 400;
+}
+.foot ul{list-style: none; display: flex; flex-direction: column; gap: 8px}
+.foot li{font-size: 14px; opacity: .85}
+.foot li a:hover{opacity: 1; color: var(--sun)}
+.foot__bottom{
+  border-top: 1px solid rgba(250,243,227,.15);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  font-size: 12px; opacity: .6;
+}
+
+/* ============================== RESPONSIVE ============================== */
+@media (max-width: 1100px){
+  .nav{padding: 8px 8px 8px 16px}
+  .nav__phone{display: none}
+  .nav__links{padding: 0 4px}
+  .nav__link{padding: 10px 14px; font-size: 13px}
+}
+@media (max-width: 900px){
+  .nav{flex-wrap: wrap; padding: 12px 16px; border-radius: 24px}
+  .nav__links, .nav__divider, .world-switch{display: none}
+  .nav__cta{margin-left: auto}
+  .marquee{margin-left: 16px; margin-right: 16px}
+  .stats__inner{grid-template-columns: 1fr 1fr}
+  .stat{border-bottom: 1.5px solid rgba(250,243,227,.15)}
+  .stat:nth-child(3){border-bottom: 0}
+  .hero__decor{display: none}
+  .salles{grid-template-columns: 1fr}
+  .annexe{grid-template-columns: 1fr; padding: 36px 28px}
+  .annexe__visual{height: 200px; order: -1}
+  .booker{padding: 24px}
+  .booker__rooms{grid-template-columns: 1fr}
+  .booker__calendar-wrap{grid-template-columns: 1fr}
+  .booker__summary{grid-template-columns: 1fr 1fr}
+  .booker__steps{flex-direction: column}
+  .services__grid{grid-template-columns: 1fr 1fr}
+  .review-card{flex: 0 0 280px}
+  .foot__grid{grid-template-columns: 1fr 1fr}
+  .foot__bottom{flex-direction: column; gap: 8px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== ICÔNES SVG INLINE (line-art) ============================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 21s-7-7.5-7-13a7 7 0 0114 0c0 5.5-7 13-7 13z"/>
+      <circle cx="12" cy="8" r="2.5"/>
+    </symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 8h13v6a4 4 0 01-4 4H8a4 4 0 01-4-4V8z"/>
+      <path d="M17 10h2.5a2.5 2.5 0 010 5H17"/>
+      <path d="M7 4c0 1.5 1 1.5 1 3M11 4c0 1.5 1 1.5 1 3M15 4c0 1.5-1 1.5-1 3"/>
+      <path d="M3 22h17"/>
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 7v5l3.5 2"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M8 12l3 3 5-6"/>
+    </symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/>
+      <path d="M19 3l.6 2.4L22 6l-2.4.6L19 9l-.6-2.4L16 6l2.4-.6L19 3z"/>
+    </symbol>
+    <symbol id="i-printer" viewBox="0 0 90 90" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 30V14a2 2 0 012-2h42a2 2 0 012 2v16"/>
+      <rect x="12" y="30" width="66" height="32" rx="3"/>
+      <rect x="22" y="50" width="46" height="26" rx="2" fill="currentColor" fill-opacity=".08"/>
+      <circle cx="68" cy="40" r="2.5" fill="currentColor"/>
+      <path d="M30 58h30M30 65h22"/>
+    </symbol>
+    <symbol id="i-cup" viewBox="0 0 90 90" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 30h36v28a18 18 0 01-18 18 18 18 0 01-18-18V30z"/>
+      <path d="M58 36h6a8 8 0 010 16h-6"/>
+      <path d="M30 18c0 4 2 4 2 8M40 18c0 4 2 4 2 8M50 18c0 4 2 4 2 8"/>
+      <path d="M18 78h44"/>
+    </symbol>
+    <symbol id="i-hand" viewBox="0 0 90 90" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30 40V20a4 4 0 018 0v18"/>
+      <path d="M38 38V16a4 4 0 018 0v22"/>
+      <path d="M46 38V20a4 4 0 018 0v22"/>
+      <path d="M54 38V28a4 4 0 018 0v22"/>
+      <path d="M62 38v6c0 14-6 28-22 28-9 0-14-6-18-12l-6-10c-2-3 0-7 4-7 2 0 4 1 5 3l5 6"/>
+    </symbol>
+    <symbol id="i-wifi" viewBox="0 0 90 90" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 32a48 48 0 0166 0"/>
+      <path d="M22 44a32 32 0 0146 0"/>
+      <path d="M32 56a16 16 0 0126 0"/>
+      <circle cx="45" cy="68" r="3" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-people" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="8" r="3"/>
+      <path d="M3 19c0-3 2.5-5 6-5s6 2 6 5"/>
+      <circle cx="17" cy="8" r="2.5"/>
+      <path d="M16 14c2.5.5 5 2 5 5"/>
+    </symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="9" width="18" height="6" rx="1"/>
+      <path d="M7 9v2M10 9v3M13 9v2M16 9v3M19 9v2"/>
+    </symbol>
+    <symbol id="i-screen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="13" rx="1.5"/>
+      <path d="M8 21h8M12 17v4"/>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3s5 5 5 11a5 5 0 01-10 0c0-3 2-5 2-5s-1 4 1 5c2-2 0-6 2-11z"/>
+    </symbol>
+  </defs>
+</svg>
+
+
+<!-- ============================== NAV ============================== -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="#" class="nav__logo">
+      Kōbō
+      <span class="nav__logo-dot"></span>
+    </a>
+    <span class="nav__divider"></span>
+    <div class="world-switch">
+      <button class="world-switch__btn world-switch__btn--active">Le Lieu</button>
+      <a href="kobo-transition.html" class="world-switch__btn">L'Écosystème</a>
+    </div>
+    <div class="nav__links">
+      <a href="#salles" class="nav__link nav__link--active">
+        <span class="nav__link-dot"></span>
+        Les salles
+      </a>
+      <a href="#reserve" class="nav__link">Réserver</a>
+      <a href="#services" class="nav__link">Services</a>
+      <a href="#faq" class="nav__link">FAQ</a>
+    </div>
+    <a href="tel:+33000000000" class="nav__phone">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.72 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0122 16.92z"/>
+      </svg>
+      05 47 50 12 18
+    </a>
+    <a href="#reserve" class="nav__cta">
+      Réserver
+      <svg class="nav__cta-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M13 6l6 6-6 6"/>
+      </svg>
+    </a>
+  </nav>
+</div>
+
+<!-- ============================== MARQUEE ============================== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <div class="marquee__group">
+      <span class="marquee__item">
+        <svg class="marquee__item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.5-7-13a7 7 0 0114 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="8" r="2.5"/></svg>
+        76 rue Mandron · Chartrons · Bordeaux
+      </span>
+      <span class="marquee__sep"></span>
+      <span class="marquee__item">Salle Canopée dès 25€/h</span>
+      <span class="marquee__sep"></span>
+      <span class="marquee__item">Salle Majorelle dès 35€/h</span>
+      <span class="marquee__sep"></span>
+      <span class="marquee__item">
+        <svg class="marquee__item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+        Annulation gratuite 24h avant
+      </span>
+      <span class="marquee__sep"></span>
+      <span class="marquee__item">
+        <svg class="marquee__item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/></svg>
+        Café offert pour les nouveaux
+      </span>
+      <span class="marquee__sep"></span>
+    </div>
+    <!-- duplicate for seamless loop -->
+    <div class="marquee__group">
+      <span class="marquee__item">
+        <svg class="marquee__item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.5-7-13a7 7 0 0114 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="8" r="2.5"/></svg>
+        76 rue Mandron · Chartrons · Bordeaux
+      </span>
+      <span class="marquee__sep"></span>
+      <span class="marquee__item">Salle Canopée dès 25€/h</span>
+      <span class="marquee__sep"></span>
+      <span class="marquee__item">Salle Majorelle dès 35€/h</span>
+      <span class="marquee__sep"></span>
+      <span class="marquee__item">
+        <svg class="marquee__item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+        Annulation gratuite 24h avant
+      </span>
+      <span class="marquee__sep"></span>
+      <span class="marquee__item">
+        <svg class="marquee__item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/></svg>
+        Café offert pour les nouveaux
+      </span>
+      <span class="marquee__sep"></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <div class="hero__inner">
+    <span class="hero__pill">
+      <span class="hero__pill-badge">DEPUIS 2022</span>
+      Salles de réunion à Bordeaux
+    </span>
+    <h1 class="hero__title">
+      <span class="word">Vos</span>
+      <span class="accent">meilleures</span>
+      <br>
+      <span class="word">réunions</span>
+      <span class="word">commencent</span>
+      <br>
+      <span class="word">ici.</span>
+    </h1>
+    <p class="hero__sub">Deux salles, un café qui fume, et une équipe qui vous reçoit comme à la maison.</p>
+    <div class="hero__address-row">
+      <span class="hero__address">
+        <svg class="hero__address-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21s-7-7.5-7-13a7 7 0 0114 0c0 5.5-7 13-7 13z"/>
+          <circle cx="12" cy="8" r="2.5"/>
+        </svg>
+        76 rue Mandron — Chartrons
+      </span>
+    </div>
+    <div class="hero__actions">
+      <a href="#reserve" class="btn-primary">
+        Réserver maintenant
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+      <a href="#salles" class="btn-secondary">Voir les salles</a>
+      <div class="hero__trust">
+        <span class="hero__trust-stars">★★★★★</span>
+        <span>4,9/5 · 47 avis Google</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÉCORS LINE-ART ÉPAIS -->
+  <svg class="hero__decor hero__decor--1" viewBox="0 0 110 110" fill="none">
+    <!-- Étoile à 8 branches, bleu Kobo -->
+    <path d="M55 8 L62 42 L96 42 L67 62 L74 96 L55 76 L36 96 L43 62 L14 42 L48 42 Z"
+          fill="#01357b" stroke="#1a1612" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="55" cy="55" r="6" fill="#f4c542" stroke="#1a1612" stroke-width="2.5"/>
+  </svg>
+
+  <svg class="hero__decor hero__decor--2" viewBox="0 0 90 90" fill="none">
+    <!-- Soleil rayonnant -->
+    <circle cx="45" cy="45" r="20" fill="#f4c542" stroke="#1a1612" stroke-width="3"/>
+    <g stroke="#1a1612" stroke-width="3" stroke-linecap="round">
+      <line x1="45" y1="8" x2="45" y2="18"/>
+      <line x1="45" y1="72" x2="45" y2="82"/>
+      <line x1="8" y1="45" x2="18" y2="45"/>
+      <line x1="72" y1="45" x2="82" y2="45"/>
+      <line x1="18" y1="18" x2="25" y2="25"/>
+      <line x1="65" y1="65" x2="72" y2="72"/>
+      <line x1="18" y1="72" x2="25" y2="65"/>
+      <line x1="65" y1="25" x2="72" y2="18"/>
+    </g>
+    <circle cx="38" cy="42" r="2" fill="#1a1612"/>
+    <circle cx="52" cy="42" r="2" fill="#1a1612"/>
+    <path d="M38 52 Q45 58 52 52" stroke="#1a1612" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <svg class="hero__decor hero__decor--3" viewBox="0 0 130 130" fill="none">
+    <!-- Tasse de café fumante -->
+    <path d="M30 50 Q30 45 35 45 L85 45 Q90 45 90 50 L88 95 Q88 105 78 105 L42 105 Q32 105 32 95 Z"
+          fill="#e6543c" stroke="#1a1612" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M88 60 Q105 60 105 75 Q105 90 88 90"
+          fill="none" stroke="#1a1612" stroke-width="3" stroke-linecap="round"/>
+    <path d="M20 110 L100 110" stroke="#1a1612" stroke-width="3" stroke-linecap="round"/>
+    <!-- Fumée -->
+    <path d="M45 35 Q50 25 55 35 T65 35 M55 25 Q60 15 65 25 T75 25"
+          stroke="#1a1612" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <svg class="hero__decor hero__decor--4" viewBox="0 0 90 90" fill="none">
+    <!-- Petite plante -->
+    <path d="M45 80 L45 35" stroke="#1a1612" stroke-width="3" stroke-linecap="round"/>
+    <path d="M45 55 Q30 45 25 30 Q35 32 45 50" fill="#4a7c3a" stroke="#1a1612" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M45 45 Q60 38 68 22 Q58 28 45 42" fill="#4a7c3a" stroke="#1a1612" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M45 35 Q35 25 38 12 Q47 20 45 32" fill="#4a7c3a" stroke="#1a1612" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Pot -->
+    <path d="M30 78 L35 88 L55 88 L60 78 Z" fill="#e6543c" stroke="#1a1612" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M28 78 L62 78" stroke="#1a1612" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+
+  <!-- Bandeau "Depuis 2022" en background -->
+  <div class="hero__since" aria-hidden="true">
+    <div class="hero__since-track">
+      <span>Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★</span>
+      <span>Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== STATS ============================== -->
+<section class="stats">
+  <div class="stats__inner">
+    <div class="stat">
+      <div class="stat__num">02<small></small></div>
+      <div class="stat__label">Salles équipées<br>au cœur de Bordeaux</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">140<small>m²</small></div>
+      <div class="stat__label">Annexe modulable<br>pour vos événements</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">25<small>€/h</small></div>
+      <div class="stat__label">À partir de…<br>tout compris</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">4,9<small>/5</small></div>
+      <div class="stat__label">Note Google<br>47 avis clients</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== SALLES (avec galerie photos) ============================== -->
+<section class="salles-section" id="salles">
+  <div class="salles-section__head">
+    <p class="section-eyebrow">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 4 L20 12 L28 13 L22 19 L24 27 L16 23 L8 27 L10 19 L4 13 L12 12 Z"/>
+      </svg>
+      hey ! choisissez votre ambiance
+    </p>
+    <h2 class="section-title">Deux salles, <span class="alt">deux vibes.</span></h2>
+    <p class="section-sub">Réunion intime ou atelier collectif, on a ce qu'il vous faut. Chaque salle est aménagée avec notre propre mobilier — vous êtes dans un showroom vivant.</p>
+  </div>
+
+  <div class="salles">
+
+    <!-- SALLE CANOPÉE -->
+    <article class="salle salle--canopee" data-gallery="0">
+      <div class="salle__gallery">
+        <div class="salle__slides">
+          <div class="salle__slide"><div class="salle__slide-img s1"></div></div>
+          <div class="salle__slide"><div class="salle__slide-img s2"></div></div>
+          <div class="salle__slide"><div class="salle__slide-img s3"></div></div>
+        </div>
+        <span class="salle__num">01</span>
+        <span class="salle__sticker"><span class="pulse"></span>Dispo aujourd'hui</span>
+        <div class="salle__gallery-nav">
+          <button class="salle__gallery-arrow prev" aria-label="Photo précédente">‹</button>
+          <button class="salle__gallery-arrow next" aria-label="Photo suivante">›</button>
+        </div>
+        <div class="salle__gallery-dots">
+          <span class="salle__gallery-dot salle__gallery-dot--active" data-i="0"></span>
+          <span class="salle__gallery-dot" data-i="1"></span>
+          <span class="salle__gallery-dot" data-i="2"></span>
+        </div>
+        <span class="salle__gallery-counter"><span class="cur">1</span>/3</span>
+      </div>
+      <div class="salle__body">
+        <h3 class="salle__name">Canopée<span class="accent">.</span></h3>
+        <p class="salle__tagline">— Calme et lumineuse, près du Jardin Public</p>
+        <p class="salle__desc">Pensée pour favoriser les échanges et libérer la créativité. Le Jardin Public est juste à côté pour une vraie pause entre deux sessions.</p>
+        <div class="salle__specs">
+          <span class="salle__spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="17" cy="8" r="2.5"/><path d="M16 14c2.5.5 5 2 5 5"/>
+            </svg>
+            8 personnes
+          </span>
+          <span class="salle__spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="9" width="18" height="6" rx="1"/><path d="M7 9v2M10 9v3M13 9v2M16 9v3M19 9v2"/>
+            </svg>
+            22 m²
+          </span>
+          <span class="salle__spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+            Vidéoprojecteur
+          </span>
+          <span class="salle__spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12a7 7 0 0114 0M8 12a4 4 0 018 0"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+            </svg>
+            Wifi fibre
+          </span>
+        </div>
+        <div class="salle__cta-row">
+          <span class="salle__price">25€<small>/heure</small></span>
+          <a href="#reserve" class="salle__btn">
+            Réserver
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- SALLE MAJORELLE -->
+    <article class="salle salle--majorelle" data-gallery="1">
+      <div class="salle__gallery">
+        <div class="salle__slides">
+          <div class="salle__slide"><div class="salle__slide-img s1"></div></div>
+          <div class="salle__slide"><div class="salle__slide-img s2"></div></div>
+          <div class="salle__slide"><div class="salle__slide-img s3"></div></div>
+        </div>
+        <span class="salle__num">02</span>
+        <span class="salle__sticker">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          Coup de cœur
+        </span>
+        <div class="salle__gallery-nav">
+          <button class="salle__gallery-arrow prev" aria-label="Photo précédente">‹</button>
+          <button class="salle__gallery-arrow next" aria-label="Photo suivante">›</button>
+        </div>
+        <div class="salle__gallery-dots">
+          <span class="salle__gallery-dot salle__gallery-dot--active" data-i="0"></span>
+          <span class="salle__gallery-dot" data-i="1"></span>
+          <span class="salle__gallery-dot" data-i="2"></span>
+        </div>
+        <span class="salle__gallery-counter"><span class="cur">1</span>/3</span>
+      </div>
+      <div class="salle__body">
+        <h3 class="salle__name"><span class="accent">Majorelle.</span></h3>
+        <p class="salle__tagline">— Colorée et inspirante, l'effet waouh</p>
+        <p class="salle__desc">Une ambiance colorée et apaisante au cœur de Bordeaux. Stimule la concentration, encourage les échanges. Pour atelier collaboratif, formation ou rendez-vous pro.</p>
+        <div class="salle__specs">
+          <span class="salle__spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="17" cy="8" r="2.5"/><path d="M16 14c2.5.5 5 2 5 5"/>
+            </svg>
+            12 personnes
+          </span>
+          <span class="salle__spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="9" width="18" height="6" rx="1"/><path d="M7 9v2M10 9v3M13 9v2M16 9v3M19 9v2"/>
+            </svg>
+            28 m²
+          </span>
+          <span class="salle__spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+            Écran 65"
+          </span>
+          <span class="salle__spec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 8h13v6a4 4 0 01-4 4H8a4 4 0 01-4-4V8z"/><path d="M17 10h2.5a2.5 2.5 0 010 5H17"/>
+            </svg>
+            Coin café
+          </span>
+        </div>
+        <div class="salle__cta-row">
+          <span class="salle__price">35€<small>/heure</small></span>
+          <a href="#reserve" class="salle__btn">
+            Réserver
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- L'ANNEXE -->
+  <div class="annexe">
+    <div>
+      <span class="annexe__sticker">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/>
+        </svg>
+        BONUS · 140 m²
+      </span>
+      <h3 class="annexe__title">L'<span class="accent">annexe.</span></h3>
+      <p class="annexe__desc">Un atelier de 140 m² entièrement dédié à la création artistique, aux résidences, événements pop-up, expositions et performances. Espace privatisable sur devis.</p>
+      <a href="#" class="annexe__btn">
+        Demander un devis
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
+    <div class="annexe__visual"></div>
+  </div>
+</section>
+
+
+<!-- ============================== RÉSERVATION ============================== -->
+<section class="reserve-section" id="reserve">
+
+  <svg class="reserve-section__decor reserve-section__decor--1" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 6"/>
+    <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2"/>
+  </svg>
+  <svg class="reserve-section__decor reserve-section__decor--2" viewBox="0 0 100 100">
+    <path d="M50 5 L60 35 L92 38 L66 58 L75 90 L50 70 L25 90 L34 58 L8 38 L40 35 Z" fill="currentColor"/>
+  </svg>
+
+  <div class="reserve-wrap">
+    <div class="reserve-head">
+      <p class="reserve-head__eyebrow">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="16" cy="16" r="12"/>
+          <path d="M16 8v8l5 3"/>
+        </svg>
+        promis, c'est rapide
+      </p>
+      <h2 class="reserve-head__title">Réservez en <span class="accent">3 étapes.</span></h2>
+    </div>
+
+    <div class="booker">
+      <div class="booker__steps">
+        <button class="booker__step booker__step--done"><span>Salle</span></button>
+        <button class="booker__step booker__step--active">
+          <span class="booker__step-num">2</span>
+          Date & heure
+        </button>
+        <button class="booker__step">
+          <span class="booker__step-num">3</span>
+          Vos infos
+        </button>
+      </div>
+
+      <div class="booker__rooms" id="booker-rooms">
+        <div class="booker__room booker__room--canopee" data-room="canopee" data-price="25">
+          <div class="booker__room-visual"></div>
+          <div class="booker__room-name">Canopée</div>
+          <div class="booker__room-cap">8 personnes · 22 m²</div>
+          <div class="booker__room-price">25€/h</div>
+        </div>
+        <div class="booker__room booker__room--majorelle booker__room--selected" data-room="majorelle" data-price="35">
+          <div class="booker__room-visual"></div>
+          <div class="booker__room-name">Majorelle</div>
+          <div class="booker__room-cap">12 personnes · 28 m²</div>
+          <div class="booker__room-price">35€/h</div>
+        </div>
+        <div class="booker__room booker__room--annexe" data-room="annexe" data-price="0">
+          <div class="booker__room-visual"></div>
+          <div class="booker__room-name">L'annexe</div>
+          <div class="booker__room-cap">140 m² · sur devis</div>
+          <div class="booker__room-price">Sur devis</div>
+        </div>
+      </div>
+
+      <div class="booker__calendar-wrap">
+        <div class="booker__calendar">
+          <div class="booker__cal-head">
+            <div class="booker__cal-month">Mai 2026</div>
+            <div class="booker__cal-nav">
+              <button class="booker__cal-arrow">‹</button>
+              <button class="booker__cal-arrow">›</button>
+            </div>
+          </div>
+          <div class="booker__cal-grid" id="cal-grid">
+            <div class="booker__cal-day-name">L</div>
+            <div class="booker__cal-day-name">M</div>
+            <div class="booker__cal-day-name">M</div>
+            <div class="booker__cal-day-name">J</div>
+            <div class="booker__cal-day-name">V</div>
+            <div class="booker__cal-day-name">S</div>
+            <div class="booker__cal-day-name">D</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="booker__slots-title">
+            Créneaux
+            <span class="booker__slots-sub">Jeu. 21 mai</span>
+          </div>
+          <div class="booker__slots-grid">
+            <button class="booker__slot">09:00</button>
+            <button class="booker__slot taken">10:00</button>
+            <button class="booker__slot booker__slot--selected">11:00</button>
+            <button class="booker__slot">12:00</button>
+            <button class="booker__slot taken">14:00</button>
+            <button class="booker__slot">15:00</button>
+            <button class="booker__slot">16:00</button>
+            <button class="booker__slot">17:00</button>
+            <button class="booker__slot">18:00</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="booker__summary">
+        <div class="booker__summary-item"><small>Salle</small><strong id="sum-room">Majorelle</strong></div>
+        <div class="booker__summary-item"><small>Date</small><strong>Jeu. 21 mai</strong></div>
+        <div class="booker__summary-item"><small>Heure</small><strong>11:00 — 12:00</strong></div>
+        <div class="booker__summary-item"><small>Durée</small><strong>1 heure</strong></div>
+      </div>
+
+      <div class="booker__total-row">
+        <span class="booker__total-label">Total à régler</span>
+        <span class="booker__total-amount" id="sum-total">35€</span>
+      </div>
+
+      <button class="booker__cta" type="button">
+        Continuer vers mes infos
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </button>
+
+      <div class="booker__legend">
+        <span class="booker__legend-item">
+          <span class="booker__legend-dot booker__legend-dot--avail"></span>
+          Disponible
+        </span>
+        <span class="booker__legend-item">
+          <span class="booker__legend-dot booker__legend-dot--taken"></span>
+          Pris
+        </span>
+        <span class="booker__legend-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+          Confirmation immédiate
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== SERVICES ============================== -->
+<section class="services" id="services">
+  <div class="services__inner">
+    <div class="services__head">
+      <p class="section-eyebrow">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="16" cy="16" r="12"/>
+          <path d="M11 16l3 3 7-7"/>
+        </svg>
+        inclus, sans supplément
+      </p>
+      <h2 class="section-title">Tout est <span class="alt">là.</span></h2>
+    </div>
+    <div class="services__grid">
+
+      <div class="svc">
+        <div class="svc__illus">
+          <svg viewBox="0 0 90 90" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 30V14a2 2 0 012-2h42a2 2 0 012 2v16"/>
+            <rect x="12" y="30" width="66" height="32" rx="3"/>
+            <rect x="22" y="50" width="46" height="26" rx="2" fill="currentColor" fill-opacity=".08"/>
+            <circle cx="68" cy="40" r="2.5" fill="currentColor"/>
+            <path d="M30 58h30M30 65h22"/>
+          </svg>
+        </div>
+        <div class="svc__name">Kōbō Print</div>
+        <div class="svc__desc">Imprimante pro à dispo.<br>Couleurs, N&B, A4/A3.</div>
+      </div>
+
+      <div class="svc">
+        <div class="svc__illus">
+          <svg viewBox="0 0 90 90" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 30h36v28a18 18 0 01-18 18 18 18 0 01-18-18V30z"/>
+            <path d="M58 36h6a8 8 0 010 16h-6"/>
+            <path d="M30 18c0 4 2 4 2 8M40 18c0 4 2 4 2 8M50 18c0 4 2 4 2 8"/>
+            <path d="M18 78h44"/>
+          </svg>
+        </div>
+        <div class="svc__name">Kōbō Drinks</div>
+        <div class="svc__desc">Café, thé, eau pétillante.<br>À volonté.</div>
+      </div>
+
+      <div class="svc">
+        <div class="svc__illus">
+          <svg viewBox="0 0 90 90" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M30 40V20a4 4 0 018 0v18"/>
+            <path d="M38 38V16a4 4 0 018 0v22"/>
+            <path d="M46 38V20a4 4 0 018 0v22"/>
+            <path d="M54 38V28a4 4 0 018 0v22"/>
+            <path d="M62 38v6c0 14-6 28-22 28-9 0-14-6-18-12l-6-10c-2-3 0-7 4-7 2 0 4 1 5 3l5 6"/>
+          </svg>
+        </div>
+        <div class="svc__name">Kōbō Welcome</div>
+        <div class="svc__desc">Une équipe sympa qui<br>vous accueille.</div>
+      </div>
+
+      <div class="svc">
+        <div class="svc__illus">
+          <svg viewBox="0 0 90 90" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 32a48 48 0 0166 0"/>
+            <path d="M22 44a32 32 0 0146 0"/>
+            <path d="M32 56a16 16 0 0126 0"/>
+            <circle cx="45" cy="68" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="svc__name">Kōbō Connect</div>
+        <div class="svc__desc">Fibre haut débit,<br>illimitée et stable.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== REVIEWS ============================== -->
+<section class="reviews">
+  <div class="reviews__head">
+    <p class="section-eyebrow" style="color: var(--sun)">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 4 L20 12 L28 13 L22 19 L24 27 L16 23 L8 27 L10 19 L4 13 L12 12 Z"/>
+      </svg>
+      ce que nos clients disent
+    </p>
+    <h2 class="section-title" style="color: var(--cream)">Ils sont <span class="alt" style="color: var(--sun)">venus.</span></h2>
+    <p class="reviews__sub">"Et ils sont revenus."</p>
+    <p class="reviews__stars">★★★★★<small>4,9/5 · 47 avis Google</small></p>
+  </div>
+
+  <div class="reviews__track">
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">Lieu hyper agréable, salles bien équipées et l'accueil est top. On y est venu 4 fois pour des ateliers, on revient à chaque fois.</p>
+      <div class="review-card__author"><span class="review-card__avatar">M</span>Marine D.</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">La salle Majorelle est superbe, vraiment inspirante. Parfait pour nos brainstorms d'équipe. Le café est délicieux en plus !</p>
+      <div class="review-card__author"><span class="review-card__avatar">T</span>Thomas R.</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">Rapport qualité-prix imbattable à Bordeaux. Bien plus chaleureux qu'un Regus ou autre. Je recommande chaudement.</p>
+      <div class="review-card__author"><span class="review-card__avatar">L</span>Léa B.</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">Réservation en ligne hyper simple, équipe au top, salles propres et bien pensées. Ce qu'on cherchait depuis longtemps.</p>
+      <div class="review-card__author"><span class="review-card__avatar">J</span>Julien M.</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">On a organisé un workshop de 8h chez Kōbō, tout était parfait. Le mobilier est superbe (ils le font eux-mêmes !).</p>
+      <div class="review-card__author"><span class="review-card__avatar">S</span>Sophie L.</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">Le Jardin Public juste à côté pour les pauses, c'est le détail qui change tout. Top spot dans les Chartrons.</p>
+      <div class="review-card__author"><span class="review-card__avatar">A</span>Antoine P.</div>
+    </div>
+    <!-- duplicate for seamless loop -->
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">Lieu hyper agréable, salles bien équipées et l'accueil est top. On y est venu 4 fois, on revient à chaque fois.</p>
+      <div class="review-card__author"><span class="review-card__avatar">M</span>Marine D.</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">La salle Majorelle est superbe, vraiment inspirante. Parfait pour nos brainstorms d'équipe.</p>
+      <div class="review-card__author"><span class="review-card__avatar">T</span>Thomas R.</div>
+    </div>
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__text">Rapport qualité-prix imbattable à Bordeaux. Bien plus chaleureux qu'un Regus ou autre.</p>
+      <div class="review-card__author"><span class="review-card__avatar">L</span>Léa B.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== FAQ ============================== -->
+<section class="faq" id="faq">
+  <div class="faq__inner">
+    <div class="faq__head">
+      <p class="section-eyebrow">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="16" cy="16" r="12"/>
+          <path d="M12 13a4 4 0 118 0c0 3-4 3-4 6"/>
+          <circle cx="16" cy="24" r="1.2" fill="currentColor"/>
+        </svg>
+        les questions qu'on nous pose
+      </p>
+      <h2 class="section-title">Bonnes <span class="alt">questions.</span></h2>
+    </div>
+    <div class="faq__list">
+      <div class="faq__item open">
+        <div class="faq__q">
+          Peut-on louer pour 1 heure seulement ?
+          <span class="faq__plus">+</span>
+        </div>
+        <div class="faq__a">
+          <p>Oui ! Les réservations sont flexibles : à l'heure, à la demi-journée ou à la journée complète. Vous payez exactement ce que vous utilisez, pas plus.</p>
+        </div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q">
+          Que comprend exactement la location ?
+          <span class="faq__plus">+</span>
+        </div>
+        <div class="faq__a">
+          <p>La salle équipée (vidéoprojecteur ou écran selon la salle), le wifi fibre, l'accès aux services Kōbō (print, café/thé en illimité, accueil). Aucun frais caché.</p>
+        </div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q">
+          Comment annuler ma réservation ?
+          <span class="faq__plus">+</span>
+        </div>
+        <div class="faq__a">
+          <p>Annulation gratuite jusqu'à 24h avant. Au-delà, 50% du montant est conservé. Vous recevez un email de confirmation avec un lien direct pour gérer votre résa.</p>
+        </div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q">
+          Y a-t-il un parking ?
+          <span class="faq__plus">+</span>
+        </div>
+        <div class="faq__a">
+          <p>Stationnement gratuit dans la rue (zone bleue) et parking payant à 200m. Les transports en commun (tram C, bus) sont à 5 min à pied.</p>
+        </div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q">
+          Peut-on apporter à manger ?
+          <span class="faq__plus">+</span>
+        </div>
+        <div class="faq__a">
+          <p>Bien sûr ! On peut aussi organiser un plateau-repas avec un traiteur partenaire local sur demande (à partir de 12€/pers.). Contactez-nous lors de la réservation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== BRIDGE VERS L'ÉCOSYSTÈME ============================== -->
+<section class="bridge">
+  <div class="bridge__inner">
+    <p class="bridge__overline">— Mais Kōbō, c'est plus qu'un lieu</p>
+    <h2 class="bridge__title">Découvrez<br><span class="accent">l'écosystème.</span></h2>
+    <p class="bridge__sub">Derrière Le Lieu, il y a 3 autres métiers. Ingénierie, design, création. Une seule maison.</p>
+    <a href="kobo-transition.html" class="bridge__cta">
+      Entrer dans l'écosystème
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M13 6l6 6-6 6"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="foot">
+  <div class="foot__inner">
+    <div class="foot__grid">
+      <div>
+        <div class="foot__brand-name">Kōbō.</div>
+        <p class="foot__brand-desc">Un lieu, deux salles, quatre métiers. Tout part d'ici, depuis Bordeaux.</p>
+      </div>
+      <div>
+        <h4>Le Lieu</h4>
+        <ul>
+          <li><a href="#">Canopée</a></li>
+          <li><a href="#">Majorelle</a></li>
+          <li><a href="#">L'annexe</a></li>
+          <li><a href="#">Tarifs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>L'Écosystème</h4>
+        <ul>
+          <li><a href="kobo-transition.html">Découvrir</a></li>
+          <li><a href="#">PO TECH</a></li>
+          <li><a href="#">Kōbō Design</a></li>
+          <li><a href="#">Kōbō Production</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>76 rue Mandron</li>
+          <li>33000 Bordeaux</li>
+          <li><a href="mailto:hello@kobo-bdx.com">hello@kobo-bdx.com</a></li>
+          <li><a href="#">Instagram</a> · <a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© 2026 Kōbō · Maison commune, Bordeaux</span>
+      <span>Mentions · Confidentialité</span>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+/* ====== Calendrier ====== */
+(function buildCalendar(){
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+  const firstDayOffset = 3;
+  const daysInMonth = 31;
+  const today = 15;
+  const selected = 21;
+  const availableDays = new Set([16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
+  const takenDays = new Set([22, 28]);
+
+  for (let i = 0; i < firstDayOffset; i++){
+    const d = document.createElement('div');
+    d.className = 'booker__cal-day disabled';
+    grid.appendChild(d);
+  }
+  for (let d = 1; d <= daysInMonth; d++){
+    const el = document.createElement('button');
+    el.className = 'booker__cal-day';
+    el.textContent = d;
+    if (d < today) el.classList.add('disabled');
+    else if (availableDays.has(d) && !takenDays.has(d)) el.classList.add('booker__cal-day--available');
+    if (d === today) el.classList.add('today');
+    if (d === selected) el.classList.add('booker__cal-day--selected');
+    if (takenDays.has(d)) el.classList.add('disabled');
+
+    el.addEventListener('click', () => {
+      if (el.classList.contains('disabled')) return;
+      document.querySelectorAll('.booker__cal-day--selected').forEach(x => x.classList.remove('booker__cal-day--selected'));
+      el.classList.add('booker__cal-day--selected');
+    });
+    grid.appendChild(el);
+  }
+})();
+
+/* ====== Choix de salle ====== */
+document.querySelectorAll('#booker-rooms .booker__room').forEach(room => {
+  room.addEventListener('click', () => {
+    document.querySelectorAll('#booker-rooms .booker__room').forEach(r => r.classList.remove('booker__room--selected'));
+    room.classList.add('booker__room--selected');
+    const name = room.querySelector('.booker__room-name').textContent;
+    const price = room.dataset.price;
+    document.getElementById('sum-room').textContent = name;
+    document.getElementById('sum-total').textContent = price > 0 ? price + '€' : 'Sur devis';
+  });
+});
+
+/* ====== Créneaux ====== */
+document.querySelectorAll('.booker__slot').forEach(slot => {
+  if (slot.classList.contains('taken')) return;
+  slot.addEventListener('click', () => {
+    document.querySelectorAll('.booker__slot').forEach(s => s.classList.remove('booker__slot--selected'));
+    slot.classList.add('booker__slot--selected');
+  });
+});
+
+/* ====== FAQ accordion ====== */
+document.querySelectorAll('.faq__q').forEach(q => {
+  q.addEventListener('click', () => {
+    q.parentElement.classList.toggle('open');
+  });
+});
+
+/* ====== Galleries (3 photos par salle) ====== */
+document.querySelectorAll('.salle').forEach(salle => {
+  const slidesContainer = salle.querySelector('.salle__slides');
+  const slides = salle.querySelectorAll('.salle__slide');
+  const dots = salle.querySelectorAll('.salle__gallery-dot');
+  const counter = salle.querySelector('.salle__gallery-counter .cur');
+  const prev = salle.querySelector('.prev');
+  const next = salle.querySelector('.next');
+  let idx = 0;
+  const total = slides.length;
+
+  function go(i){
+    idx = (i + total) % total;
+    slidesContainer.style.transform = `translateX(-${idx * 100}%)`;
+    dots.forEach((d, di) => d.classList.toggle('salle__gallery-dot--active', di === idx));
+    if (counter) counter.textContent = idx + 1;
+  }
+
+  prev?.addEventListener('click', (e) => {e.preventDefault(); go(idx - 1)});
+  next?.addEventListener('click', (e) => {e.preventDefault(); go(idx + 1)});
+  dots.forEach((d, di) => d.addEventListener('click', () => go(di)));
+
+  // Auto-rotation toutes les 5s
+  let autoTimer = setInterval(() => go(idx + 1), 5000);
+  salle.addEventListener('mouseenter', () => clearInterval(autoTimer));
+  salle.addEventListener('mouseleave', () => {
+    autoTimer = setInterval(() => go(idx + 1), 5000);
+  });
+});
+
+/* ====== Smooth scroll ====== */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (id.length > 1) {
+      const t = document.querySelector(id);
+      if (t) {
+        e.preventDefault();
+        t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  });
+});
+</script>
+
+</body>
+</html>
