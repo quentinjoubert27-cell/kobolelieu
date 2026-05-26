@@ -77,32 +77,33 @@ img,svg{display:block;max-width:100%}
   padding-left: 24px;
 }
 .marquee__track span{display:flex; align-items:center; gap:24px}
+.marquee__track span svg{display:inline-block; vertical-align:middle; stroke:var(--sun); flex-shrink:0}
 .marquee__track .dot{display:inline-block; width:6px; height:6px; border-radius:50%; background: var(--sun)}
 @keyframes scrollX{from{transform: translateX(0)}to{transform: translateX(-50%)}}
 
 /* ============================== NAV ============================== */
 .nav{
   position: sticky; top: 0; z-index: 50;
-  background: var(--blue);
+  background: var(--cream);
   border-bottom: 3px solid var(--ink);
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 28px;
 }
 .nav__logo{
   font-family: var(--display); font-size: 32px;
-  color: var(--cream); line-height: 1;
+  color: var(--blue); line-height: 1;
   display: flex; align-items: center; gap: 10px;
   letter-spacing: -.01em;
 }
 .nav__logo .dot{
-  width: 11px; height: 11px; background: var(--sun); border-radius: 50%;
+  width: 11px; height: 11px; background: var(--tomato); border-radius: 50%;
   animation: bounce 2s ease-in-out infinite;
 }
 @keyframes bounce{0%,100%{transform: translateY(0)}50%{transform: translateY(-5px)}}
 .nav__links{display: flex; gap: 24px; font-weight: 600; font-size: 14px}
 .nav__links a{
-  color: var(--cream);
-  opacity: .75;
+  color: var(--ink);
+  opacity: .65;
   padding: 6px 0;
   position: relative;
   transition: opacity .2s;
@@ -110,14 +111,14 @@ img,svg{display:block;max-width:100%}
 .nav__links a::after{
   content: "";
   position: absolute; left: 0; right: 0; bottom: 0;
-  height: 2px; background: var(--sun);
+  height: 2px; background: var(--blue);
   transform: scaleX(0); transform-origin: left;
   transition: transform .25s;
 }
 .nav__links a:hover{opacity: 1}
 .nav__links a:hover::after{transform: scaleX(1)}
 .nav__cta{
-  background: var(--sun); color: var(--ink);
+  background: var(--blue); color: var(--cream);
   padding: 11px 22px;
   border-radius: var(--r-pill);
   font-weight: 700; font-size: 14px;
@@ -126,7 +127,7 @@ img,svg{display:block;max-width:100%}
   transition: transform .2s, background .2s, box-shadow .2s;
   box-shadow: 3px 3px 0 var(--ink);
 }
-.nav__cta:hover{transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink);}
+.nav__cta:hover{transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); background: var(--blue-deep);}
 .nav__cta .arrow{display: inline-block; transition: transform .3s}
 .nav__cta:hover .arrow{transform: translateX(3px)}
 
@@ -234,8 +235,10 @@ img,svg{display:block;max-width:100%}
   display: inline-flex; align-items: center; gap: 10px;
   margin-bottom: 48px;
 }
-.hero__address::before{
-  content: "📍"; font-size: 22px;
+.hero__address svg{
+  flex-shrink: 0;
+  stroke: var(--tomato); stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
 }
 .hero__actions{display: flex; gap: 16px; flex-wrap: wrap}
 .btn-primary{
@@ -892,7 +895,11 @@ img,svg{display:block;max-width:100%}
   background: rgba(255,255,255,.15);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 32px;
+}
+.svc__icon svg{
+  width: 30px; height: 30px;
+  stroke: currentColor; stroke-width: 2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
 }
 .svc:nth-child(2) .svc__icon,
 .svc:nth-child(4) .svc__icon{background: rgba(0,0,0,.08)}
@@ -1143,22 +1150,6 @@ img,svg{display:block;max-width:100%}
 </head>
 <body>
 
-<!-- ============================== MARQUEE TOP ============================== -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    <span>📍 76 rue Mandron, Chartrons — Bordeaux <span class="dot"></span></span>
-    <span>Salle Canopée dès 25€/h <span class="dot"></span></span>
-    <span>Salle Majorelle dès 35€/h <span class="dot"></span></span>
-    <span>Annulation gratuite 24h avant <span class="dot"></span></span>
-    <span>Café offert pour les nouveaux ✨ <span class="dot"></span></span>
-    <span>📍 76 rue Mandron, Chartrons — Bordeaux <span class="dot"></span></span>
-    <span>Salle Canopée dès 25€/h <span class="dot"></span></span>
-    <span>Salle Majorelle dès 35€/h <span class="dot"></span></span>
-    <span>Annulation gratuite 24h avant <span class="dot"></span></span>
-    <span>Café offert pour les nouveaux ✨ <span class="dot"></span></span>
-  </div>
-</div>
-
 <!-- ============================== NAV ============================== -->
 <nav class="nav">
   <a href="#" class="nav__logo">Kōbō<span class="dot"></span></a>
@@ -1168,11 +1159,27 @@ img,svg{display:block;max-width:100%}
     <a href="#services">Services</a>
     <a href="#faq">FAQ</a>
   </div>
-  <a href="#reserve" class="nav__cta">
+  <a href="reservation.html" class="nav__cta">
     Réserver
     <span class="arrow">→</span>
   </a>
 </nav>
+
+<!-- ============================== MARQUEE TOP ============================== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 76 rue Mandron, Chartrons — Bordeaux <span class="dot"></span></span>
+    <span>Salle Canopée dès 25€/h <span class="dot"></span></span>
+    <span>Salle Majorelle dès 35€/h <span class="dot"></span></span>
+    <span>Annulation gratuite 24h avant <span class="dot"></span></span>
+    <span>Café offert pour les nouveaux <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg> <span class="dot"></span></span>
+    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 76 rue Mandron, Chartrons — Bordeaux <span class="dot"></span></span>
+    <span>Salle Canopée dès 25€/h <span class="dot"></span></span>
+    <span>Salle Majorelle dès 35€/h <span class="dot"></span></span>
+    <span>Annulation gratuite 24h avant <span class="dot"></span></span>
+    <span>Café offert pour les nouveaux <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg> <span class="dot"></span></span>
+  </div>
+</div>
 
 <!-- ============================== SWITCH MONDES ============================== -->
 <div class="world-switch">
@@ -1205,7 +1212,10 @@ img,svg{display:block;max-width:100%}
       <span class="word">ici.</span>
     </h1>
     <p class="hero__sub">Deux salles, un café qui fume, et une équipe qui vous reçoit comme à la maison.</p>
-    <p class="hero__address">76 rue Mandron — Chartrons</p>
+    <p class="hero__address">
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      76 rue Mandron — Chartrons
+    </p>
     <div class="hero__actions">
       <a href="#reserve" class="btn-primary">
         Réserver maintenant
@@ -1265,14 +1275,14 @@ img,svg{display:block;max-width:100%}
         <p class="salle__tagline">— Calme et lumineuse, près du Jardin Public</p>
         <p class="salle__desc">Pensée pour favoriser les échanges et libérer la créativité. Le Jardin Public est juste à côté pour une vraie pause entre deux sessions.</p>
         <div class="salle__specs">
-          <span class="salle__spec">👥 8 personnes</span>
-          <span class="salle__spec">📐 22 m²</span>
-          <span class="salle__spec">📺 Vidéoprojecteur</span>
-          <span class="salle__spec">📶 Wifi fibre</span>
+          <span class="salle__spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> 8 personnes</span>
+          <span class="salle__spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L3 21M7 3h14v14"/></svg> 22 m²</span>
+          <span class="salle__spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Vidéoprojecteur</span>
+          <span class="salle__spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.42 9a16 16 0 0121.16 0M5 12.55a11 11 0 0114.08 0M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg> Wifi fibre</span>
         </div>
         <div class="salle__cta-row">
           <span class="salle__price">25€<small>/heure</small></span>
-          <a href="#reserve" class="salle__btn">
+          <a href="reservation.html?salle=canopee" class="salle__btn">
             Réserver
             <span class="arrow">→</span>
           </a>
@@ -1291,14 +1301,14 @@ img,svg{display:block;max-width:100%}
         <p class="salle__tagline">— Colorée et inspirante, l'effet waouh</p>
         <p class="salle__desc">Une ambiance colorée et apaisante au cœur de Bordeaux. Stimule la concentration, encourage les échanges. Pour atelier collaboratif, formation ou rendez-vous pro.</p>
         <div class="salle__specs">
-          <span class="salle__spec">👥 12 personnes</span>
-          <span class="salle__spec">📐 28 m²</span>
-          <span class="salle__spec">🖥 Écran 65"</span>
-          <span class="salle__spec">☕ Coin café</span>
+          <span class="salle__spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> 12 personnes</span>
+          <span class="salle__spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L3 21M7 3h14v14"/></svg> 28 m²</span>
+          <span class="salle__spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Écran 65"</span>
+          <span class="salle__spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><path d="M6 2v2M10 2v2M14 2v2"/></svg> Coin café</span>
         </div>
         <div class="salle__cta-row">
           <span class="salle__price">35€<small>/heure</small></span>
-          <a href="#reserve" class="salle__btn">
+          <a href="reservation.html?salle=majorelle" class="salle__btn">
             Réserver
             <span class="arrow">→</span>
           </a>
@@ -1451,8 +1461,8 @@ img,svg{display:block;max-width:100%}
         <span class="booker__total-amount" id="sum-total">35€</span>
       </div>
 
-      <button class="booker__cta" type="button">
-        Continuer vers mes infos
+      <button class="booker__cta" type="button" id="booker-continue">
+        Continuer ma réservation
         <span>→</span>
       </button>
 
@@ -1465,7 +1475,10 @@ img,svg{display:block;max-width:100%}
           <span class="booker__legend-dot booker__legend-dot--taken"></span>
           Pris
         </span>
-        <span class="booker__legend-item">⚡ Confirmation immédiate</span>
+        <span class="booker__legend-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Confirmation immédiate
+        </span>
       </div>
     </div>
 
@@ -1482,22 +1495,22 @@ img,svg{display:block;max-width:100%}
     </div>
     <div class="services__grid">
       <div class="svc">
-        <div class="svc__icon">🖨</div>
+        <div class="svc__icon"><svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
         <div class="svc__name">Kōbō Print</div>
         <div class="svc__desc">Imprimante pro à dispo. Couleurs, noir & blanc, A4/A3.</div>
       </div>
       <div class="svc">
-        <div class="svc__icon">☕</div>
+        <div class="svc__icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><path d="M6 2v2M10 2v2M14 2v2"/></svg></div>
         <div class="svc__name">Kōbō Drinks</div>
         <div class="svc__desc">Café, thé, eau pétillante, jus. À volonté.</div>
       </div>
       <div class="svc">
-        <div class="svc__icon">👋</div>
+        <div class="svc__icon"><svg viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 00-4 0v5M14 10V4a2 2 0 00-4 0v6M10 10.5V6a2 2 0 00-4 0v8.5a6 6 0 006 6 6 6 0 006-6v-2"/></svg></div>
         <div class="svc__name">Kōbō Welcome</div>
         <div class="svc__desc">Une équipe sympa qui vous accueille à l'arrivée.</div>
       </div>
       <div class="svc">
-        <div class="svc__icon">📶</div>
+        <div class="svc__icon"><svg viewBox="0 0 24 24"><path d="M1.42 9a16 16 0 0121.16 0M5 12.55a11 11 0 0114.08 0M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1.5" fill="currentColor"/></svg></div>
         <div class="svc__name">Kōbō Connect</div>
         <div class="svc__desc">Fibre haut débit, illimitée, ultra stable.</div>
       </div>
@@ -1739,16 +1752,28 @@ img,svg{display:block;max-width:100%}
 })();
 
 /* ====== Choix de salle ====== */
+let selectedRoom = 'majorelle';
 document.querySelectorAll('#booker-rooms .booker__room').forEach(room => {
   room.addEventListener('click', () => {
     document.querySelectorAll('#booker-rooms .booker__room').forEach(r => r.classList.remove('booker__room--selected'));
     room.classList.add('booker__room--selected');
+    selectedRoom = room.dataset.room;
     // Maj récap
     const name = room.querySelector('.booker__room-name').textContent;
     const price = room.dataset.price;
     document.getElementById('sum-room').textContent = name;
     document.getElementById('sum-total').textContent = price > 0 ? price + '€' : 'Sur devis';
   });
+});
+
+/* ====== CTA booker → page réservation ====== */
+document.getElementById('booker-continue').addEventListener('click', () => {
+  const params = new URLSearchParams({ salle: selectedRoom });
+  const selectedDay = document.querySelector('.booker__cal-day--selected');
+  if (selectedDay && selectedDay.textContent) params.set('jour', selectedDay.textContent);
+  const selectedSlot = document.querySelector('.booker__slot--selected');
+  if (selectedSlot) params.set('heure', selectedSlot.textContent);
+  window.location.href = 'reservation.html?' + params.toString();
 });
 
 /* ====== Créneaux ====== */

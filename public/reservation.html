@@ -635,6 +635,16 @@ function afficherSalles(salles){
     }
     c.appendChild(el);
   });
+
+  // Pré-sélection depuis URL (?salle=canopee ou ?salle=majorelle)
+  const urlSalle = new URLSearchParams(location.search).get('salle');
+  if (urlSalle) {
+    const rooms = c.querySelectorAll('.room:not(.room--devis)');
+    rooms.forEach(r => {
+      const name = r.querySelector('.room__name').textContent.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+      if (name.includes(urlSalle.toLowerCase())) r.click();
+    });
+  }
 }
 $('#to-step-2').addEventListener('click', () => {
   if (!state.salle) return;
