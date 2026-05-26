@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Réserver une salle — Kōbō Le Lieu · Bordeaux</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Caprasimo&family=Instrument+Serif:ital@0;1&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue: #01357b;
+  --blue-deep: #021f4a;
+  --blue-soft: #d8e2f2;
+  --blue-paper: #eef2fa;
+  --cream: #faf3e3;
+  --cream-2: #f5ebd1;
+  --sun: #f4c542;
+  --tomato: #e6543c;
+  --leaf: #4a7c3a;
+  --ink: #1a1612;
+  --display: "Caprasimo", "Cooper Black", serif;
+  --hand: "Caveat", cursive;
+  --italic: "Instrument Serif", serif;
+  --body: "Familjen Grotesk", system-ui, sans-serif;
+  --line: 2.5px;
+  --r: 24px;
+  --r-pill: 999px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family: var(--body);
+  background: var(--blue);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+svg{display:block}
+::selection{background: var(--sun); color: var(--ink)}
+input,select,textarea{font:inherit}
+
+/* En-tête */
+.top{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: var(--line) solid var(--ink);
+}
+.top__brand{
+  font-family: var(--display); font-size: 26px;
+  color: var(--cream);
+  display: flex; align-items: center; gap: 8px;
+}
+.top__brand-dot{width: 9px; height: 9px; border-radius: 50%; background: var(--tomato)}
+.top__back{
+  font-family: var(--body); font-weight: 600; font-size: 14px;
+  color: var(--cream);
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px;
+  border: var(--line) solid var(--cream);
+  border-radius: var(--r-pill);
+  transition: background .2s, color .2s;
+}
+.top__back:hover{background: var(--cream); color: var(--ink)}
+.top__back svg{width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.5; fill: none}
+
+/* Conteneur */
+.wrap{ max-width: 1080px; margin: 0 auto; padding: 56px 28px 100px }
+.wrap__head{text-align: center; margin-bottom: 40px}
+.wrap__eyebrow{ font-family: var(--hand); font-weight: 600; font-size: 28px; color: var(--sun) }
+.wrap__title{
+  font-family: var(--display);
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: 1; color: var(--cream);
+  letter-spacing: -.02em;
+}
+.wrap__title .accent{ font-family: var(--italic); font-style: italic; color: var(--sun); font-weight: 400 }
+
+/* Carte booker */
+.booker{
+  background: var(--cream);
+  border-radius: var(--r);
+  padding: 40px;
+  border: var(--line) solid var(--ink);
+  box-shadow: 0 12px 0 var(--ink);
+}
+
+/* Steps */
+.steps{
+  display: flex; gap: 4px; margin-bottom: 32px;
+  background: rgba(0,0,0,.05);
+  padding: 6px;
+  border-radius: var(--r-pill);
+}
+.step{
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 13px;
+  text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all .3s;
+  color: var(--ink);
+}
+.step--active{background: var(--blue); color: var(--cream)}
+.step--done{color: var(--blue)}
+.step__num{
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.1);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+.step--active .step__num{background: rgba(255,255,255,.3)}
+.step--done .step__num{background: var(--leaf); color: var(--cream)}
+
+/* Panneaux d'étape */
+.panel{display: none}
+.panel--active{display: block; animation: fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0; transform: translateY(8px)}to{opacity:1; transform: translateY(0)}}
+
+.panel__title{ font-family: var(--display); font-size: 28px; margin-bottom: 4px }
+.panel__hint{ font-size: 14px; opacity: .6; margin-bottom: 24px }
+
+/* Étape 1 — salles */
+.rooms{display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px}
+.room{
+  border: var(--line) solid rgba(0,0,0,.12);
+  border-radius: var(--r);
+  padding: 22px;
+  background: #fff;
+  cursor: pointer;
+  transition: all .25s;
+  position: relative;
+  text-align: left;
+}
+.room:hover{border-color: var(--blue)}
+.room--selected{
+  border-color: var(--blue);
+  background: var(--blue-paper);
+  box-shadow: 0 6px 0 var(--blue);
+  transform: translateY(-3px);
+}
+.room--selected::after{
+  content: "✓";
+  position: absolute; top: 14px; right: 14px;
+  width: 26px; height: 26px;
+  background: var(--blue); color: var(--cream);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+}
+.room__swatch{ height: 70px; border-radius: 12px; margin-bottom: 12px }
+.room__name{ font-family: var(--display); font-size: 22px; line-height: 1; margin-bottom: 4px }
+.room__cap{ font-size: 12px; opacity: .6; margin-bottom: 8px }
+.room__pricerange{ font-weight: 700; font-size: 13px; color: var(--blue) }
+.room__pricerange small{font-weight: 500; opacity: .65}
+.room--devis{opacity: .55; cursor: not-allowed}
+.room--devis:hover{border-color: rgba(0,0,0,.12)}
+
+/* Étape 2 — Date + formules */
+.cal-wrap{display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px}
+.calendar{
+  background: #fff;
+  border: var(--line) solid rgba(0,0,0,.12);
+  border-radius: var(--r);
+  padding: 20px;
+}
+.cal-head{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px }
+.cal-month{ font-family: var(--display); font-size: 20px; text-transform: capitalize }
+.cal-nav{display: flex; gap: 6px}
+.cal-arrow{
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--cream);
+  border: 1.5px solid rgba(0,0,0,.1);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.cal-arrow:hover{background: var(--blue); color: var(--cream)}
+.cal-arrow:disabled{opacity: .3; cursor: not-allowed}
+.cal-arrow svg{width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.5; fill: none}
+.cal-grid{display: grid; grid-template-columns: repeat(7,1fr); gap: 3px}
+.cal-dn{ font-size: 10px; font-weight: 600; opacity: .5; text-align: center; padding: 6px 0; text-transform: uppercase }
+.cal-day{
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  font-weight: 500; font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.cal-day:hover:not(.cal-day--off){background: var(--blue-soft)}
+.cal-day--off{opacity: .25; cursor: not-allowed}
+.cal-day--today{border: 2px solid var(--tomato)}
+.cal-day--selected{background: var(--blue); color: var(--cream); font-weight: 700}
+
+/* Formules : cartes choix */
+.formules-title{ font-family: var(--display); font-size: 20px; margin-bottom: 4px }
+.formules-sub{font-size: 13px; opacity: .6; margin-bottom: 14px}
+.formules{
+  display: flex; flex-direction: column; gap: 10px;
+  max-height: 420px; overflow-y: auto;
+  padding-right: 4px;
+}
+.formule{
+  border: var(--line) solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  background: #fff;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 14px;
+  transition: all .2s;
+  position: relative;
+}
+.formule:hover:not(.formule--off){border-color: var(--blue); transform: translateX(2px)}
+.formule--selected{
+  border-color: var(--blue);
+  background: var(--blue-paper);
+  box-shadow: 0 4px 0 var(--blue);
+}
+.formule--off{
+  opacity: .4; cursor: not-allowed;
+  background: rgba(0,0,0,.03);
+}
+.formule--off .formule__badge{
+  background: rgba(0,0,0,.15); color: rgba(0,0,0,.6);
+}
+.formule__ic{
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.formule__ic svg{width: 20px; height: 20px; stroke: var(--ink); stroke-width: 2.2; fill: none}
+.formule__main{flex: 1; min-width: 0}
+.formule__name{font-family: var(--display); font-size: 18px; line-height: 1}
+.formule__creneau{font-size: 12px; opacity: .65; margin-top: 2px}
+.formule__price{
+  font-family: var(--display); font-size: 22px;
+  color: var(--blue);
+  text-align: right;
+}
+.formule__price small{font-family: var(--body); font-size: 11px; font-weight: 500; opacity: .55}
+.formule__badge{
+  position: absolute; top: -6px; right: 16px;
+  font-size: 10px; font-weight: 700;
+  background: var(--leaf); color: var(--cream);
+  padding: 3px 8px; border-radius: var(--r-pill);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.formule--off .formule__name,
+.formule--off .formule__creneau,
+.formule--off .formule__price{ text-decoration: line-through; opacity: .7 }
+
+/* Sous-sélection horaire pour formule "à l'heure" */
+.horaires-pick{
+  margin-top: 14px;
+  padding: 16px;
+  background: rgba(1,53,123,.06);
+  border: 1.5px dashed var(--blue);
+  border-radius: 12px;
+  display: none;
+}
+.horaires-pick--show{display: block; animation: fadeIn .3s ease}
+.horaires-pick__title{
+  font-weight: 600; font-size: 13px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.horaires-pick__title svg{width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none}
+.slots{display: grid; grid-template-columns: repeat(5,1fr); gap: 6px}
+.slot{
+  background: #fff;
+  border: 1.5px solid rgba(0,0,0,.12);
+  border-radius: 8px;
+  padding: 8px 4px;
+  font-weight: 600; font-size: 12px;
+  text-align: center;
+  transition: all .15s;
+}
+.slot:hover:not(.slot--off){border-color: var(--blue)}
+.slot--off{opacity: .3; cursor: not-allowed; text-decoration: line-through}
+.slot--start, .slot--end{background: var(--blue); color: var(--cream); border-color: var(--blue)}
+.slot--inrange{background: var(--blue-soft); border-color: var(--blue)}
+.horaires-pick__hint{font-size: 11px; opacity: .65; margin-top: 8px}
+
+/* Étape 3 — Form */
+.form-grid{display: grid; grid-template-columns: 1fr 1fr; gap: 16px}
+.field{display: flex; flex-direction: column}
+.field--full{grid-column: 1/-1}
+.field label{
+  font-size: 12px; font-weight: 600; opacity: .65;
+  text-transform: uppercase; letter-spacing: .04em;
+  margin-bottom: 6px;
+}
+.field label .req{color: var(--tomato)}
+.field input,.field select,.field textarea{
+  padding: 13px 15px;
+  background: #fff;
+  border: 1.5px solid rgba(0,0,0,.12);
+  border-radius: 10px;
+  font-size: 15px; color: var(--ink);
+  transition: border-color .2s;
+}
+.field textarea{resize: vertical; min-height: 80px}
+.field input:focus,.field select:focus,.field textarea:focus{ outline: none; border-color: var(--blue) }
+
+/* Récap */
+.summary{
+  background: var(--blue-paper);
+  border: 2px dashed var(--blue);
+  border-radius: var(--r);
+  padding: 22px;
+  margin: 24px 0;
+}
+.summary__row{ display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px }
+.summary__row small{opacity: .6}
+.summary__row strong{font-weight: 600}
+.summary__total{
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1.5px dashed rgba(0,0,0,.2);
+  margin-top: 8px; padding-top: 14px;
+}
+.summary__total span{font-size: 14px; opacity: .6}
+.summary__total strong{font-family: var(--display); font-size: 32px; color: var(--blue)}
+
+/* Boutons */
+.nav-btns{ display: flex; justify-content: space-between; margin-top: 28px }
+.btn{
+  padding: 16px 28px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 10px;
+  border: var(--line) solid var(--ink);
+  transition: transform .15s, box-shadow .15s;
+}
+.btn svg{width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.6; fill: none}
+.btn--ghost{background: transparent; color: var(--ink)}
+.btn--ghost:hover{background: rgba(0,0,0,.05)}
+.btn--primary{ background: var(--blue); color: var(--cream); box-shadow: 0 4px 0 var(--ink) }
+.btn--primary:hover{transform: translateY(-2px); box-shadow: 0 6px 0 var(--ink)}
+.btn--primary:disabled{ opacity: .5; cursor: not-allowed; transform: none; box-shadow: 0 4px 0 var(--ink) }
+.btn--pay{ background: var(--leaf); color: var(--cream) }
+
+/* Loader / skeleton / alerts */
+.loader{
+  display: inline-block; width: 16px; height: 16px;
+  border: 2.5px solid rgba(255,255,255,.3); border-top-color: #fff;
+  border-radius: 50%; animation: spin .7s linear infinite;
+}
+@keyframes spin{to{transform: rotate(360deg)}}
+.skeleton{
+  background: linear-gradient(90deg, rgba(0,0,0,.05), rgba(0,0,0,.1), rgba(0,0,0,.05));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer{to{background-position: -200% 0}}
+
+.alert{
+  padding: 14px 18px; border-radius: 12px;
+  font-size: 14px; font-weight: 500;
+  margin-bottom: 20px;
+  display: none; align-items: center; gap: 10px;
+}
+.alert--show{display: flex}
+.alert--error{background: #fde8e4; color: #a3260f; border: 1.5px solid #e6543c}
+.alert--info{background: var(--blue-paper); color: var(--blue-deep); border: 1.5px solid var(--blue)}
+.alert svg{width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.2; fill: none; flex-shrink: 0}
+
+@media (max-width: 760px){
+  .wrap{padding: 32px 16px 60px}
+  .booker{padding: 24px}
+  .steps{flex-direction: column}
+  .rooms{grid-template-columns: 1fr}
+  .cal-wrap{grid-template-columns: 1fr}
+  .form-grid{grid-template-columns: 1fr}
+  .top{padding: 16px 20px}
+  .slots{grid-template-columns: repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="kobo-lieu.html" class="top__brand">Kōbō<span class="top__brand-dot"></span></a>
+  <a href="kobo-lieu.html" class="top__back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
+    Retour
+  </a>
+</header>
+
+<div class="wrap">
+  <div class="wrap__head">
+    <p class="wrap__eyebrow">— promis, c'est rapide</p>
+    <h1 class="wrap__title">Réservez votre <span class="accent">salle.</span></h1>
+  </div>
+
+  <div class="booker">
+
+    <div class="steps">
+      <div class="step step--active"><span class="step__num">1</span> Salle</div>
+      <div class="step"><span class="step__num">2</span> Date & formule</div>
+      <div class="step"><span class="step__num">3</span> Vos infos</div>
+      <div class="step"><span class="step__num">4</span> Paiement</div>
+    </div>
+
+    <div class="alert alert--error" id="alert">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16h.01"/></svg>
+      <span id="alert-text"></span>
+    </div>
+
+    <!-- ===== ÉTAPE 1 : SALLE ===== -->
+    <div class="panel panel--active" data-panel="1">
+      <h2 class="panel__title">Quelle salle ?</h2>
+      <p class="panel__hint">Choisissez l'espace qui correspond à votre besoin.</p>
+      <div class="rooms" id="rooms">
+        <div class="room skeleton" style="height:180px"></div>
+        <div class="room skeleton" style="height:180px"></div>
+        <div class="room skeleton" style="height:180px"></div>
+      </div>
+      <div class="nav-btns">
+        <span></span>
+        <button class="btn btn--primary" id="to-step-2" disabled>
+          Continuer <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== ÉTAPE 2 : DATE + FORMULE ===== -->
+    <div class="panel" data-panel="2">
+      <h2 class="panel__title">Quand et comment ?</h2>
+      <p class="panel__hint">Choisissez une date, puis la formule qui vous convient.</p>
+      <div class="cal-wrap">
+        <div class="calendar">
+          <div class="cal-head">
+            <div class="cal-month" id="cal-month">—</div>
+            <div class="cal-nav">
+              <button class="cal-arrow" id="cal-prev" aria-label="Mois précédent">
+                <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button class="cal-arrow" id="cal-next" aria-label="Mois suivant">
+                <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <div>
+          <div class="formules-title">Formules</div>
+          <div class="formules-sub" id="formules-date">Choisissez d'abord une date</div>
+          <div class="formules" id="formules">
+            <div class="formule skeleton" style="height:70px"></div>
+            <div class="formule skeleton" style="height:70px"></div>
+            <div class="formule skeleton" style="height:70px"></div>
+          </div>
+
+          <!-- Sous-zone : choix précis des heures pour la formule "à l'heure" -->
+          <div class="horaires-pick" id="horaires-pick">
+            <div class="horaires-pick__title">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+              Cliquez l'heure de début puis l'heure de fin
+            </div>
+            <div class="slots" id="slots"></div>
+            <div class="horaires-pick__hint">Tarif : <strong id="horaires-prix">40€/h</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn--ghost" data-back="1">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg> Retour
+        </button>
+        <button class="btn btn--primary" id="to-step-3" disabled>
+          Continuer <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== ÉTAPE 3 : COORDONNÉES ===== -->
+    <div class="panel" data-panel="3">
+      <h2 class="panel__title">Vos coordonnées</h2>
+      <p class="panel__hint">Pour vous envoyer la confirmation et vous accueillir.</p>
+      <div class="form-grid">
+        <div class="field"><label>Nom complet <span class="req">*</span></label><input type="text" id="f-nom" placeholder="Marie Dupont" required></div>
+        <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="f-email" placeholder="marie@exemple.fr" required></div>
+        <div class="field"><label>Téléphone</label><input type="tel" id="f-tel" placeholder="06 12 34 56 78"></div>
+        <div class="field"><label>Entreprise</label><input type="text" id="f-entreprise" placeholder="(optionnel)"></div>
+        <div class="field"><label>Nombre de participants</label><input type="number" id="f-participants" min="1" max="60" placeholder="6"></div>
+        <div class="field field--full"><label>Message (optionnel)</label><textarea id="f-message" placeholder="Un besoin particulier ?"></textarea></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn--ghost" data-back="2">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg> Retour
+        </button>
+        <button class="btn btn--primary" id="to-step-4">
+          Voir le récapitulatif <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== ÉTAPE 4 : RÉCAP ===== -->
+    <div class="panel" data-panel="4">
+      <h2 class="panel__title">Récapitulatif</h2>
+      <p class="panel__hint">Vérifiez votre réservation avant le paiement sécurisé.</p>
+      <div class="alert alert--info alert--show" style="display:flex">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 8v5M12 16h.01"/></svg>
+        <span>Le paiement est sécurisé par Stripe. Vous serez redirigé vers une page de paiement.</span>
+      </div>
+      <div class="summary">
+        <div class="summary__row"><small>Salle</small><strong id="r-salle">—</strong></div>
+        <div class="summary__row"><small>Formule</small><strong id="r-formule">—</strong></div>
+        <div class="summary__row"><small>Date</small><strong id="r-date">—</strong></div>
+        <div class="summary__row"><small>Créneau</small><strong id="r-creneau">—</strong></div>
+        <div class="summary__row"><small>Au nom de</small><strong id="r-nom">—</strong></div>
+        <div class="summary__total">
+          <span>Total à régler</span>
+          <strong id="r-total">—</strong>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn--ghost" data-back="3">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg> Retour
+        </button>
+        <button class="btn btn--primary btn--pay" id="pay-btn">
+          <span id="pay-label">Payer et confirmer</span>
+          <svg id="pay-icon" viewBox="0 0 24 24"><path d="M2 9h20M6 15h4M2 6h20v12H2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+/* ============================================================================
+   BOOKER — logique front (avec formules)
+   ============================================================================ */
+const API_BASE = '';
+
+const state = {
+  salle: null,
+  date: null,
+  formule: null,            // formule sélectionnée
+  heureDebut: null,         // utilisé seulement si formule.a_la_carte
+  heureFin: null,
+  formules: [],             // formules dispos pour la date
+  creneaux: [],             // créneaux libres (pour formule à l'heure)
+};
+
+const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+function showAlert(msg, type='error'){
+  $('#alert-text').textContent = msg;
+  $('#alert').classList.toggle('alert--error', type==='error');
+  $('#alert').classList.toggle('alert--info', type==='info');
+  $('#alert').classList.add('alert--show');
+  $('#alert').scrollIntoView({behavior:'smooth', block:'center'});
+}
+function hideAlert(){ $('#alert').classList.remove('alert--show') }
+function euros(c){ return (c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'}) }
+function dateISO(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0') }
+function dateLisible(iso){
+  return new Date(iso+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+}
+
+function goToStep(n){
+  $$('.panel').forEach(p => p.classList.toggle('panel--active', +p.dataset.panel === n));
+  $$('.step').forEach((s,i) => {
+    s.classList.toggle('step--active', i+1 === n);
+    s.classList.toggle('step--done', i+1 < n);
+  });
+  hideAlert();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================================
+   ICONES DES FORMULES (SVG)
+   ============================================================================ */
+const ICONES = {
+  soleil:  '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>',
+  cafe:    '<svg viewBox="0 0 24 24"><path d="M5 9h12v7a4 4 0 01-4 4H9a4 4 0 01-4-4V9z"/><path d="M17 11h2a2 2 0 010 4h-2"/><path d="M8 5c0-1 1-1 1-2M11 5c0-1 1-1 1-2M14 5c0-1 1-1 1-2"/></svg>',
+  horloge: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>',
+  lune:    '<svg viewBox="0 0 24 24"><path d="M21 13a9 9 0 11-10-10 7 7 0 0010 10z"/></svg>',
+  chrono:  '<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6M12 5v2"/></svg>',
+};
+
+/* ============================================================================
+   ÉTAPE 1 — Salles
+   ============================================================================ */
+async function chargerSalles(){
+  try {
+    const r = await fetch(API_BASE + '/api/salles');
+    if (!r.ok) throw new Error();
+    const { salles } = await r.json();
+    afficherSalles(salles);
+  } catch (e) {
+    // Mode démo si API absente
+    afficherSalles([
+      { id:'demo-canopee', nom:'Canopée', capacite:8, surface_m2:22, couleur:'#4a7c3a', sur_devis:false },
+      { id:'demo-majorelle', nom:'Majorelle', capacite:12, surface_m2:28, couleur:'#01357b', sur_devis:false },
+      { id:'demo-annexe', nom:"L'annexe", capacite:60, surface_m2:140, couleur:'#1a1612', sur_devis:true },
+    ]);
+  }
+}
+function afficherSalles(salles){
+  const c = $('#rooms');
+  c.innerHTML = '';
+  salles.forEach(s => {
+    const el = document.createElement('button');
+    el.className = 'room' + (s.sur_devis ? ' room--devis' : '');
+    el.innerHTML = `
+      <div class="room__swatch" style="background:${s.couleur||'#01357b'}"></div>
+      <div class="room__name">${s.nom}</div>
+      <div class="room__cap">${s.capacite} pers. · ${s.surface_m2||'—'} m²</div>
+      <div class="room__pricerange">${s.sur_devis ? 'Sur devis' : 'À partir de 40€<small>/h</small>'}</div>
+    `;
+    if (s.sur_devis){
+      el.title = 'Cette salle est sur devis — contactez-nous';
+    } else {
+      el.addEventListener('click', () => {
+        $$('.room').forEach(r => r.classList.remove('room--selected'));
+        el.classList.add('room--selected');
+        state.salle = s;
+        $('#to-step-2').disabled = false;
+      });
+    }
+    c.appendChild(el);
+  });
+}
+$('#to-step-2').addEventListener('click', () => {
+  if (!state.salle) return;
+  goToStep(2);
+  renderCalendar();
+});
+
+/* ============================================================================
+   ÉTAPE 2 — Calendrier + formules
+   ============================================================================ */
+let calCursor = new Date();
+calCursor.setDate(1);
+
+function renderCalendar(){
+  const annee = calCursor.getFullYear();
+  const mois = calCursor.getMonth();
+  $('#cal-month').textContent = MOIS[mois] + ' ' + annee;
+
+  const grid = $('#cal-grid');
+  grid.innerHTML = '';
+  ['L','M','M','J','V','S','D'].forEach(j => {
+    const dn = document.createElement('div');
+    dn.className = 'cal-dn'; dn.textContent = j;
+    grid.appendChild(dn);
+  });
+  const premier = new Date(annee, mois, 1);
+  let offset = premier.getDay() - 1;
+  if (offset < 0) offset = 6;
+  for (let i=0;i<offset;i++) grid.appendChild(document.createElement('div'));
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dansMois = new Date(annee, mois+1, 0).getDate();
+
+  for (let d=1; d<=dansMois; d++){
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    cell.textContent = d;
+    const dCell = new Date(annee, mois, d);
+    const iso = dateISO(dCell);
+
+    const estPasse = dCell < today;
+    const estDimanche = dCell.getDay() === 0;
+
+    if (estPasse || estDimanche){
+      cell.classList.add('cal-day--off');
+    } else {
+      cell.addEventListener('click', () => {
+        $$('.cal-day').forEach(x => x.classList.remove('cal-day--selected'));
+        cell.classList.add('cal-day--selected');
+        state.date = iso;
+        state.formule = null;
+        state.heureDebut = null;
+        state.heureFin = null;
+        $('#horaires-pick').classList.remove('horaires-pick--show');
+        chargerFormules(iso);
+      });
+    }
+    if (dCell.getTime() === today.getTime()) cell.classList.add('cal-day--today');
+    if (iso === state.date) cell.classList.add('cal-day--selected');
+    grid.appendChild(cell);
+  }
+
+  const moisCourant = new Date(); moisCourant.setDate(1); moisCourant.setHours(0,0,0,0);
+  $('#cal-prev').disabled = (calCursor <= moisCourant);
+}
+
+$('#cal-prev').addEventListener('click', () => { calCursor.setMonth(calCursor.getMonth()-1); renderCalendar() });
+$('#cal-next').addEventListener('click', () => { calCursor.setMonth(calCursor.getMonth()+1); renderCalendar() });
+
+async function chargerFormules(iso){
+  $('#formules-date').textContent = dateLisible(iso);
+  const cont = $('#formules');
+  cont.innerHTML = '<div class="formule skeleton" style="height:70px"></div><div class="formule skeleton" style="height:70px"></div><div class="formule skeleton" style="height:70px"></div>';
+
+  let formules = [];
+  try {
+    const url = `${API_BASE}/api/formules?salle=${encodeURIComponent(state.salle.id)}&date=${iso}`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    formules = data.formules || [];
+  } catch (e) {
+    // Démo
+    formules = [
+      { slug:'journee', nom:'La journée', heure_debut:9, heure_fin:17, prix:20000, a_la_carte:false, icone:'soleil', disponible:true },
+      { slug:'matinee', nom:'La matinée', heure_debut:9, heure_fin:13, prix:12000, a_la_carte:false, icone:'cafe', disponible:true },
+      { slug:'apres_midi', nom:"L'après-midi", heure_debut:14, heure_fin:18, prix:12000, a_la_carte:false, icone:'horloge', disponible:false },
+      { slug:'soiree', nom:'La soirée', heure_debut:20, heure_fin:23, prix:8000, a_la_carte:false, icone:'lune', disponible:true },
+      { slug:'horaire', nom:"À l'heure", heure_debut:9, heure_fin:19, prix:4000, a_la_carte:true, icone:'chrono', disponible:true },
+    ];
+  }
+
+  state.formules = formules;
+  afficherFormules();
+}
+
+function afficherFormules(){
+  const cont = $('#formules');
+  cont.innerHTML = '';
+  state.formules.forEach(f => {
+    const el = document.createElement('button');
+    el.className = 'formule' + (!f.disponible ? ' formule--off' : '');
+    const creneauTxt = f.a_la_carte
+      ? `Disponible de ${f.heure_debut}h à ${f.heure_fin}h`
+      : `${f.heure_debut}h — ${f.heure_fin}h`;
+    const prixTxt = f.a_la_carte ? `${euros(f.prix)}<small>/h</small>` : euros(f.prix);
+    el.innerHTML = `
+      <span class="formule__ic">${ICONES[f.icone] || ICONES.soleil}</span>
+      <div class="formule__main">
+        <div class="formule__name">${f.nom}</div>
+        <div class="formule__creneau">${creneauTxt}</div>
+      </div>
+      <div class="formule__price">${prixTxt}</div>
+      ${f.a_la_carte ? '<span class="formule__badge">à la carte</span>' : ''}
+    `;
+    if (f.disponible){
+      el.addEventListener('click', () => selectionnerFormule(f, el));
+    }
+    cont.appendChild(el);
+  });
+}
+
+async function selectionnerFormule(f, el){
+  $$('.formule').forEach(x => x.classList.remove('formule--selected'));
+  el.classList.add('formule--selected');
+  state.formule = f;
+  state.heureDebut = null;
+  state.heureFin = null;
+
+  if (f.a_la_carte){
+    // Afficher la grille de créneaux horaires
+    $('#horaires-pick').classList.add('horaires-pick--show');
+    $('#horaires-prix').textContent = euros(f.prix) + '/h';
+    await chargerCreneaux();
+    $('#to-step-3').disabled = true;
+  } else {
+    // Formule fixe : on a tout ce qu'il faut
+    $('#horaires-pick').classList.remove('horaires-pick--show');
+    state.heureDebut = f.heure_debut;
+    state.heureFin = f.heure_fin;
+    $('#to-step-3').disabled = false;
+  }
+}
+
+async function chargerCreneaux(){
+  const cont = $('#slots');
+  cont.innerHTML = '<div style="grid-column:1/-1;text-align:center;font-size:12px;opacity:.6">Chargement...</div>';
+  let creneaux = [];
+  try {
+    const url = `${API_BASE}/api/disponibilites?salle=${encodeURIComponent(state.salle.id)}&date=${state.date}`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    creneaux = data.creneaux || [];
+  } catch (e) {
+    // Démo
+    for (let h=9; h<19; h++) creneaux.push({heure:h, disponible: Math.random() > 0.25});
+  }
+  // Filtrer aux bornes de la formule horaire
+  creneaux = creneaux.filter(c => c.heure >= state.formule.heure_debut && c.heure < state.formule.heure_fin);
+  state.creneaux = creneaux;
+  afficherCreneaux();
+}
+
+function afficherCreneaux(){
+  const cont = $('#slots');
+  cont.innerHTML = '';
+  state.creneaux.forEach(c => {
+    const el = document.createElement('button');
+    el.className = 'slot' + (!c.disponible ? ' slot--off' : '');
+    el.textContent = String(c.heure).padStart(2,'0')+':00';
+    el.dataset.heure = c.heure;
+    if (c.disponible){
+      el.addEventListener('click', () => selectionnerHeure(c.heure));
+    }
+    cont.appendChild(el);
+  });
+}
+
+function selectionnerHeure(h){
+  if (state.heureDebut === null || state.heureFin !== null){
+    state.heureDebut = h;
+    state.heureFin = null;
+  } else {
+    if (h <= state.heureDebut){
+      state.heureDebut = h;
+    } else {
+      // Vérifier que les créneaux intermédiaires sont libres
+      let libre = true;
+      for (let x=state.heureDebut; x<h; x++){
+        const c = state.creneaux.find(k=>k.heure===x);
+        if (!c || !c.disponible) libre = false;
+      }
+      if (!libre){
+        showAlert('Un créneau pris se trouve dans cette plage. Choisissez une plage continue.');
+        state.heureDebut = h; state.heureFin = null;
+      } else {
+        state.heureFin = h + 1;
+      }
+    }
+  }
+  rafraichirSelectionCreneaux();
+}
+
+function rafraichirSelectionCreneaux(){
+  $$('.slot').forEach(el => {
+    el.classList.remove('slot--start','slot--inrange','slot--end');
+    const h = +el.dataset.heure;
+    if (state.heureDebut !== null && state.heureFin !== null){
+      if (h === state.heureDebut) el.classList.add('slot--start');
+      else if (h === state.heureFin-1) el.classList.add('slot--end');
+      else if (h > state.heureDebut && h < state.heureFin-1) el.classList.add('slot--inrange');
+    } else if (state.heureDebut !== null && h === state.heureDebut){
+      el.classList.add('slot--start');
+    }
+  });
+  const ok = state.heureDebut !== null && state.heureFin !== null;
+  $('#to-step-3').disabled = !ok;
+}
+
+$('#to-step-3').addEventListener('click', () => {
+  if (!state.formule) return;
+  if (state.heureDebut === null || state.heureFin === null) return;
+  goToStep(3);
+});
+
+/* ============================================================================
+   ÉTAPE 3 — Coordonnées
+   ============================================================================ */
+function calculerMontant(){
+  if (state.formule.a_la_carte){
+    const duree = state.heureFin - state.heureDebut;
+    return state.formule.prix * duree;
+  }
+  return state.formule.prix;
+}
+
+$('#to-step-4').addEventListener('click', () => {
+  const nom = $('#f-nom').value.trim();
+  const email = $('#f-email').value.trim();
+  if (!nom){ showAlert('Merci d\'indiquer votre nom.'); $('#f-nom').focus(); return; }
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+    showAlert('Merci d\'indiquer un email valide.'); $('#f-email').focus(); return;
+  }
+  $('#r-salle').textContent = state.salle.nom;
+  $('#r-formule').textContent = state.formule.nom;
+  $('#r-date').textContent = dateLisible(state.date);
+  $('#r-creneau').textContent =
+    String(state.heureDebut).padStart(2,'0')+'h00 — '+
+    String(state.heureFin).padStart(2,'0')+'h00';
+  $('#r-nom').textContent = nom;
+  $('#r-total').textContent = euros(calculerMontant());
+  goToStep(4);
+});
+
+/* ============================================================================
+   ÉTAPE 4 — Paiement
+   ============================================================================ */
+$('#pay-btn').addEventListener('click', async () => {
+  const btn = $('#pay-btn');
+  btn.disabled = true;
+  $('#pay-label').textContent = 'Préparation du paiement…';
+  $('#pay-icon').outerHTML = '<span class="loader" id="pay-icon"></span>';
+  hideAlert();
+
+  const payload = {
+    salleId: state.salle.id,
+    formuleSlug: state.formule.slug,
+    date: state.date,
+    heureDebut: state.heureDebut,
+    heureFin: state.heureFin,
+    nom: $('#f-nom').value.trim(),
+    email: $('#f-email').value.trim(),
+    tel: $('#f-tel').value.trim(),
+    entreprise: $('#f-entreprise').value.trim(),
+    participants: $('#f-participants').value,
+    message: $('#f-message').value.trim(),
+  };
+
+  try {
+    const r = await fetch(API_BASE + '/api/creer-reservation', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'Erreur');
+    window.location.href = data.checkoutUrl;
+  } catch (e) {
+    showAlert(e.message || 'Une erreur est survenue. Réessayez.');
+    btn.disabled = false;
+    $('#pay-label').textContent = 'Payer et confirmer';
+    const ic = $('#pay-icon');
+    if (ic) ic.outerHTML = '<svg id="pay-icon" viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2.6;fill:none"><path d="M2 9h20M6 15h4M2 6h20v12H2z"/></svg>';
+  }
+});
+
+$$('[data-back]').forEach(b => b.addEventListener('click', () => goToStep(+b.dataset.back)));
+
+if (new URLSearchParams(location.search).get('annule') === '1'){
+  setTimeout(() => showAlert('Paiement annulé. Votre créneau n\'a pas été réservé.', 'info'), 300);
+}
+
+chargerSalles();
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "kobo-reservation",
+  "version": "1.0.0",
+  "description": "Système de réservation de salles Kōbō Le Lieu — Supabase + Stripe + Vercel",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "stripe": "^17.0.0",
+    "resend": "^4.0.0"
+  }
+}

@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Réservation confirmée — Kōbō Le Lieu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Caprasimo&family=Instrument+Serif:ital@0;1&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue: #01357b;
+  --cream: #faf3e3;
+  --cream-2: #f5ebd1;
+  --sun: #f4c542;
+  --tomato: #e6543c;
+  --leaf: #4a7c3a;
+  --ink: #1a1612;
+  --blue-paper: #eef2fa;
+  --display: "Caprasimo", serif;
+  --hand: "Caveat", cursive;
+  --italic: "Instrument Serif", serif;
+  --body: "Familjen Grotesk", system-ui, sans-serif;
+  --line: 2.5px;
+  --r: 24px;
+  --r-pill: 999px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family: var(--body);
+  background: var(--blue);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px;
+  -webkit-font-smoothing: antialiased;
+}
+svg{display:block}
+a{color:inherit;text-decoration:none}
+
+.card{
+  background: var(--cream);
+  border: var(--line) solid var(--ink);
+  border-radius: var(--r);
+  box-shadow: 0 14px 0 var(--ink);
+  max-width: 540px; width: 100%;
+  overflow: hidden;
+}
+
+/* En-tête succès */
+.card__top{
+  background: var(--leaf);
+  padding: 48px 40px 40px;
+  text-align: center;
+  position: relative;
+  border-bottom: var(--line) solid var(--ink);
+}
+.check{
+  width: 88px; height: 88px;
+  background: var(--cream);
+  border: var(--line) solid var(--ink);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
+  animation: pop .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes pop{from{transform: scale(0)}to{transform: scale(1)}}
+.check svg{
+  width: 44px; height: 44px;
+  stroke: var(--leaf); stroke-width: 3.5; fill: none;
+  stroke-dasharray: 60; stroke-dashoffset: 60;
+  animation: draw .5s ease .3s forwards;
+}
+@keyframes draw{to{stroke-dashoffset: 0}}
+.card__eyebrow{
+  font-family: var(--hand); font-weight: 600; font-size: 26px;
+  color: var(--cream);
+}
+.card__title{
+  font-family: var(--display); font-size: 40px;
+  color: var(--cream); line-height: 1;
+}
+
+/* Corps */
+.card__body{padding: 36px 40px 40px}
+.card__intro{
+  font-size: 15px; line-height: 1.6;
+  opacity: .8; margin-bottom: 28px;
+  text-align: center;
+}
+
+/* Récap */
+.recap{
+  background: var(--blue-paper);
+  border: 2px dashed var(--blue);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.recap__row{
+  display: flex; justify-content: space-between;
+  padding: 7px 0;
+  font-size: 14px;
+}
+.recap__row small{opacity: .6}
+.recap__row strong{font-weight: 600; text-align: right}
+.recap__total{
+  border-top: 1.5px dashed rgba(0,0,0,.2);
+  margin-top: 8px; padding-top: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.recap__total span{font-size: 14px; opacity: .6}
+.recap__total strong{font-family: var(--display); font-size: 28px; color: var(--blue)}
+
+/* Infos pratiques */
+.infos{
+  display: flex; flex-direction: column; gap: 14px;
+  margin-bottom: 28px;
+}
+.info{
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 14px; line-height: 1.5;
+}
+.info__ic{
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: var(--sun);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.info__ic svg{width: 18px; height: 18px; stroke: var(--ink); stroke-width: 2.2; fill: none}
+.info strong{display: block; margin-bottom: 1px}
+.info span{opacity: .7}
+
+/* Bouton */
+.btn{
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%;
+  background: var(--blue); color: var(--cream);
+  padding: 17px 28px;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 15px;
+  border: var(--line) solid var(--ink);
+  box-shadow: 0 4px 0 var(--ink);
+  transition: transform .15s, box-shadow .15s;
+}
+.btn:hover{transform: translateY(-2px); box-shadow: 0 6px 0 var(--ink)}
+.btn svg{width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.6; fill: none}
+
+.note{
+  text-align: center;
+  font-size: 12px; opacity: .55;
+  margin-top: 16px;
+}
+
+/* État chargement / erreur */
+.state{
+  padding: 60px 40px;
+  text-align: center;
+}
+.state__spinner{
+  width: 40px; height: 40px;
+  border: 3px solid rgba(0,0,0,.1);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin{to{transform: rotate(360deg)}}
+.state__text{font-size: 15px; opacity: .7}
+
+.hidden{display: none}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- État : vérification en cours -->
+  <div class="state" id="loading">
+    <div class="state__spinner"></div>
+    <div class="state__text">Vérification de votre paiement…</div>
+  </div>
+
+  <!-- État : succès -->
+  <div class="hidden" id="success">
+    <div class="card__top">
+      <div class="check">
+        <svg viewBox="0 0 24 24"><path d="M5 13l5 5L20 6"/></svg>
+      </div>
+      <p class="card__eyebrow">— merci et à bientôt</p>
+      <h1 class="card__title">C'est réservé !</h1>
+    </div>
+    <div class="card__body">
+      <p class="card__intro">
+        Votre paiement a bien été reçu. Un email de confirmation vient de vous être envoyé.
+      </p>
+
+      <div class="recap">
+        <div class="recap__row"><small>Salle</small><strong id="r-salle">—</strong></div>
+        <div class="recap__row"><small>Date</small><strong id="r-date">—</strong></div>
+        <div class="recap__row"><small>Créneau</small><strong id="r-creneau">—</strong></div>
+        <div class="recap__row"><small>Au nom de</small><strong id="r-nom">—</strong></div>
+        <div class="recap__total">
+          <span>Montant réglé</span>
+          <strong id="r-total">—</strong>
+        </div>
+      </div>
+
+      <div class="infos">
+        <div class="info">
+          <span class="info__ic">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 1114 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </span>
+          <div>
+            <strong>76 rue Mandron, 33000 Bordeaux</strong>
+            <span>Quartier des Chartrons. Tram C à 5 min.</span>
+          </div>
+        </div>
+        <div class="info">
+          <span class="info__ic">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </span>
+          <div>
+            <strong>Annulation gratuite jusqu'à 24h avant</strong>
+            <span>Répondez simplement à l'email de confirmation.</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="kobo-lieu.html" class="btn">
+        Retour à l'accueil
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <p class="note" id="ref-note"></p>
+    </div>
+  </div>
+
+  <!-- État : en attente / erreur -->
+  <div class="hidden" id="pending">
+    <div class="state">
+      <div class="card__top" style="border-radius:0;margin:-60px -40px 24px;padding:40px;background:var(--sun)">
+        <h1 class="card__title" style="color:var(--ink);font-size:32px">Paiement en cours…</h1>
+      </div>
+      <p class="state__text" style="margin-bottom:24px">
+        Votre paiement est en cours de traitement. Vous recevrez un email
+        dès qu'il sera confirmé. Vous pouvez fermer cette page.
+      </p>
+      <a href="kobo-lieu.html" class="btn">
+        Retour à l'accueil
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API_BASE = '';
+
+function euros(c){
+  return (c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+}
+function dateLisible(iso){
+  return new Date(iso+'T00:00:00').toLocaleDateString('fr-FR',
+    {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+
+async function verifier(){
+  const sessionId = new URLSearchParams(location.search).get('session_id');
+
+  if (!sessionId){
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('pending').classList.remove('hidden');
+    return;
+  }
+
+  // Le webhook Stripe confirme la résa de façon asynchrone.
+  // On interroge le statut, avec quelques tentatives espacées.
+  let tentatives = 0;
+  const maxTentatives = 6;
+
+  async function check(){
+    tentatives++;
+    try {
+      const r = await fetch(`${API_BASE}/api/statut-reservation?session_id=${encodeURIComponent(sessionId)}`);
+      const data = await r.json();
+
+      if (r.ok && data.statut === 'confirmee'){
+        afficherSucces(data.reservation);
+        return;
+      }
+      // Pas encore confirmée → on retente
+      if (tentatives < maxTentatives){
+        setTimeout(check, 1500);
+      } else {
+        // Le paiement peut être ok mais le webhook en retard → message rassurant
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('pending').classList.remove('hidden');
+      }
+    } catch (e){
+      if (tentatives < maxTentatives){
+        setTimeout(check, 1500);
+      } else {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('pending').classList.remove('hidden');
+      }
+    }
+  }
+  check();
+}
+
+function afficherSucces(resa){
+  document.getElementById('r-salle').textContent = resa.salle || '—';
+  document.getElementById('r-date').textContent = dateLisible(resa.date);
+  document.getElementById('r-creneau').textContent =
+    String(resa.heureDebut).padStart(2,'0')+'h00 — '+
+    String(resa.heureFin).padStart(2,'0')+'h00';
+  document.getElementById('r-nom').textContent = resa.nom || '—';
+  document.getElementById('r-total').textContent = resa.montantLisible || euros(resa.montant);
+
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('success').classList.remove('hidden');
+}
+
+verifier();
+</script>
+</body>
+</html>

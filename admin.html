@@ -1,0 +1,992 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Kōbō Le Lieu</title>
+<meta name="robots" content="noindex,nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caprasimo&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================================
+   ADMIN — Interface back-office sobre et dense
+   On change volontairement la DA par rapport au public :
+   typographie plus neutre (Inter), interface dense, gris/blanc
+   ============================================================================ */
+:root{
+  --blue: #01357b;
+  --blue-soft: #e6ecf6;
+  --leaf: #4a7c3a;
+  --tomato: #e6543c;
+  --sun: #f4c542;
+  --ink: #1a1612;
+  --paper: #f8f7f4;
+  --rule: #e3e0d8;
+  --gray: #6b6660;
+  --display: "Caprasimo", serif;
+  --body: "Inter", system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family: var(--body);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+svg{display:block}
+input,select{font:inherit}
+
+/* ============================================================================
+   ÉCRAN BLOCAGE TOKEN
+   ============================================================================ */
+.gate{
+  position: fixed; inset: 0;
+  background: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 50;
+}
+.gate__card{
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  max-width: 380px; width: 92%;
+  text-align: center;
+}
+.gate__icon{
+  width: 56px; height: 56px;
+  margin: 0 auto 20px;
+  background: var(--ink); color: var(--paper);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.gate__icon svg{width: 24px; height: 24px; stroke: currentColor; stroke-width: 2; fill: none}
+.gate h1{font-family: var(--display); font-size: 28px; margin-bottom: 8px}
+.gate p{color: var(--gray); margin-bottom: 24px; font-size: 14px}
+.gate input{
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.gate input:focus{outline: none; border-color: var(--blue)}
+.gate button{
+  width: 100%;
+  padding: 12px;
+  background: var(--blue); color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.gate__err{color: var(--tomato); font-size: 12px; margin-top: 6px; min-height: 16px}
+
+/* ============================================================================
+   LAYOUT
+   ============================================================================ */
+.app{display: none; min-height: 100vh; flex-direction: column}
+.app.ready{display: flex}
+
+.head{
+  background: #fff;
+  border-bottom: 1px solid var(--rule);
+  padding: 14px 24px;
+  display: flex; align-items: center; gap: 24px;
+  position: sticky; top: 0; z-index: 10;
+}
+.head__brand{
+  font-family: var(--display); font-size: 22px;
+  display: flex; align-items: center; gap: 8px;
+  color: var(--blue);
+}
+.head__brand-dot{width: 8px; height: 8px; border-radius: 50%; background: var(--tomato)}
+.head__sep{width: 1px; height: 24px; background: var(--rule)}
+.head__title{font-weight: 600; font-size: 14px; color: var(--gray); text-transform: uppercase; letter-spacing: .08em}
+.head__right{margin-left: auto; display: flex; gap: 8px; align-items: center}
+
+.tab{
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px; font-weight: 500;
+  color: var(--gray);
+  transition: all .15s;
+}
+.tab--active{background: var(--ink); color: #fff}
+.tab:hover:not(.tab--active){background: rgba(0,0,0,.05)}
+
+/* ============================================================================
+   BARRE STATS / FILTRES
+   ============================================================================ */
+.stats-bar{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.stat{
+  background: #fff;
+  padding: 16px 20px;
+}
+.stat__label{font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px}
+.stat__value{font-family: var(--display); font-size: 24px; line-height: 1; color: var(--ink)}
+.stat--ca .stat__value{color: var(--leaf)}
+.stat--pending .stat__value{color: var(--sun)}
+
+.toolbar{
+  padding: 14px 24px;
+  display: flex; align-items: center; gap: 12px;
+  background: #fff;
+  border-bottom: 1px solid var(--rule);
+}
+.toolbar__group{
+  display: flex; align-items: center;
+  background: var(--paper);
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+  padding: 2px;
+}
+.toolbar__btn{
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px; font-weight: 500;
+  color: var(--gray);
+  transition: all .15s;
+}
+.toolbar__btn--active{background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.06)}
+.toolbar__date{
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 600; font-size: 14px;
+  padding: 6px 14px;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  text-transform: capitalize;
+}
+.toolbar__nav{
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.toolbar__nav:hover{background: var(--paper)}
+.toolbar__nav svg{width: 14px; height: 14px; stroke: var(--ink); stroke-width: 2; fill: none}
+.toolbar__spacer{flex: 1}
+.toolbar__btn-ico{
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+}
+.toolbar__btn-ico:hover{background: var(--paper)}
+.toolbar__btn-ico svg{width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none}
+
+/* ============================================================================
+   VUE PLANNING
+   ============================================================================ */
+.main{flex: 1; overflow: auto; padding: 24px}
+
+.planning{
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.planning__head{
+  display: grid;
+  grid-template-columns: 64px repeat(7, 1fr);
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+}
+.planning__day-h{
+  padding: 12px 8px;
+  text-align: center;
+  border-left: 1px solid var(--rule);
+  font-size: 12px;
+}
+.planning__day-h:first-child{border-left: 0}
+.planning__day-h-name{color: var(--gray); text-transform: uppercase; letter-spacing: .05em; font-size: 10px}
+.planning__day-h-num{font-family: var(--display); font-size: 22px; line-height: 1.2; margin-top: 2px}
+.planning__day-h--today .planning__day-h-num{
+  display: inline-block;
+  background: var(--blue); color: #fff;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  line-height: 32px;
+}
+
+.planning__body{
+  display: grid;
+  grid-template-columns: 64px repeat(7, 1fr);
+  position: relative;
+}
+.planning__hours{
+  border-right: 1px solid var(--rule);
+}
+.planning__hour{
+  height: 56px;
+  padding: 6px 8px;
+  font-size: 11px;
+  color: var(--gray);
+  text-align: right;
+  border-top: 1px solid var(--rule);
+  font-variant-numeric: tabular-nums;
+}
+.planning__col{
+  border-left: 1px solid var(--rule);
+  position: relative;
+}
+.planning__col:first-child{border-left: 0}
+.planning__col-row{
+  height: 56px;
+  border-top: 1px solid var(--rule);
+}
+.planning__col--today{background: rgba(1,53,123,.03)}
+.planning__col--off{background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(0,0,0,.025) 6px 7px)}
+
+.event{
+  position: absolute;
+  left: 4px; right: 4px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 11px;
+  line-height: 1.3;
+  overflow: hidden;
+  cursor: pointer;
+  border-left: 3px solid var(--ink);
+  transition: transform .15s;
+  z-index: 2;
+}
+.event:hover{transform: scale(1.02); z-index: 3}
+.event--pending{
+  background: var(--sun); color: var(--ink);
+  border-left-color: #b58e1e;
+}
+.event--cancelled{
+  background: #e8e6e0; color: var(--gray);
+  text-decoration: line-through;
+  border-left-color: var(--gray);
+}
+.event__name{font-weight: 600; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis}
+.event__meta{opacity: .85; font-size: 10px}
+
+/* ============================================================================
+   VUE LISTE
+   ============================================================================ */
+.list-view{display: none}
+.list-view.show{display: block}
+.planning-view{display: block}
+.planning-view.hide{display: none}
+
+.list{
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.list__row{
+  display: grid;
+  grid-template-columns: 32px 110px 140px 120px 1fr 80px 100px 80px;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13px;
+  gap: 12px;
+  transition: background .15s;
+}
+.list__row:last-child{border-bottom: 0}
+.list__row:hover{background: var(--paper); cursor: pointer}
+.list__head{
+  background: var(--paper);
+  font-size: 11px;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 600;
+  padding: 10px 16px;
+}
+.list__head:hover{background: var(--paper); cursor: default}
+.list__status{
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.list__status--confirmee{background: var(--leaf)}
+.list__status--en_attente{background: var(--sun)}
+.list__status--annulee{background: var(--gray)}
+.list__status--expiree{background: var(--rule)}
+.list__date{font-weight: 600; font-variant-numeric: tabular-nums}
+.list__client{font-weight: 500}
+.list__client small{color: var(--gray); font-weight: 400; display: block; font-size: 11px}
+.list__salle{
+  display: inline-flex; align-items: center; gap: 6px;
+  font-weight: 500;
+}
+.list__salle-dot{width: 8px; height: 8px; border-radius: 50%}
+.list__amount{font-family: var(--display); font-size: 16px; color: var(--blue); text-align: right}
+.list__amount--cancelled{color: var(--gray); text-decoration: line-through}
+.list__formule{font-size: 11px; color: var(--gray)}
+.list__arrow{color: var(--gray); justify-self: end}
+
+.empty{
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--gray);
+  font-size: 14px;
+}
+
+/* ============================================================================
+   MODALE DÉTAIL RÉSERVATION
+   ============================================================================ */
+.modal{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+  display: none; align-items: center; justify-content: center;
+  z-index: 40;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.modal.open{display: flex}
+.modal__card{
+  background: #fff;
+  border-radius: 12px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal__head{
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.modal__title{font-family: var(--display); font-size: 22px}
+.modal__close{
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal__close svg{width: 14px; height: 14px; stroke: var(--ink); stroke-width: 2.5; fill: none}
+.modal__body{padding: 24px 28px}
+.modal__chip{
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 16px;
+}
+.modal__chip--confirmee{background: rgba(74,124,58,.15); color: var(--leaf)}
+.modal__chip--en_attente{background: rgba(244,197,66,.2); color: #8a6b16}
+.modal__chip--annulee{background: rgba(107,102,96,.15); color: var(--gray)}
+.modal__chip--expiree{background: rgba(107,102,96,.15); color: var(--gray)}
+
+.modal__grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 16px;
+  background: var(--paper);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.modal__cell small{font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: .05em; display: block; margin-bottom: 2px}
+.modal__cell strong{font-weight: 600; font-size: 14px}
+
+.modal__field{margin-bottom: 14px}
+.modal__field label{font-size: 12px; color: var(--gray); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .04em; font-weight: 600}
+.modal__field input,.modal__field textarea{
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+.modal__field input:focus,.modal__field textarea:focus{outline: none; border-color: var(--blue)}
+.modal__field textarea{min-height: 60px; resize: vertical}
+
+.modal__actions{
+  padding: 20px 28px;
+  border-top: 1px solid var(--rule);
+  display: flex; gap: 8px; justify-content: space-between;
+  background: var(--paper);
+}
+.btn{
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--rule);
+  background: #fff;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all .15s;
+}
+.btn:hover{background: var(--paper)}
+.btn--primary{background: var(--blue); color: #fff; border-color: var(--blue)}
+.btn--primary:hover{background: var(--ink); border-color: var(--ink)}
+.btn--danger{background: var(--tomato); color: #fff; border-color: var(--tomato)}
+.btn--danger:hover{background: #c53d28; border-color: #c53d28}
+.btn svg{width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none}
+.btn:disabled{opacity: .5; cursor: not-allowed}
+
+/* Toast notif */
+.toast{
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--ink); color: #fff;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-size: 14px; font-weight: 500;
+  z-index: 60;
+  display: flex; align-items: center; gap: 10px;
+  transition: transform .3s cubic-bezier(.2,.8,.2,1);
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+.toast.show{transform: translateX(-50%) translateY(0)}
+.toast--success{background: var(--leaf)}
+.toast--error{background: var(--tomato)}
+
+@media (max-width: 900px){
+  .stats-bar{grid-template-columns: repeat(2, 1fr)}
+  .planning__head, .planning__body{grid-template-columns: 50px repeat(7, 1fr)}
+  .list__row{grid-template-columns: 24px 90px 1fr 80px; gap: 8px; font-size: 12px}
+  .list__head .list__col-formule, .list__head .list__col-salle, .list__head .list__col-creneau,
+  .list__col-formule, .list__col-salle, .list__col-creneau{display: none}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== ÉCRAN DE BLOCAGE ===================== -->
+<div class="gate" id="gate">
+  <div class="gate__card">
+    <div class="gate__icon">
+      <svg viewBox="0 0 24 24"><path d="M12 15v3M6 11V8a6 6 0 1112 0v3"/><rect x="4" y="11" width="16" height="11" rx="2"/></svg>
+    </div>
+    <h1>Accès admin</h1>
+    <p>Saisissez le token d'accès, ou utilisez le lien complet reçu par email.</p>
+    <input type="password" id="gate-input" placeholder="Token d'accès" autocomplete="off">
+    <button id="gate-btn">Accéder</button>
+    <div class="gate__err" id="gate-err"></div>
+  </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div class="app" id="app">
+
+  <header class="head">
+    <div class="head__brand">Kōbō<span class="head__brand-dot"></span></div>
+    <div class="head__sep"></div>
+    <div class="head__title">Administration des réservations</div>
+    <div class="head__right">
+      <button class="tab tab--active" data-view="planning">Planning</button>
+      <button class="tab" data-view="liste">Liste</button>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat__label">Total période</div>
+      <div class="stat__value" id="s-total">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat__label">Confirmées</div>
+      <div class="stat__value" id="s-conf">—</div>
+    </div>
+    <div class="stat stat--pending">
+      <div class="stat__label">En attente</div>
+      <div class="stat__value" id="s-pend">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat__label">Annulées</div>
+      <div class="stat__value" id="s-canc">—</div>
+    </div>
+    <div class="stat stat--ca">
+      <div class="stat__label">CA confirmé</div>
+      <div class="stat__value" id="s-ca">—</div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button class="toolbar__nav" id="nav-prev" aria-label="Précédent">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="toolbar__date" id="period-label">—</div>
+    <button class="toolbar__nav" id="nav-next" aria-label="Suivant">
+      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <button class="toolbar__btn-ico" id="nav-today">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      Aujourd'hui
+    </button>
+    <div class="toolbar__spacer"></div>
+    <button class="toolbar__btn-ico" id="btn-refresh">
+      <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-3-7M21 4v6h-6"/></svg>
+      Actualiser
+    </button>
+  </div>
+
+  <main class="main">
+    <!-- Vue planning -->
+    <div class="planning-view" id="view-planning">
+      <div class="planning">
+        <div class="planning__head" id="planning-head"></div>
+        <div class="planning__body" id="planning-body"></div>
+      </div>
+    </div>
+
+    <!-- Vue liste -->
+    <div class="list-view" id="view-liste">
+      <div class="list">
+        <div class="list__row list__head">
+          <div></div>
+          <div>Date</div>
+          <div>Créneau</div>
+          <div class="list__col-salle">Salle</div>
+          <div>Client</div>
+          <div class="list__col-formule">Formule</div>
+          <div style="text-align:right">Montant</div>
+          <div></div>
+        </div>
+        <div id="list-rows"></div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- ===================== MODALE DÉTAIL ===================== -->
+<div class="modal" id="modal">
+  <div class="modal__card">
+    <div class="modal__head">
+      <div class="modal__title">Réservation</div>
+      <button class="modal__close" id="modal-close">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal__body" id="modal-body"></div>
+    <div class="modal__actions">
+      <button class="btn btn--danger" id="modal-cancel">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+        Annuler & rembourser
+      </button>
+      <button class="btn btn--primary" id="modal-save">
+        <svg viewBox="0 0 24 24"><path d="M5 13l5 5L20 6"/></svg>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================================
+   ÉTAT & API
+   ============================================================================ */
+const API_BASE = '';
+let token = '';
+let view = 'planning';
+let currentWeek = startOfWeek(new Date()); // lundi de la semaine courante
+let allReservations = [];
+let modalResa = null;
+
+const JOURS_LONG = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+const JOURS_COURT = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const MOIS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+
+function $ (s) { return document.querySelector(s); }
+function $$ (s) { return document.querySelectorAll(s); }
+
+function startOfWeek(d){
+  const x = new Date(d); x.setHours(0,0,0,0);
+  const day = x.getDay();
+  const diff = (day === 0 ? -6 : 1 - day);
+  x.setDate(x.getDate() + diff);
+  return x;
+}
+function isoDate(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function euros(c){ return (c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'}); }
+function eurosShort(c){ return Math.round(c/100) + '€'; }
+
+function toast(msg, type='success'){
+  const t = $('#toast');
+  t.className = 'toast toast--'+type+' show';
+  t.textContent = msg;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ============================================================================
+   AUTHENTIFICATION TOKEN
+   ============================================================================ */
+function init(){
+  // Le token peut venir de l'URL ou être saisi
+  const urlToken = new URLSearchParams(location.search).get('token');
+  if (urlToken){
+    tryToken(urlToken);
+  } else {
+    $('#gate').style.display = 'flex';
+  }
+}
+$('#gate-btn').addEventListener('click', () => {
+  const v = $('#gate-input').value.trim();
+  if (v) tryToken(v);
+});
+$('#gate-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') $('#gate-btn').click();
+});
+
+async function tryToken(t){
+  const r = await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(t)}&du=${isoDate(currentWeek)}&au=${isoDate(addDays(currentWeek,6))}`);
+  if (r.status === 401){
+    $('#gate-err').textContent = 'Token invalide.';
+    return;
+  }
+  if (!r.ok){
+    $('#gate-err').textContent = 'Erreur, réessayez.';
+    return;
+  }
+  // OK
+  token = t;
+  $('#gate').style.display = 'none';
+  $('#app').classList.add('ready');
+  const data = await r.json();
+  appliquerDonnees(data);
+}
+
+/* ============================================================================
+   NAVIGATION TEMPORELLE
+   ============================================================================ */
+function addDays(d, n){ const x = new Date(d); x.setDate(x.getDate()+n); return x; }
+function refresh(){ chargerSemaine(currentWeek); }
+
+$('#nav-prev').addEventListener('click', () => { currentWeek = addDays(currentWeek, -7); refresh() });
+$('#nav-next').addEventListener('click', () => { currentWeek = addDays(currentWeek, 7); refresh() });
+$('#nav-today').addEventListener('click', () => { currentWeek = startOfWeek(new Date()); refresh() });
+$('#btn-refresh').addEventListener('click', refresh);
+
+/* ============================================================================
+   CHARGEMENT
+   ============================================================================ */
+async function chargerSemaine(weekStart){
+  const du = isoDate(weekStart);
+  const au = isoDate(addDays(weekStart, 6));
+  const r = await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(token)}&du=${du}&au=${au}`);
+  if (!r.ok){ toast('Erreur de chargement', 'error'); return; }
+  const data = await r.json();
+  appliquerDonnees(data);
+}
+
+function appliquerDonnees(data){
+  allReservations = data.reservations || [];
+
+  // Stats
+  $('#s-total').textContent = data.stats.total;
+  $('#s-conf').textContent = data.stats.confirmees;
+  $('#s-pend').textContent = data.stats.en_attente;
+  $('#s-canc').textContent = data.stats.annulees;
+  $('#s-ca').textContent = eurosShort(data.stats.ca_total || 0);
+
+  // Label période
+  $('#period-label').textContent = formatPeriode(currentWeek);
+
+  if (view === 'planning') renderPlanning();
+  else renderListe();
+}
+
+function formatPeriode(weekStart){
+  const w7 = addDays(weekStart, 6);
+  if (weekStart.getMonth() === w7.getMonth()){
+    return `${weekStart.getDate()} – ${w7.getDate()} ${MOIS[w7.getMonth()]} ${w7.getFullYear()}`;
+  }
+  return `${weekStart.getDate()} ${MOIS[weekStart.getMonth()]} – ${w7.getDate()} ${MOIS[w7.getMonth()]}`;
+}
+
+/* ============================================================================
+   VUE PLANNING (semaine)
+   ============================================================================ */
+function renderPlanning(){
+  // En-tête : 7 jours
+  const head = $('#planning-head');
+  head.innerHTML = '<div class="planning__day-h"></div>';
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let i=0; i<7; i++){
+    const d = addDays(currentWeek, i);
+    const isToday = d.getTime() === today.getTime();
+    head.innerHTML += `
+      <div class="planning__day-h ${isToday?'planning__day-h--today':''}">
+        <div class="planning__day-h-name">${JOURS_COURT[d.getDay()]}</div>
+        <div class="planning__day-h-num">${d.getDate()}</div>
+      </div>
+    `;
+  }
+
+  // Corps : 8h-23h (15 lignes) × 7 colonnes
+  const HEURE_DEBUT = 8;
+  const HEURE_FIN = 23;
+  const NB_LIGNES = HEURE_FIN - HEURE_DEBUT;
+
+  const body = $('#planning-body');
+  body.innerHTML = '';
+  // Colonne heures
+  let colHours = '<div class="planning__hours">';
+  for (let h=HEURE_DEBUT; h<HEURE_FIN; h++){
+    colHours += `<div class="planning__hour">${String(h).padStart(2,'0')}:00</div>`;
+  }
+  colHours += '</div>';
+  body.innerHTML += colHours;
+
+  // 7 colonnes de jour
+  for (let i=0; i<7; i++){
+    const d = addDays(currentWeek, i);
+    const dIso = isoDate(d);
+    const isToday = d.getTime() === today.getTime();
+    const isSunday = d.getDay() === 0;
+    let col = `<div class="planning__col ${isToday?'planning__col--today':''} ${isSunday?'planning__col--off':''}" data-day="${dIso}">`;
+    for (let h=HEURE_DEBUT; h<HEURE_FIN; h++){
+      col += '<div class="planning__col-row"></div>';
+    }
+    col += '</div>';
+    body.innerHTML += col;
+  }
+
+  // Placer les réservations
+  const cols = body.querySelectorAll('.planning__col');
+  allReservations.forEach(r => {
+    const col = Array.from(cols).find(c => c.dataset.day === r.date_resa);
+    if (!col) return;
+    if (r.statut === 'expiree') return; // pas d'affichage des expirées
+    const top = (r.heure_debut - HEURE_DEBUT) * 56;
+    const height = (r.heure_fin - r.heure_debut) * 56 - 4;
+    const cls = r.statut === 'confirmee' ? '' :
+                r.statut === 'en_attente' ? 'event--pending' :
+                r.statut === 'annulee' ? 'event--cancelled' : '';
+    const color = r.salles?.couleur || '#01357b';
+    const evt = document.createElement('div');
+    evt.className = 'event ' + cls;
+    if (r.statut === 'confirmee') evt.style.background = color;
+    evt.style.top = top + 'px';
+    evt.style.height = height + 'px';
+    evt.innerHTML = `
+      <div class="event__name">${r.client_nom}</div>
+      <div class="event__meta">${r.salles?.nom || ''} · ${r.heure_debut}h–${r.heure_fin}h</div>
+    `;
+    evt.addEventListener('click', () => openModal(r));
+    col.appendChild(evt);
+  });
+}
+
+/* ============================================================================
+   VUE LISTE
+   ============================================================================ */
+function renderListe(){
+  const c = $('#list-rows');
+  c.innerHTML = '';
+  if (allReservations.length === 0){
+    c.innerHTML = '<div class="empty">Aucune réservation sur cette période.</div>';
+    return;
+  }
+  allReservations.forEach(r => {
+    const isCanc = r.statut === 'annulee' || r.statut === 'expiree';
+    const row = document.createElement('div');
+    row.className = 'list__row';
+    row.innerHTML = `
+      <div><span class="list__status list__status--${r.statut}"></span></div>
+      <div class="list__date">${formatDateCourte(r.date_resa)}</div>
+      <div>${String(r.heure_debut).padStart(2,'0')}h – ${String(r.heure_fin).padStart(2,'0')}h</div>
+      <div class="list__col-salle">
+        <span class="list__salle">
+          <span class="list__salle-dot" style="background:${r.salles?.couleur||'#01357b'}"></span>
+          ${r.salles?.nom || '—'}
+        </span>
+      </div>
+      <div class="list__client">${r.client_nom}<small>${r.client_email}</small></div>
+      <div class="list__col-formule list__formule">${r.formules?.nom || '—'}</div>
+      <div class="list__amount ${isCanc?'list__amount--cancelled':''}">${eurosShort(r.montant_total)}</div>
+      <div class="list__arrow">→</div>
+    `;
+    row.addEventListener('click', () => openModal(r));
+    c.appendChild(row);
+  });
+}
+function formatDateCourte(iso){
+  const d = new Date(iso+'T00:00:00');
+  return JOURS_COURT[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()];
+}
+
+/* ============================================================================
+   ONGLETS
+   ============================================================================ */
+$$('[data-view]').forEach(b => {
+  b.addEventListener('click', () => {
+    $$('[data-view]').forEach(x => x.classList.remove('tab--active'));
+    b.classList.add('tab--active');
+    view = b.dataset.view;
+    $('#view-planning').classList.toggle('hide', view !== 'planning');
+    $('#view-liste').classList.toggle('show', view === 'liste');
+    if (view === 'planning') renderPlanning(); else renderListe();
+  });
+});
+
+/* ============================================================================
+   MODALE DÉTAIL
+   ============================================================================ */
+function openModal(r){
+  modalResa = r;
+  const isCanc = r.statut === 'annulee' || r.statut === 'expiree';
+  const isPending = r.statut === 'en_attente';
+  $('#modal-body').innerHTML = `
+    <span class="modal__chip modal__chip--${r.statut}">${labelStatut(r.statut)}</span>
+
+    <div class="modal__grid">
+      <div class="modal__cell">
+        <small>Salle</small>
+        <strong>${r.salles?.nom || '—'}</strong>
+      </div>
+      <div class="modal__cell">
+        <small>Formule</small>
+        <strong>${r.formules?.nom || '—'}</strong>
+      </div>
+      <div class="modal__cell">
+        <small>Date</small>
+        <strong>${formatDateCourte(r.date_resa)}</strong>
+      </div>
+      <div class="modal__cell">
+        <small>Créneau</small>
+        <strong>${String(r.heure_debut).padStart(2,'0')}h00 — ${String(r.heure_fin).padStart(2,'0')}h00</strong>
+      </div>
+      <div class="modal__cell">
+        <small>Montant</small>
+        <strong style="color:${isCanc?'var(--gray)':'var(--blue)'};font-family:var(--display);font-size:18px">${euros(r.montant_total)}</strong>
+      </div>
+      <div class="modal__cell">
+        <small>Réservé le</small>
+        <strong>${formatDateHeure(r.created_at)}</strong>
+      </div>
+    </div>
+
+    <div class="modal__field">
+      <label>Nom du client</label>
+      <input type="text" id="m-nom" value="${escapeHtml(r.client_nom)}">
+    </div>
+    <div class="modal__field">
+      <label>Email</label>
+      <input type="email" id="m-email" value="${escapeHtml(r.client_email)}">
+    </div>
+    <div class="modal__field">
+      <label>Téléphone</label>
+      <input type="tel" id="m-tel" value="${escapeHtml(r.client_tel || '')}">
+    </div>
+    <div class="modal__field">
+      <label>Entreprise</label>
+      <input type="text" id="m-entreprise" value="${escapeHtml(r.client_entreprise || '')}">
+    </div>
+    <div class="modal__field">
+      <label>Participants</label>
+      <input type="number" id="m-participants" value="${r.nb_participants || ''}" min="1" max="60">
+    </div>
+    <div class="modal__field">
+      <label>Message du client</label>
+      <textarea id="m-message">${escapeHtml(r.message || '')}</textarea>
+    </div>
+  `;
+  $('#modal-cancel').style.display = isCanc ? 'none' : '';
+  $('#modal-save').style.display = isCanc ? 'none' : '';
+  $('#modal').classList.add('open');
+}
+function escapeHtml(s){
+  return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function labelStatut(s){
+  return {confirmee:'Confirmée', en_attente:'En attente', annulee:'Annulée', expiree:'Expirée'}[s] || s;
+}
+function formatDateHeure(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'2-digit'}) + ' ' +
+         d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+}
+
+$('#modal-close').addEventListener('click', () => $('#modal').classList.remove('open'));
+$('#modal').addEventListener('click', (e) => { if (e.target.id === 'modal') $('#modal').classList.remove('open'); });
+
+$('#modal-save').addEventListener('click', async () => {
+  if (!modalResa) return;
+  const champs = {
+    client_nom: $('#m-nom').value.trim(),
+    client_email: $('#m-email').value.trim(),
+    client_tel: $('#m-tel').value.trim() || null,
+    client_entreprise: $('#m-entreprise').value.trim() || null,
+    nb_participants: parseInt($('#m-participants').value, 10) || null,
+    message: $('#m-message').value.trim() || null,
+  };
+  const r = await fetch(API_BASE + '/api/admin/modifier', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ token, reservationId: modalResa.id, champs }),
+  });
+  if (r.ok){
+    toast('Réservation mise à jour');
+    $('#modal').classList.remove('open');
+    refresh();
+  } else {
+    toast('Erreur de modification', 'error');
+  }
+});
+
+$('#modal-cancel').addEventListener('click', async () => {
+  if (!modalResa) return;
+  const confirme = confirm(
+    'Annuler cette réservation ?\n\n' +
+    (modalResa.statut === 'confirmee'
+      ? '⚠️ Le client sera intégralement remboursé via Stripe et recevra un email d\'annulation.'
+      : 'Le client recevra un email d\'annulation.')
+  );
+  if (!confirme) return;
+
+  const r = await fetch(API_BASE + '/api/admin/annuler', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      token,
+      reservationId: modalResa.id,
+      rembourser: true,
+      prevenirClient: true,
+    }),
+  });
+  const data = await r.json();
+  if (r.ok){
+    toast(data.rembourse ? 'Annulée et remboursée' : 'Annulée');
+    $('#modal').classList.remove('open');
+    refresh();
+  } else {
+    toast(data.error || 'Erreur', 'error');
+  }
+});
+
+/* ============================================================================
+   DÉMARRAGE
+   ============================================================================ */
+init();
+</script>
+</body>
+</html>
