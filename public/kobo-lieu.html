@@ -1504,7 +1504,7 @@ img,svg{display:block;max-width:100%}
             <div class="horaires-pick" id="horaires-pick">
               <div class="horaires-pick__title">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                Cliquez l'heure de début puis l'heure de fin
+                Cliquez le 1er créneau puis le dernier que vous souhaitez
               </div>
               <div class="slots" id="slots"></div>
               <div class="horaires-pick__hint">Tarif : <strong id="horaires-prix">—</strong></div>
@@ -1988,7 +1988,7 @@ function afficherCreneaux(){
   state.creneaux.forEach(c => {
     const el = document.createElement('button');
     el.className = 'slot' + (!c.disponible ? ' slot--off' : '');
-    el.textContent = String(c.heure).padStart(2,'0')+':00'; el.dataset.heure = c.heure;
+    el.textContent = `${c.heure}h - ${c.heure+1}h`; el.dataset.heure = c.heure;
     if (c.disponible) el.addEventListener('click', () => selectionnerHeure(c.heure));
     cont.appendChild(el);
   });
@@ -1996,10 +1996,10 @@ function afficherCreneaux(){
 function selectionnerHeure(h){
   if (state.heureDebut === null || state.heureFin !== null){ state.heureDebut = h; state.heureFin = null; }
   else {
-    if (h <= state.heureDebut){ state.heureDebut = h; }
+    if (h < state.heureDebut){ state.heureDebut = h; }
     else {
       let libre = true;
-      for (let x=state.heureDebut; x<h; x++){ const c=state.creneaux.find(k=>k.heure===x); if (!c||!c.disponible) libre=false; }
+      for (let x=state.heureDebut; x<=h; x++){ const c=state.creneaux.find(k=>k.heure===x); if (!c||!c.disponible) libre=false; }
       if (!libre){ showAlert('Un créneau pris se trouve dans cette plage.'); state.heureDebut=h; state.heureFin=null; }
       else { state.heureFin = h + 1; }
     }
