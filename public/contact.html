@@ -314,16 +314,68 @@ button{font:inherit;cursor:pointer;border:0;background:none}
   font-size: 12px; opacity: .45;
 }
 
+/* ============================== HAMBURGER MENU ============================== */
+.nav__burger{
+  display: none;
+  flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  border: 2px solid var(--ink);
+  background: var(--cream);
+  cursor: pointer; flex-shrink: 0;
+}
+.nav__burger span{
+  display: block; width: 20px; height: 2.5px;
+  background: var(--ink); border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+.nav__burger--open span:nth-child(1){ transform: translateY(7.5px) rotate(45deg) }
+.nav__burger--open span:nth-child(2){ opacity: 0 }
+.nav__burger--open span:nth-child(3){ transform: translateY(-7.5px) rotate(-45deg) }
+.nav__drawer{
+  position: fixed; inset: 0; z-index: 45;
+  background: var(--cream);
+  padding: 90px 28px 48px;
+  display: flex; flex-direction: column; gap: 0;
+  transform: translateY(-110%);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+  border-bottom: 3px solid var(--ink);
+  overflow-y: auto;
+}
+.nav__drawer--open{ transform: translateY(0) }
+.nav__drawer a:not(.nav__drawer__cta){
+  font-weight: 600; font-size: 22px;
+  padding: 18px 0;
+  border-bottom: 1.5px solid rgba(26,22,18,.12);
+  opacity: .7;
+  transition: opacity .2s, color .2s;
+  display: block;
+}
+.nav__drawer a:not(.nav__drawer__cta):hover,
+.nav__drawer a.active:not(.nav__drawer__cta){ opacity: 1; color: var(--blue) }
+.nav__drawer__cta{
+  margin-top: 28px;
+  background: var(--blue); color: var(--cream);
+  padding: 16px 28px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
 /* ============================== RESPONSIVE ============================== */
 @media(max-width:900px){
+  .nav__links{display:none}
+  .nav__burger{display:flex}
+  .nav__cta{display:none}
   .contact-section__inner{grid-template-columns:1fr; gap:48px}
   .foot__grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:600px){
-  .nav__links{display:none}
   .form-row{grid-template-columns:1fr}
   .foot__grid{grid-template-columns:1fr}
   .contact-form{padding:28px 20px}
+  .hero{padding:60px 20px 48px}
 }
 </style>
 </head>
@@ -345,7 +397,19 @@ button{font:inherit;cursor:pointer;border:0;background:none}
     Réserver
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
   </a>
+  <button class="nav__burger" id="burgerBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Drawer mobile -->
+<div class="nav__drawer" id="navDrawer" aria-hidden="true">
+  <a href="kobo-lieu.html">Accueil</a>
+  <a href="reservation.html">Réserver</a>
+  <a href="services.html">Services</a>
+  <a href="contact.html" class="active">Contact</a>
+  <a href="reservation.html" class="nav__drawer__cta">Réserver <span>→</span></a>
+</div>
 
 <!-- ============================== HERO ============================== -->
 <section class="hero">
@@ -653,6 +717,31 @@ document.querySelectorAll('.faq__q').forEach(q => {
   form.querySelectorAll('input,select,textarea').forEach(el => {
     el.addEventListener('input', () => { el.style.borderColor = ''; });
   });
+})();
+
+/* ============================== HAMBURGER MENU ============================== */
+(function(){
+  const burger = document.getElementById('burgerBtn');
+  const drawer = document.getElementById('navDrawer');
+  function openMenu(){
+    drawer.classList.add('nav__drawer--open');
+    burger.classList.add('nav__burger--open');
+    burger.setAttribute('aria-expanded','true');
+    drawer.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    drawer.classList.remove('nav__drawer--open');
+    burger.classList.remove('nav__burger--open');
+    burger.setAttribute('aria-expanded','false');
+    drawer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  burger.addEventListener('click', () => {
+    drawer.classList.contains('nav__drawer--open') ? closeMenu() : openMenu();
+  });
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeMenu(); });
 })();
 </script>
 
