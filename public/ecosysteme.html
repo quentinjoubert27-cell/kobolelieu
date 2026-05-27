@@ -1,0 +1,1510 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L'Écosystème Kōbō — Ingénierie · Design · Espaces · Création</title>
+<meta name="description" content="L'écosystème Kōbō : quatre pôles d'expertise réunis sous une même maison. Bordeaux.">
+
+<link rel="icon" type="image/png" href="favicon.png"/>
+<link rel="shortcut icon" href="favicon.png"/>
+<!-- Sécurité -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline' https://unpkg.com; connect-src 'self' https://unpkg.com; worker-src blob:; frame-ancestors 'none';">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=()">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --eco-bg: #0a0807;
+  --eco-bg-2: #14110d;
+  --eco-paper: #f5ede0;
+  --eco-cream: #ebe0c8;
+  --eco-clay: #d65c2e;
+  --eco-brass: #c69648;
+  --eco-moss: #5a6f44;
+  --eco-blue: #01357b;
+  --eco-stone: #8c7e6a;
+  --eco-rule: rgba(245,237,224,.15);
+
+  --display: "Instrument Serif", "Times New Roman", serif;
+  --italic: "Instrument Serif", serif;
+  --body: "Familjen Grotesk", system-ui, sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family: var(--body);
+  background: var(--eco-bg);
+  color: var(--eco-paper);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+a{color: inherit; text-decoration: none}
+button{font: inherit; background: none; border: 0; cursor: pointer; color: inherit}
+img, canvas, svg{display: block; max-width: 100%}
+::selection{background: var(--eco-clay); color: var(--eco-paper)}
+
+/* ============================== GRAIN GLOBAL ============================== */
+.grain{
+  position: fixed; inset: 0; pointer-events: none; z-index: 1000;
+  opacity: .08; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* ============================== NAV ============================== */
+.nav{
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 40px;
+  font-size: 13px;
+  mix-blend-mode: difference; color: #fff;
+}
+.nav__brand{
+  font-family: var(--display);
+  font-size: 24px;
+  font-style: italic;
+  letter-spacing: -.01em;
+}
+.nav__links{display: flex; gap: 28px; font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase}
+.nav__links a{opacity: .8; transition: opacity .3s}
+.nav__links a:hover{opacity: 1}
+.nav__cta{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  padding: 12px 20px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  transition: background .3s, color .3s;
+}
+.nav__cta:hover{background: #fff; color: #000}
+
+/* ============================== WORLD SWITCH (rappel) ============================== */
+.world-switch{
+  position: fixed; top: 80px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+}
+.world-switch__pill{
+  background: rgba(245,237,224,.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(245,237,224,.15);
+  border-radius: 999px;
+  padding: 5px;
+  display: flex; gap: 4px;
+}
+.world-switch__btn{
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--eco-paper);
+  opacity: .65;
+  transition: all .3s;
+}
+.world-switch__btn--active{
+  background: var(--eco-paper);
+  color: var(--eco-bg);
+  opacity: 1;
+}
+
+/* ============================== HERO (intro écosystème) ============================== */
+.hero{
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 0 40px;
+  position: relative; overflow: hidden;
+}
+.hero__bg{
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+}
+#hero-canvas{
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.hero__content{
+  position: relative; z-index: 2;
+  max-width: 1400px; margin: 0 auto; width: 100%;
+}
+.hero__overline{
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--eco-clay);
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 40px;
+}
+.hero__overline::before{content: ""; width: 32px; height: 1px; background: var(--eco-clay)}
+.hero__title{
+  font-family: var(--display);
+  font-size: clamp(64px, 11vw, 200px);
+  line-height: .88;
+  font-weight: 300;
+  letter-spacing: -.025em;
+  margin-bottom: 32px;
+}
+.hero__title em{
+  font-family: var(--italic);
+  font-style: italic;
+  color: var(--eco-clay);
+}
+.hero__sub{
+  font-family: var(--italic); font-style: italic;
+  font-size: clamp(20px, 2vw, 28px);
+  opacity: .8;
+  max-width: 640px;
+}
+
+.hero__indices{
+  position: absolute; bottom: 40px; left: 40px; right: 40px;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
+  opacity: .5;
+  z-index: 2;
+}
+
+/* ============================== INTRO/MANIFESTO ============================== */
+.manifest{
+  padding: 200px 40px 160px;
+  max-width: 1400px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+}
+.manifest__meta{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--eco-clay);
+  position: sticky; top: 120px;
+  align-self: start;
+}
+.manifest__meta span{display: block; opacity: .5; margin-bottom: 8px}
+.manifest__text{
+  font-family: var(--display);
+  font-size: clamp(28px, 3.5vw, 48px);
+  line-height: 1.18;
+  font-weight: 300;
+  letter-spacing: -.01em;
+}
+.manifest__text em{font-family: var(--italic); font-style: italic; color: var(--eco-clay)}
+.manifest__text p + p{margin-top: 32px}
+.manifest__signature{
+  font-family: var(--italic); font-style: italic;
+  font-size: 20px; opacity: .6;
+  margin-top: 60px;
+}
+
+/* ============================== INDEX DES PÔLES ============================== */
+.index{
+  padding: 0 40px 160px;
+  max-width: 1400px; margin: 0 auto;
+  border-top: 1px solid var(--eco-rule);
+  padding-top: 60px;
+}
+.index__head{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--eco-clay); opacity: .7;
+  margin-bottom: 40px;
+}
+.index__list{
+  display: flex; flex-direction: column;
+}
+.index__item{
+  display: grid;
+  grid-template-columns: 80px 1fr 200px 60px;
+  gap: 32px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--eco-rule);
+  align-items: center;
+  cursor: pointer;
+  transition: padding .4s, background .4s;
+  position: relative;
+}
+.index__item:hover{padding-left: 24px}
+.index__item::before{
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px; background: var(--eco-clay);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform .4s;
+}
+.index__item:hover::before{transform: scaleY(1)}
+.index__num{
+  font-family: var(--mono); font-size: 12px;
+  color: var(--eco-clay);
+  letter-spacing: .2em;
+}
+.index__name{
+  font-family: var(--display); font-size: clamp(28px, 4vw, 56px);
+  line-height: 1; letter-spacing: -.02em;
+  font-weight: 300;
+}
+.index__name em{font-family: var(--italic); font-style: italic; color: var(--eco-clay)}
+.index__tag{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  opacity: .6;
+}
+.index__arrow{
+  font-family: var(--display); font-size: 32px;
+  color: var(--eco-clay);
+  text-align: right;
+  transition: transform .4s;
+}
+.index__item:hover .index__arrow{transform: translateX(8px)}
+
+/* ============================== PÔLES — SECTIONS WEBGL FULLSCREEN ============================== */
+.pole{
+  position: relative;
+  min-height: 100vh;
+  padding: 100px 40px;
+  border-top: 1px solid var(--eco-rule);
+  overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.pole__canvas-wrap{
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+}
+.pole__canvas-wrap canvas{
+  position: absolute; inset: 0;
+  width: 100% !important; height: 100% !important;
+}
+.pole__bg-fade{
+  position: absolute; inset: 0; z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 0%, var(--eco-bg) 90%);
+}
+.pole__inner{
+  position: relative; z-index: 2;
+  max-width: 1400px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.pole__head{display: flex; flex-direction: column}
+.pole__num-block{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--eco-clay);
+  margin-bottom: 32px;
+  display: flex; align-items: baseline; gap: 16px;
+}
+.pole__num-block .big{
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 96px;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -.04em;
+  color: var(--eco-clay);
+}
+.pole__brand{
+  font-family: var(--display);
+  font-size: clamp(56px, 7vw, 112px);
+  line-height: .92;
+  font-weight: 300;
+  letter-spacing: -.025em;
+  margin-bottom: 20px;
+}
+.pole__brand em{font-family: var(--italic); font-style: italic; opacity: .85}
+.pole__tag{
+  font-family: var(--italic);
+  font-style: italic;
+  font-size: clamp(20px, 1.8vw, 28px);
+  opacity: .75;
+  margin-bottom: 36px;
+}
+.pole__desc{
+  font-size: 17px;
+  line-height: 1.65;
+  opacity: .82;
+  max-width: 520px;
+  margin-bottom: 40px;
+}
+.pole__skills{
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-bottom: 48px;
+  max-width: 520px;
+  border-top: 1px solid var(--eco-rule);
+}
+.pole__skill{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  padding: 14px 0 14px 20px;
+  border-bottom: 1px solid var(--eco-rule);
+  opacity: .75;
+  position: relative;
+}
+.pole__skill::before{
+  content: ""; position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--eco-clay);
+}
+.pole__cta{
+  display: inline-flex; align-items: center; gap: 16px;
+  padding: 18px 30px;
+  border: 1px solid rgba(245,237,224,.3);
+  border-radius: 999px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+  align-self: flex-start;
+  transition: all .4s cubic-bezier(.2,0,.2,1);
+  position: relative;
+  overflow: hidden;
+}
+.pole__cta::before{
+  content: ""; position: absolute; inset: 0;
+  background: var(--eco-paper);
+  border-radius: 999px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s cubic-bezier(.2,0,.2,1);
+  z-index: -1;
+}
+.pole__cta:hover{color: var(--eco-bg); border-color: var(--eco-paper)}
+.pole__cta:hover::before{transform: scaleX(1)}
+.pole__cta .arrow{transition: transform .4s}
+.pole__cta:hover .arrow{transform: translateX(6px)}
+
+/* ============================== VIEWPORT POUR LE CANVAS DE CHAQUE PÔLE ============================== */
+.pole__visual{
+  position: relative;
+  height: 600px;
+}
+.pole__visual-frame{
+  position: absolute; inset: 0;
+  border: 1px solid rgba(245,237,224,.1);
+  pointer-events: none;
+}
+.pole__visual-frame::before,
+.pole__visual-frame::after{
+  content: "";
+  position: absolute;
+  width: 16px; height: 16px;
+  border: 1px solid var(--eco-clay);
+}
+.pole__visual-frame::before{top: -8px; left: -8px; border-right: 0; border-bottom: 0}
+.pole__visual-frame::after{bottom: -8px; right: -8px; border-left: 0; border-top: 0}
+.pole__visual-label{
+  position: absolute; top: 16px; left: 16px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--eco-clay);
+  background: rgba(10,8,7,.6);
+  backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 999px;
+  z-index: 3;
+}
+.pole__visual-coords{
+  position: absolute; bottom: 16px; right: 16px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  color: var(--eco-stone);
+  opacity: .7;
+  z-index: 3;
+}
+.pole__visual-logo{
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 4; pointer-events: none;
+}
+.pole__visual-logo img{
+  max-width: 220px; max-height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 30px rgba(0,0,0,.9));
+  opacity: .88;
+}
+
+/* ============================== PÔLES — PALETTES ============================== */
+.pole--potech{background: linear-gradient(180deg, var(--eco-bg), #0f1015)}
+.pole--design{background: linear-gradient(180deg, #0f1015, #14110d)}
+.pole--lieu{background: linear-gradient(180deg, #14110d, #0a1428)}
+.pole--prod{background: linear-gradient(180deg, #0a1428, var(--eco-bg))}
+
+/* Alternance gauche/droite */
+.pole:nth-child(even) .pole__inner{direction: rtl}
+.pole:nth-child(even) .pole__inner > *{direction: ltr}
+
+/* ============================== CONNEXIONS ENTRE LES PÔLES ============================== */
+.connection{
+  padding: 80px 40px;
+  text-align: center;
+  border-top: 1px solid var(--eco-rule);
+  border-bottom: 1px solid var(--eco-rule);
+  position: relative;
+  background: var(--eco-bg);
+}
+.connection__line{
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 1px; background: linear-gradient(180deg, transparent, var(--eco-clay) 30%, var(--eco-clay) 70%, transparent);
+}
+.connection__text{
+  font-family: var(--italic); font-style: italic;
+  font-size: clamp(20px, 2.4vw, 36px);
+  opacity: .7;
+  max-width: 700px; margin: 0 auto;
+  line-height: 1.3;
+}
+
+/* ============================== CHAÎNE GLOBALE ============================== */
+.chain{
+  padding: 200px 40px;
+  background: linear-gradient(180deg, var(--eco-bg), #1a0f0a);
+}
+.chain__inner{max-width: 1400px; margin: 0 auto}
+.chain__head{
+  text-align: center;
+  margin-bottom: 100px;
+}
+.chain__overline{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--eco-clay);
+  margin-bottom: 24px;
+}
+.chain__title{
+  font-family: var(--display);
+  font-size: clamp(48px, 7vw, 112px);
+  line-height: .95;
+  font-weight: 300;
+  letter-spacing: -.025em;
+}
+.chain__title em{font-family: var(--italic); font-style: italic; color: var(--eco-clay)}
+
+.chain__diagram{
+  position: relative;
+  height: 320px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.chain__node{
+  width: 140px; height: 140px;
+  border: 1px solid var(--eco-rule);
+  border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--eco-bg);
+  position: relative;
+  z-index: 2;
+  transition: transform .4s, border-color .4s;
+}
+.chain__node:hover{transform: scale(1.08); border-color: var(--eco-clay)}
+.chain__node-num{
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  color: var(--eco-clay);
+  margin-bottom: 6px;
+}
+.chain__node-name{
+  font-family: var(--display); font-size: 18px; font-weight: 400;
+  text-align: center; line-height: 1;
+}
+.chain__line{
+  position: absolute; top: 50%; left: 0; right: 0;
+  height: 1px; background: linear-gradient(90deg, var(--eco-clay), var(--eco-clay));
+  z-index: 1;
+  transform: translateY(-50%);
+}
+.chain__pulse{
+  position: absolute; top: 50%; left: 0;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--eco-clay);
+  transform: translateY(-50%);
+  box-shadow: 0 0 24px var(--eco-clay);
+  animation: chainPulse 6s linear infinite;
+}
+@keyframes chainPulse{
+  0%{left: 5%; opacity: 1}
+  90%{left: 95%; opacity: 1}
+  100%{left: 95%; opacity: 0}
+}
+
+.chain__labels{
+  display: flex; justify-content: space-between;
+  margin-top: 32px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  opacity: .6;
+}
+.chain__labels span{width: 140px; text-align: center}
+
+/* ============================== CTA FINAL ============================== */
+.cta-final{
+  padding: 200px 40px;
+  text-align: center;
+  background: var(--eco-bg);
+}
+.cta-final__overline{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--eco-clay);
+  margin-bottom: 32px;
+}
+.cta-final__title{
+  font-family: var(--display);
+  font-size: clamp(56px, 9vw, 168px);
+  line-height: .9;
+  font-weight: 300;
+  letter-spacing: -.03em;
+  margin-bottom: 48px;
+}
+.cta-final__title em{font-family: var(--italic); font-style: italic; color: var(--eco-clay)}
+.cta-final__btn{
+  display: inline-flex; align-items: center; gap: 16px;
+  padding: 22px 36px;
+  background: var(--eco-paper);
+  color: var(--eco-bg);
+  border-radius: 999px;
+  font-family: var(--mono); font-size: 13px; letter-spacing: .2em; text-transform: uppercase;
+  font-weight: 600;
+  transition: transform .3s;
+}
+.cta-final__btn:hover{transform: translateY(-3px)}
+
+/* ============================== FOOTER ============================== */
+.foot{
+  background: #050403;
+  padding: 80px 40px 40px;
+  border-top: 1px solid var(--eco-rule);
+}
+.foot__inner{max-width: 1400px; margin: 0 auto}
+.foot__grid{
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 56px;
+}
+.foot__brand{
+  font-family: var(--display); font-style: italic;
+  font-size: 48px; color: var(--eco-clay);
+  margin-bottom: 16px;
+}
+.foot__desc{font-family: var(--italic); font-style: italic; font-size: 17px; opacity: .65; max-width: 320px}
+.foot h4{
+  font-family: var(--mono); font-size: 11px; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--eco-clay); margin-bottom: 16px;
+}
+.foot ul{list-style: none; display: flex; flex-direction: column; gap: 10px}
+.foot a{font-size: 14px; opacity: .8; transition: opacity .3s}
+.foot a:hover{opacity: 1; color: var(--eco-clay)}
+.foot__bottom{
+  border-top: 1px solid var(--eco-rule);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+  opacity: .5;
+}
+
+/* ============================== RESPONSIVE ============================== */
+@media (max-width: 900px){
+  .nav{padding: 16px 20px}
+  .nav__links{display: none}
+  .world-switch{top: 70px}
+  .world-switch__pill{padding: 4px}
+  .world-switch__btn{padding: 8px 14px; font-size: 10px}
+  .hero{padding: 0 20px}
+  .hero__indices{display: none}
+  .manifest{padding: 140px 20px 100px; grid-template-columns: 1fr; gap: 40px}
+  .manifest__meta{position: static}
+  .index{padding: 0 20px 100px}
+  .index__item{grid-template-columns: 50px 1fr 30px; gap: 16px}
+  .index__tag{display: none}
+  .pole{padding: 80px 20px}
+  .pole__inner{grid-template-columns: 1fr; gap: 40px}
+  .pole:nth-child(even) .pole__inner{direction: ltr}
+  .pole__visual{height: 400px; order: -1}
+  .pole__skills{grid-template-columns: 1fr}
+  .chain__diagram{flex-direction: column; height: auto; gap: 24px}
+  .chain__line{display: none}
+  .chain__labels{display: none}
+  .foot__grid{grid-template-columns: 1fr 1fr; gap: 32px}
+  .foot__bottom{flex-direction: column; gap: 8px}
+}
+
+/* ============================== REVEAL ============================== */
+.reveal{opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(.2,0,.2,1), transform 1s cubic-bezier(.2,0,.2,1)}
+.reveal.in{opacity: 1; transform: translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ============================== NAV ============================== -->
+<nav class="nav">
+  <a href="#" class="nav__brand">Kōbō</a>
+  <div class="nav__links">
+    <a href="#potech">01 PO TECH</a>
+    <a href="#design">02 Design</a>
+    <a href="#lieu">03 Le Lieu</a>
+    <a href="#prod">04 Production</a>
+  </div>
+  <a href="contact.html" class="nav__cta">Nous contacter</a>
+</nav>
+
+<!-- World Switch -->
+<div class="world-switch">
+  <div class="world-switch__pill">
+    <a href="kobo-lieu.html" class="world-switch__btn">Le Lieu</a>
+    <button class="world-switch__btn world-switch__btn--active">L'Écosystème</button>
+  </div>
+</div>
+
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <div class="hero__bg">
+    <canvas id="hero-canvas"></canvas>
+  </div>
+  <div class="hero__content">
+    <div class="hero__overline">L'Écosystème · Maison Kōbō · Bordeaux</div>
+    <h1 class="hero__title">Quatre métiers,<br>une <em>maison</em>.</h1>
+    <p class="hero__sub">De l'analyse technique au mobilier sur mesure, des salles de réunion aux résidences artistiques. Une seule chaîne — fluide, cohérente, ancrée à Bordeaux.</p>
+  </div>
+  <div class="hero__indices">
+    <span>Écosystème · Kōbō</span>
+    <span>04 Pôles · 01 Maison</span>
+    <span>Bordeaux · 33000</span>
+  </div>
+</section>
+
+<!-- ============================== MANIFESTO ============================== -->
+<section class="manifest">
+  <div class="manifest__meta">
+    <span>Chap. 00</span>
+    Manifeste
+  </div>
+  <div class="manifest__text">
+    <p>Kōbō n'est pas une juxtaposition d'activités. <em>C'est un système.</em></p>
+    <p>Chaque pôle est autonome dans son métier mais branché aux trois autres. Un bureau d'études dialogue avec un atelier. Un lieu d'accueil devient terrain d'expérimentation pour des artistes en résidence.</p>
+    <p>Centré sur l'<em>ingénierie appliquée</em>, chaque projet suit une chaîne fluide : analyse, conception, fabrication, activation. Pertinence technique <em>et</em> intelligence du design.</p>
+    <p class="manifest__signature">— Kōbō, depuis Bordeaux</p>
+  </div>
+</section>
+
+<!-- ============================== INDEX ============================== -->
+<section class="index">
+  <div class="index__head">→ Naviguer dans la maison</div>
+  <div class="index__list">
+    <a href="#potech" class="index__item">
+      <span class="index__num">01.</span>
+      <span class="index__name">PO TECH <em>Ingénierie</em></span>
+      <span class="index__tag">Bureau d'études</span>
+      <span class="index__arrow">→</span>
+    </a>
+    <a href="#design" class="index__item">
+      <span class="index__num">02.</span>
+      <span class="index__name"><em>Kōbō</em> Design</span>
+      <span class="index__tag">Mobilier sur mesure</span>
+      <span class="index__arrow">→</span>
+    </a>
+    <a href="#lieu" class="index__item">
+      <span class="index__num">03.</span>
+      <span class="index__name">Kōbō <em>Le Lieu</em></span>
+      <span class="index__tag">Salles & espaces</span>
+      <span class="index__arrow">→</span>
+    </a>
+    <a href="#prod" class="index__item">
+      <span class="index__num">04.</span>
+      <span class="index__name"><em>Kōbō</em> Production</span>
+      <span class="index__tag">Création & résidences</span>
+      <span class="index__arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============================== PÔLE 01 — PO TECH ============================== -->
+<section class="pole pole--potech" id="potech">
+  <div class="pole__canvas-wrap">
+    <canvas id="canvas-potech"></canvas>
+  </div>
+  <div class="pole__bg-fade"></div>
+  <div class="pole__inner">
+    <div class="pole__head">
+      <div class="pole__num-block">
+        <span class="big">01</span>
+        Pôle Ingénierie
+      </div>
+      <h2 class="pole__brand">PO TECH<br><em>Ingénierie.</em></h2>
+      <p class="pole__tag">Le cœur technique du groupe.</p>
+      <p class="pole__desc">Bureau d'études structure & expertise bâtiment. Garant de la viabilité structurelle et réglementaire des projets les plus ambitieux. Études bois, métal, béton. Reprise en sous-œuvre. Calculs d'éléments techniques spécifiques. Expertise pathologies et sinistres.</p>
+      <div class="pole__skills">
+        <div class="pole__skill">Études structurelles</div>
+        <div class="pole__skill">Sous-œuvre</div>
+        <div class="pole__skill">Expertise pathologies</div>
+        <div class="pole__skill">Assistance MOA</div>
+      </div>
+      <a href="https://www.potech-ingenierie.com" target="_blank" rel="noopener" class="pole__cta">
+        Découvrir PO TECH
+        <span class="arrow">↗</span>
+      </a>
+    </div>
+    <div class="pole__visual">
+      <div class="pole__visual-frame"></div>
+      <div class="pole__visual-logo">
+        <img src="logoPOtech.png" alt="PO TECH Ingénierie" style="filter: brightness(0) invert(1) drop-shadow(0 0 24px rgba(32,34,73,.6))">
+      </div>
+      <div class="pole__visual-label">Structure · Wireframe</div>
+      <div class="pole__visual-coords">44.8378°N · 0.5792°W</div>
+    </div>
+  </div>
+</section>
+
+<!-- Connection 1→2 -->
+<div class="connection">
+  <div class="connection__line"></div>
+  <p class="connection__text">— De l'<em>analyse structurelle</em> à la <em>matière fabriquée</em>. La rigueur du calcul devient objet.</p>
+</div>
+
+<!-- ============================== PÔLE 02 — KOBO DESIGN ============================== -->
+<section class="pole pole--design" id="design">
+  <div class="pole__canvas-wrap">
+    <canvas id="canvas-design"></canvas>
+  </div>
+  <div class="pole__bg-fade"></div>
+  <div class="pole__inner">
+    <div class="pole__head">
+      <div class="pole__num-block">
+        <span class="big">02</span>
+        Pôle Design & Fabrication
+      </div>
+      <h2 class="pole__brand"><em>Kōbō</em> Design.</h2>
+      <p class="pole__tag">Là où l'ingénierie rejoint l'esthétique.</p>
+      <p class="pole__desc">Mobilier intelligent, modulable et fabriqué localement. Croise exigence technique et sens du design. Sur mesure pour particuliers et professionnels, kits prêts à monter, panneaux acoustiques, aménagements techniques. Réemploi de matériaux et optimisation CNC.</p>
+      <div class="pole__skills">
+        <div class="pole__skill">Mobilier sur mesure</div>
+        <div class="pole__skill">Kits prêts à monter</div>
+        <div class="pole__skill">Panneaux acoustiques</div>
+        <div class="pole__skill">Aménagements pro</div>
+      </div>
+      <a href="https://www.kobo-design.fr" target="_blank" rel="noopener" class="pole__cta">
+        Découvrir Kōbō Design
+        <span class="arrow">↗</span>
+      </a>
+    </div>
+    <div class="pole__visual">
+      <div class="pole__visual-frame"></div>
+      <div class="pole__visual-logo">
+        <img src="logokobodesign.png" alt="Kōbō Design">
+      </div>
+      <div class="pole__visual-label">CNC · Bois · 1:1</div>
+      <div class="pole__visual-coords">Pin · Chêne · MDF</div>
+    </div>
+  </div>
+</section>
+
+<!-- Connection 2→3 -->
+<div class="connection">
+  <div class="connection__line"></div>
+  <p class="connection__text">— L'objet trouve sa place. Le mobilier <em>fait lieu</em>.</p>
+</div>
+
+<!-- ============================== PÔLE 03 — KOBO LE LIEU ============================== -->
+<section class="pole pole--lieu" id="lieu">
+  <div class="pole__canvas-wrap">
+    <canvas id="canvas-lieu"></canvas>
+  </div>
+  <div class="pole__bg-fade"></div>
+  <div class="pole__inner">
+    <div class="pole__head">
+      <div class="pole__num-block">
+        <span class="big">03</span>
+        Pôle Espaces
+      </div>
+      <h2 class="pole__brand">Kōbō<br><em>Le Lieu.</em></h2>
+      <p class="pole__tag">La vitrine vivante de l'univers Kōbō.</p>
+      <p class="pole__desc">Bureaux et salles de réunion à louer, aménagés avec nos propres créations. Réunions, événements, temps de travail collaboratif. Deux salles à l'identité forte — Canopée, Majorelle — un showroom vivant où chaque pièce est une démonstration.</p>
+      <div class="pole__skills">
+        <div class="pole__skill">Salles de réunion</div>
+        <div class="pole__skill">Bureaux partagés</div>
+        <div class="pole__skill">Showroom mobilier</div>
+        <div class="pole__skill">Événements pro</div>
+      </div>
+      <a href="kobo-lieu.html" class="pole__cta">
+        Visiter Le Lieu
+        <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="pole__visual">
+      <div class="pole__visual-frame"></div>
+      <div class="pole__visual-logo">
+        <img src="koboblanc.png" alt="Kōbō Le Lieu">
+      </div>
+      <div class="pole__visual-label">Plan · 76 rue Mandron</div>
+      <div class="pole__visual-coords">Chartrons · Bordeaux</div>
+    </div>
+  </div>
+</section>
+
+<!-- Connection 3→4 -->
+<div class="connection">
+  <div class="connection__line"></div>
+  <p class="connection__text">— Le lieu devient <em>laboratoire</em>. Le quotidien laisse place à l'expérimentation.</p>
+</div>
+
+<!-- ============================== PÔLE 04 — KOBO PRODUCTION ============================== -->
+<section class="pole pole--prod" id="prod">
+  <div class="pole__canvas-wrap">
+    <canvas id="canvas-prod"></canvas>
+  </div>
+  <div class="pole__bg-fade"></div>
+  <div class="pole__inner">
+    <div class="pole__head">
+      <div class="pole__num-block">
+        <span class="big">04</span>
+        Pôle Création
+      </div>
+      <h2 class="pole__brand"><em>Kōbō</em><br>Production.</h2>
+      <p class="pole__tag">L'atelier où s'expriment création et expérimentation.</p>
+      <p class="pole__desc">À la croisée du design, de la culture et de l'innovation, Kōbō Production anime L'annexe : 140 m² entièrement dédiés à la création artistique sous toutes ses formes. Résidences d'artistes, événements pop-up, expositions, showcases et performances.</p>
+      <div class="pole__skills">
+        <div class="pole__skill">Résidences d'artistes</div>
+        <div class="pole__skill">Pop-up & expositions</div>
+        <div class="pole__skill">Showcases</div>
+        <div class="pole__skill">Expérimentations</div>
+      </div>
+      <a href="contact.html" class="pole__cta">
+        Proposer un projet
+        <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="pole__visual">
+      <div class="pole__visual-frame"></div>
+      <div class="pole__visual-logo">
+        <img src="logokoboproduction.png" alt="Kōbō Production">
+      </div>
+      <div class="pole__visual-label">L'annexe · 140 m²</div>
+      <div class="pole__visual-coords">Live · Résidence en cours</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== CHAÎNE ============================== -->
+<section class="chain">
+  <div class="chain__inner">
+    <div class="chain__head">
+      <div class="chain__overline">— La chaîne</div>
+      <h2 class="chain__title">De l'<em>analyse</em><br>à l'<em>usage</em>.</h2>
+    </div>
+    <div class="chain__diagram">
+      <div class="chain__line"></div>
+      <div class="chain__pulse"></div>
+
+      <div class="chain__node">
+        <span class="chain__node-num">01</span>
+        <span class="chain__node-name">Analyse</span>
+      </div>
+      <div class="chain__node">
+        <span class="chain__node-num">02</span>
+        <span class="chain__node-name">Conception</span>
+      </div>
+      <div class="chain__node">
+        <span class="chain__node-num">03</span>
+        <span class="chain__node-name">Fabrication</span>
+      </div>
+      <div class="chain__node">
+        <span class="chain__node-num">04</span>
+        <span class="chain__node-name">Activation</span>
+      </div>
+    </div>
+    <div class="chain__labels">
+      <span>PO TECH</span>
+      <span>Kōbō Design</span>
+      <span>Kōbō Design</span>
+      <span>Le Lieu / Prod</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== CTA FINAL ============================== -->
+<section class="cta-final">
+  <div class="cta-final__overline">— Parlons projet</div>
+  <h2 class="cta-final__title">Un projet à<br><em>imaginer ?</em></h2>
+  <a href="contact.html" class="cta-final__btn">
+    Écrivez-nous
+    <span>→</span>
+  </a>
+</section>
+
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="foot">
+  <div class="foot__inner">
+    <div class="foot__grid">
+      <div>
+        <div class="foot__brand">Kōbō.</div>
+        <p class="foot__desc">Un lieu, deux salles, quatre métiers. Tout part d'ici, depuis Bordeaux.</p>
+      </div>
+      <div>
+        <h4>L'Écosystème</h4>
+        <ul>
+          <li><a href="#potech">PO TECH</a></li>
+          <li><a href="#design">Kōbō Design</a></li>
+          <li><a href="#lieu">Le Lieu</a></li>
+          <li><a href="#prod">Production</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Le Lieu</h4>
+        <ul>
+          <li><a href="kobo-lieu.html">Salles</a></li>
+          <li><a href="kobo-lieu.html#reserve">Réserver</a></li>
+          <li><a href="#">Tarifs</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Maison</h4>
+        <ul>
+          <li>76 rue Mandron</li>
+          <li>33000 Bordeaux</li>
+          <li><a href="mailto:hello@kobo-bdx.com">hello@kobo-bdx.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© 2026 Kōbō · Maison commune, Bordeaux</span>
+      <span>Mentions · Confidentialité</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================== THREE.JS ============================== -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.158.0/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* ====================================================================
+   UTILS — gestion d'un canvas avec scène Three.js
+   ==================================================================== */
+function createScene(canvasId){
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return null;
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: true,
+    powerPreference: 'high-performance'
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.z = 8;
+
+  function resize(){
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  return { canvas, renderer, scene, camera, resize };
+}
+
+/* ====================================================================
+   HERO — Nuage de points constellation (toute la maison Kōbō)
+   ==================================================================== */
+(function heroScene(){
+  const ctx = createScene('hero-canvas');
+  if (!ctx) return;
+  const { renderer, scene, camera } = ctx;
+  camera.position.z = 6;
+
+  // 4 clusters de points, un par pôle, reliés par des lignes lumineuses
+  const colors = [0xd65c2e, 0xc69648, 0x01357b, 0x5a6f44];
+  const clusters = [];
+  const clusterCount = 4;
+  const pointsPerCluster = 90;
+
+  for (let c = 0; c < clusterCount; c++){
+    const angle = (c / clusterCount) * Math.PI * 2;
+    const cx = Math.cos(angle) * 2.6;
+    const cy = Math.sin(angle) * 1.4;
+    const cz = (Math.random() - 0.5) * 2;
+    const positions = new Float32Array(pointsPerCluster * 3);
+    for (let i = 0; i < pointsPerCluster; i++){
+      positions[i*3+0] = cx + (Math.random() - 0.5) * 1.8;
+      positions[i*3+1] = cy + (Math.random() - 0.5) * 1.6;
+      positions[i*3+2] = cz + (Math.random() - 0.5) * 1.4;
+    }
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const mat = new THREE.PointsMaterial({
+      color: colors[c],
+      size: 0.035,
+      transparent: true,
+      opacity: 0.85,
+      sizeAttenuation: true,
+    });
+    const points = new THREE.Points(geom, mat);
+    scene.add(points);
+    clusters.push({ points, base: positions.slice(), cx, cy, cz, color: colors[c] });
+  }
+
+  // Lignes reliant les clusters
+  const lineGeom = new THREE.BufferGeometry();
+  const linePositions = [];
+  for (let a = 0; a < clusterCount; a++){
+    for (let b = a+1; b < clusterCount; b++){
+      linePositions.push(clusters[a].cx, clusters[a].cy, clusters[a].cz);
+      linePositions.push(clusters[b].cx, clusters[b].cy, clusters[b].cz);
+    }
+  }
+  lineGeom.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+  const lineMat = new THREE.LineBasicMaterial({ color: 0xd65c2e, transparent: true, opacity: 0.2 });
+  scene.add(new THREE.LineSegments(lineGeom, lineMat));
+
+  // Mouse parallax
+  let mx = 0, my = 0;
+  window.addEventListener('mousemove', (e) => {
+    mx = (e.clientX / window.innerWidth - 0.5) * 0.6;
+    my = (e.clientY / window.innerHeight - 0.5) * 0.6;
+  });
+
+  // Anim
+  const clock = new THREE.Clock();
+  function loop(){
+    const t = clock.getElapsedTime();
+    clusters.forEach((cl, idx) => {
+      cl.points.rotation.y = t * 0.05 + idx;
+      cl.points.rotation.x = Math.sin(t * 0.2 + idx) * 0.1;
+    });
+    camera.position.x += (mx * 1.5 - camera.position.x) * 0.05;
+    camera.position.y += (-my * 1.0 - camera.position.y) * 0.05;
+    camera.lookAt(0,0,0);
+    renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+
+/* ====================================================================
+   PÔLE 01 — PO TECH : Structure architecturale wireframe rotative
+   Métaphore : un bureau d'études dessine en 3D ce qu'il calcule.
+   ==================================================================== */
+(function potechScene(){
+  const ctx = createScene('canvas-potech');
+  if (!ctx) return;
+  const { renderer, scene, camera } = ctx;
+  camera.position.set(0, 0, 7);
+
+  // Structure : une grille de tubes formant un bâtiment filaire
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const W = 3.0, H = 3.5, D = 2.0;
+  const stories = 4;
+  const cols = 3;
+
+  const lineMat = new THREE.LineBasicMaterial({ color: 0xc69648, transparent: true, opacity: 0.7 });
+  const accentMat = new THREE.LineBasicMaterial({ color: 0xd65c2e, transparent: true, opacity: 0.9 });
+
+  // Étages horizontaux
+  for (let s = 0; s <= stories; s++){
+    const y = -H/2 + (H / stories) * s;
+    const geom = new THREE.BufferGeometry();
+    const pts = [];
+    // rectangle de l'étage
+    pts.push(-W/2, y, -D/2,  W/2, y, -D/2);
+    pts.push( W/2, y, -D/2,  W/2, y,  D/2);
+    pts.push( W/2, y,  D/2, -W/2, y,  D/2);
+    pts.push(-W/2, y,  D/2, -W/2, y, -D/2);
+    geom.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+    group.add(new THREE.LineSegments(geom, s === 0 || s === stories ? accentMat : lineMat));
+  }
+
+  // Colonnes verticales
+  for (let i = 0; i <= cols; i++){
+    const x = -W/2 + (W / cols) * i;
+    for (let j = 0; j <= 1; j++){
+      const z = -D/2 + D * j;
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.Float32BufferAttribute([x,-H/2,z, x,H/2,z], 3));
+      group.add(new THREE.Line(geom, lineMat));
+    }
+  }
+
+  // Diagonales (contreventement)
+  for (let s = 0; s < stories; s++){
+    const y1 = -H/2 + (H/stories) * s;
+    const y2 = -H/2 + (H/stories) * (s+1);
+    for (let i = 0; i < cols; i++){
+      const x1 = -W/2 + (W/cols) * i;
+      const x2 = -W/2 + (W/cols) * (i+1);
+      // Façade avant
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.Float32BufferAttribute([x1,y1,D/2, x2,y2,D/2], 3));
+      group.add(new THREE.Line(geom, accentMat));
+    }
+  }
+
+  // Points de calcul (noeuds)
+  const nodeGeom = new THREE.SphereGeometry(0.05, 12, 12);
+  const nodeMat = new THREE.MeshBasicMaterial({ color: 0xd65c2e });
+  for (let s = 0; s <= stories; s++){
+    const y = -H/2 + (H / stories) * s;
+    for (let i = 0; i <= cols; i++){
+      const x = -W/2 + (W / cols) * i;
+      [-D/2, D/2].forEach(z => {
+        const n = new THREE.Mesh(nodeGeom, nodeMat);
+        n.position.set(x, y, z);
+        group.add(n);
+      });
+    }
+  }
+
+  // Vecteurs de force (flèches)
+  const arrowGeom = new THREE.ConeGeometry(0.08, 0.2, 6);
+  const arrowMat = new THREE.MeshBasicMaterial({ color: 0xd65c2e });
+  for (let i = 0; i <= cols; i++){
+    const x = -W/2 + (W / cols) * i;
+    const arrow = new THREE.Mesh(arrowGeom, arrowMat);
+    arrow.position.set(x, H/2 + 0.3, D/2);
+    arrow.rotation.z = Math.PI;
+    group.add(arrow);
+  }
+
+  // Scroll-tied rotation
+  let scrollProgress = 0;
+  const section = document.getElementById('potech');
+  function updateScroll(){
+    const rect = section.getBoundingClientRect();
+    const center = window.innerHeight / 2;
+    const dist = (center - rect.top) / window.innerHeight;
+    scrollProgress = Math.max(-1, Math.min(2, dist));
+  }
+  window.addEventListener('scroll', updateScroll, { passive: true });
+  updateScroll();
+
+  const clock = new THREE.Clock();
+  function loop(){
+    const t = clock.getElapsedTime();
+    group.rotation.y = t * 0.15 + scrollProgress * 0.8;
+    group.rotation.x = Math.sin(t * 0.15) * 0.15 + scrollProgress * 0.2;
+    renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+
+/* ====================================================================
+   PÔLE 02 — KOBO DESIGN : Lattes de bois en formation dynamique
+   Métaphore : matière brute qui s'organise (CNC).
+   ==================================================================== */
+(function designScene(){
+  const ctx = createScene('canvas-design');
+  if (!ctx) return;
+  const { renderer, scene, camera } = ctx;
+  camera.position.set(0, 0, 7);
+
+  // Lumière
+  const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambient);
+  const dir = new THREE.DirectionalLight(0xffd29b, 1.2);
+  dir.position.set(3, 5, 4);
+  scene.add(dir);
+  const fill = new THREE.DirectionalLight(0xd65c2e, 0.5);
+  fill.position.set(-3, -2, 2);
+  scene.add(fill);
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // Texture procédurale "bois" : canvas gradient + stripes
+  function makeWoodTexture(){
+    const c = document.createElement('canvas');
+    c.width = 256; c.height = 256;
+    const g = c.getContext('2d');
+    g.fillStyle = '#b88555';
+    g.fillRect(0,0,256,256);
+    for (let i = 0; i < 40; i++){
+      g.strokeStyle = `rgba(${80+Math.random()*40},${50+Math.random()*30},${20+Math.random()*20},${.2+Math.random()*.5})`;
+      g.lineWidth = 0.5 + Math.random() * 1.5;
+      g.beginPath();
+      const y = Math.random() * 256;
+      g.moveTo(0, y);
+      g.bezierCurveTo(80, y + (Math.random()-.5)*30, 180, y + (Math.random()-.5)*30, 256, y + (Math.random()-.5)*40);
+      g.stroke();
+    }
+    const tex = new THREE.CanvasTexture(c);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    return tex;
+  }
+  const woodTex = makeWoodTexture();
+
+  // 14 lattes
+  const slatCount = 14;
+  const slats = [];
+  for (let i = 0; i < slatCount; i++){
+    const w = 0.4, h = 4.5, d = 0.15;
+    const geom = new THREE.BoxGeometry(w, h, d);
+    const mat = new THREE.MeshStandardMaterial({
+      map: woodTex,
+      color: 0xd9a06a,
+      roughness: 0.8,
+      metalness: 0.1
+    });
+    const m = new THREE.Mesh(geom, mat);
+    const x = (i - slatCount/2) * 0.45;
+    m.position.set(x, 0, 0);
+    m.userData.baseX = x;
+    m.userData.phase = i * 0.4;
+    group.add(m);
+    slats.push(m);
+  }
+
+  // Scroll-tied
+  let scrollProgress = 0;
+  const section = document.getElementById('design');
+  function updateScroll(){
+    const rect = section.getBoundingClientRect();
+    const center = window.innerHeight / 2;
+    scrollProgress = Math.max(-1, Math.min(2, (center - rect.top) / window.innerHeight));
+  }
+  window.addEventListener('scroll', updateScroll, { passive: true });
+  updateScroll();
+
+  const clock = new THREE.Clock();
+  function loop(){
+    const t = clock.getElapsedTime();
+    slats.forEach((m, i) => {
+      m.rotation.x = Math.sin(t * 0.4 + m.userData.phase) * 0.3;
+      m.rotation.z = Math.sin(t * 0.3 + m.userData.phase) * 0.2;
+      m.position.y = Math.sin(t * 0.6 + m.userData.phase) * 0.3;
+      m.position.z = Math.cos(t * 0.4 + m.userData.phase) * 0.4;
+    });
+    group.rotation.y = t * 0.1 + scrollProgress * 0.6;
+    group.rotation.z = scrollProgress * 0.15;
+    renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+
+/* ====================================================================
+   PÔLE 03 — KOBO LE LIEU : Plan axonométrique des espaces avec extrusion
+   Métaphore : architecture en plan qui se construit.
+   ==================================================================== */
+(function lieuScene(){
+  const ctx = createScene('canvas-lieu');
+  if (!ctx) return;
+  const { renderer, scene, camera } = ctx;
+  camera.position.set(4, 5, 7);
+  camera.lookAt(0, 0, 0);
+
+  const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(ambient);
+  const dir = new THREE.DirectionalLight(0xc8d8f0, 1.4);
+  dir.position.set(4, 8, 6);
+  scene.add(dir);
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // Sol
+  const floorGeom = new THREE.BoxGeometry(6, 0.05, 4);
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0x1a3060, roughness: 0.7, metalness: 0.1 });
+  const floor = new THREE.Mesh(floorGeom, floorMat);
+  floor.position.y = -0.025;
+  group.add(floor);
+
+  // 3 salles définies par leurs dimensions (x, z, w, d, h, color)
+  const rooms = [
+    { x: -1.8, z: -1, w: 2.4, d: 1.8, h: 1.4, color: 0x4a72c8, name: 'CANOPÉE' },
+    { x: 1.4, z: -1, w: 1.6, d: 1.8, h: 1.4, color: 0xc97a3a, name: 'MAJORELLE' },
+    { x: 0, z: 1.2, w: 5.6, d: 1.5, h: 1.0, color: 0x5a6f44, name: 'ANNEXE' },
+  ];
+
+  rooms.forEach((r, idx) => {
+    // Box semi-transparente
+    const geom = new THREE.BoxGeometry(r.w, r.h, r.d);
+    const mat = new THREE.MeshStandardMaterial({
+      color: r.color,
+      transparent: true,
+      opacity: 0.4,
+      roughness: 0.6,
+      metalness: 0.2
+    });
+    const m = new THREE.Mesh(geom, mat);
+    m.position.set(r.x, r.h / 2, r.z);
+    m.userData.targetY = r.h / 2;
+    m.userData.delay = idx * 0.3;
+    group.add(m);
+
+    // Wireframe par-dessus
+    const wireGeom = new THREE.EdgesGeometry(geom);
+    const wireMat = new THREE.LineBasicMaterial({ color: 0xf5ede0, transparent: true, opacity: 0.6 });
+    const wire = new THREE.LineSegments(wireGeom, wireMat);
+    wire.position.copy(m.position);
+    group.add(wire);
+    m.userData.wire = wire;
+  });
+
+  // Lignes de plan au sol (axes)
+  const planLines = new THREE.BufferGeometry();
+  const lp = [];
+  for (let i = -3; i <= 3; i++){
+    lp.push(i, 0.01, -2,  i, 0.01, 2);
+    lp.push(-3, 0.01, i*0.7,  3, 0.01, i*0.7);
+  }
+  planLines.setAttribute('position', new THREE.Float32BufferAttribute(lp, 3));
+  group.add(new THREE.LineSegments(planLines, new THREE.LineBasicMaterial({ color: 0xf5ede0, transparent: true, opacity: 0.08 })));
+
+  // Scroll-tied
+  let scrollProgress = 0;
+  const section = document.getElementById('lieu');
+  function updateScroll(){
+    const rect = section.getBoundingClientRect();
+    const center = window.innerHeight / 2;
+    scrollProgress = Math.max(-1, Math.min(2, (center - rect.top) / window.innerHeight));
+  }
+  window.addEventListener('scroll', updateScroll, { passive: true });
+  updateScroll();
+
+  const clock = new THREE.Clock();
+  function loop(){
+    const t = clock.getElapsedTime();
+    group.rotation.y = t * 0.1 + scrollProgress * 0.6;
+    // léger sway sur l'axe X
+    group.rotation.x = Math.sin(t * 0.2) * 0.03;
+    renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+
+/* ====================================================================
+   PÔLE 04 — KOBO PRODUCTION : Particules créatives qui se rassemblent
+   Métaphore : chaos artistique qui devient forme.
+   ==================================================================== */
+(function prodScene(){
+  const ctx = createScene('canvas-prod');
+  if (!ctx) return;
+  const { renderer, scene, camera } = ctx;
+  camera.position.set(0, 0, 6);
+
+  const particleCount = 1500;
+  const positions = new Float32Array(particleCount * 3);
+  const targets = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+
+  const palette = [
+    new THREE.Color(0xd65c2e),
+    new THREE.Color(0xc69648),
+    new THREE.Color(0x5a6f44),
+    new THREE.Color(0xf5ede0),
+  ];
+
+  // Forme cible : torus aplati (cadre/galerie)
+  for (let i = 0; i < particleCount; i++){
+    // Position chaotique initiale
+    positions[i*3+0] = (Math.random() - 0.5) * 12;
+    positions[i*3+1] = (Math.random() - 0.5) * 8;
+    positions[i*3+2] = (Math.random() - 0.5) * 8;
+
+    // Target : torus
+    const u = Math.random() * Math.PI * 2;
+    const v = Math.random() * Math.PI * 2;
+    const R = 2.2;
+    const r = 0.5;
+    targets[i*3+0] = (R + r * Math.cos(v)) * Math.cos(u);
+    targets[i*3+1] = (R + r * Math.cos(v)) * Math.sin(u);
+    targets[i*3+2] = r * Math.sin(v) * 1.5;
+
+    const col = palette[Math.floor(Math.random() * palette.length)];
+    colors[i*3+0] = col.r;
+    colors[i*3+1] = col.g;
+    colors[i*3+2] = col.b;
+  }
+
+  const geom = new THREE.BufferGeometry();
+  geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: 0.04,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.85,
+    sizeAttenuation: true,
+  });
+  const points = new THREE.Points(geom, mat);
+  scene.add(points);
+
+  // Scroll-tied
+  let scrollProgress = 0;
+  const section = document.getElementById('prod');
+  function updateScroll(){
+    const rect = section.getBoundingClientRect();
+    const center = window.innerHeight / 2;
+    scrollProgress = Math.max(0, Math.min(1, (center - rect.top) / window.innerHeight + 0.5));
+  }
+  window.addEventListener('scroll', updateScroll, { passive: true });
+  updateScroll();
+
+  const clock = new THREE.Clock();
+  function loop(){
+    const t = clock.getElapsedTime();
+    // Lerp progressif vers la target en fonction du scroll
+    const k = Math.pow(scrollProgress, 1.5);
+    for (let i = 0; i < particleCount; i++){
+      const ix = i*3, iy = i*3+1, iz = i*3+2;
+      const tx = targets[ix] + Math.sin(t + i * 0.05) * 0.15;
+      const ty = targets[iy] + Math.cos(t + i * 0.05) * 0.15;
+      const tz = targets[iz] + Math.sin(t * 0.7 + i * 0.1) * 0.1;
+      positions[ix] += (tx - positions[ix]) * 0.02 * k + (Math.random() - 0.5) * 0.005;
+      positions[iy] += (ty - positions[iy]) * 0.02 * k + (Math.random() - 0.5) * 0.005;
+      positions[iz] += (tz - positions[iz]) * 0.02 * k + (Math.random() - 0.5) * 0.005;
+    }
+    geom.attributes.position.needsUpdate = true;
+    points.rotation.y = t * 0.08;
+    points.rotation.x = Math.sin(t * 0.15) * 0.1;
+    renderer.render(scene, camera);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+
+/* ============================== REVEAL ============================== */
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  }
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+
+/* ============================== SMOOTH SCROLL ============================== */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (id.length > 1) {
+      const t = document.querySelector(id);
+      if (t) {
+        e.preventDefault();
+        t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  });
+});
+</script>
+
+</body>
+</html>
