@@ -108,7 +108,7 @@ svg{display:block}
   pointer-events: auto;
 }
 .top-bar__brand img{
-  height: 44px; width: auto; display: block;
+  height: 80px; width: auto; display: block;
 }
 .top-bar__brand-dot{
   width: 9px; height: 9px; border-radius: 50%;
@@ -367,6 +367,11 @@ svg{display:block}
   letter-spacing: -.02em;
   margin-bottom: 20px;
 }
+.panel__title img{
+  height: clamp(80px, 10vw, 160px);
+  width: auto; display: inline-block;
+  vertical-align: middle;
+}
 .panel__title .accent{
   font-family: var(--italic); font-style: italic;
   font-weight: 400;
@@ -548,7 +553,7 @@ svg{display:block}
         <span class="panel__tag-dot"></span>
         Salles dispo aujourd'hui
       </span>
-      <h2 class="panel__title">Kōbō<br><span class="accent">Le Lieu.</span></h2>
+      <h2 class="panel__title"><img src="koboblanc.png" alt="Kōbō"><br><span class="accent">Le Lieu.</span></h2>
       <p class="panel__desc">Deux salles de réunion à louer au cœur des Chartrons. Réservez votre créneau en ligne, dès 25€ l'heure.</p>
       <span class="panel__enter">
         Réserver une salle
@@ -595,7 +600,7 @@ svg{display:block}
         <span class="panel__tag-dot"></span>
         4 pôles d'expertise
       </span>
-      <h2 class="panel__title"><span class="accent">L'</span>Écosystème<br>Kōbō.</h2>
+      <h2 class="panel__title"><span class="accent">L'</span>Écosystème<br><img src="koboblanc.png" alt="Kōbō"></h2>
       <p class="panel__desc">Ingénierie, design, espaces, création. Découvrez les quatre métiers qui font vivre la maison Kōbō.</p>
       <span class="panel__enter">
         Explorer l'écosystème
