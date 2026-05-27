@@ -613,8 +613,8 @@ async function chargerSalles(){
   } catch (e) {
     // Mode démo si API absente
     afficherSalles([
-      { id:'demo-canopee', nom:'Canopée', capacite:8, surface_m2:22, couleur:'#4a7c3a', sur_devis:false },
-      { id:'demo-majorelle', nom:'Majorelle', capacite:12, surface_m2:28, couleur:'#01357b', sur_devis:false },
+      { id:'demo-canopee', nom:'Canopée', capacite:8, surface_m2:22, couleur:'#4a7c3a', photo:'sallecanopee.jpg', sur_devis:false },
+      { id:'demo-majorelle', nom:'Majorelle', capacite:12, surface_m2:28, couleur:'#01357b', photo:'sallemajorelle.jpg', sur_devis:false },
       { id:'demo-annexe', nom:"L'annexe", capacite:60, surface_m2:140, couleur:'#1a1612', sur_devis:true },
     ]);
   }
@@ -626,7 +626,7 @@ function afficherSalles(salles){
     const el = document.createElement('button');
     el.className = 'room' + (s.sur_devis ? ' room--devis' : '');
     el.innerHTML = `
-      <div class="room__swatch" style="background:${s.couleur||'#01357b'}"></div>
+      <div class="room__swatch" style="${s.photo ? `background:url(${s.photo}) center/cover` : `background:${s.couleur||'#01357b'}`}"></div>
       <div class="room__name">${s.nom}</div>
       <div class="room__cap">${s.capacite} pers. · ${s.surface_m2||'—'} m²</div>
       <div class="room__pricerange">${s.sur_devis ? 'Sur devis' : 'À partir de 40€<small>/h</small>'}</div>

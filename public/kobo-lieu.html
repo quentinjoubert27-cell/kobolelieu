@@ -366,27 +366,35 @@ img,svg{display:block;max-width:100%}
   height: 320px;
   position: relative; overflow: hidden;
   border-bottom: 2px solid var(--ink);
+  background: var(--ink);
 }
-/* Placeholder gradients très vibrants en attendant les vraies photos */
-.salle--canopee .salle__photo{
-  background:
-    radial-gradient(circle at 30% 40%, #5a8d6b 0%, transparent 50%),
-    radial-gradient(circle at 70% 60%, #2d5a3f 0%, transparent 50%),
-    linear-gradient(135deg, #3d6f4f, #1f3a2b);
+/* Slider photos */
+.salle__slide{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  opacity: 0;
+  transition: opacity .7s ease;
 }
-.salle--majorelle .salle__photo{
-  background:
-    radial-gradient(circle at 25% 35%, #6890d4 0%, transparent 55%),
-    radial-gradient(circle at 75% 75%, #e08842 0%, transparent 55%),
-    linear-gradient(135deg, #1f3f8c, #c97a3a);
+.salle__slide--active{ opacity: 1; }
+.salle__dots{
+  position: absolute; bottom: 16px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 7px; z-index: 10;
 }
+.salle__dot{
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,.45);
+  cursor: pointer; transition: background .3s, transform .3s;
+  border: 1.5px solid rgba(255,255,255,.6);
+}
+.salle__dot--active{ background: #fff; transform: scale(1.25); }
+/* Dégradé sombre en bas pour lisibilité sticker/dots */
 .salle__photo::after{
-  /* Texture grain léger */
   content: "";
   position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  opacity: .5;
-  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(0,0,0,.45) 0%, transparent 50%);
+  pointer-events: none; z-index: 5;
 }
 .salle__sticker{
   position: absolute; top: 24px; right: 24px;
@@ -1204,6 +1212,14 @@ img,svg{display:block;max-width:100%}
     <!-- SALLE CANOPÉE -->
     <article class="salle salle--canopee">
       <div class="salle__photo">
+        <img class="salle__slide salle__slide--active" src="sallecanopee.jpg" alt="Salle Canopée · vue 1">
+        <img class="salle__slide" src="sallecanopee2.jpg" alt="Salle Canopée · vue 2">
+        <img class="salle__slide" src="sallecanopee3.jpg" alt="Salle Canopée · vue 3">
+        <div class="salle__dots">
+          <span class="salle__dot salle__dot--active"></span>
+          <span class="salle__dot"></span>
+          <span class="salle__dot"></span>
+        </div>
         <span class="salle__num">01</span>
         <span class="salle__sticker"><span class="pulse"></span>Dispo aujourd'hui</span>
       </div>
@@ -1230,6 +1246,14 @@ img,svg{display:block;max-width:100%}
     <!-- SALLE MAJORELLE -->
     <article class="salle salle--majorelle">
       <div class="salle__photo">
+        <img class="salle__slide salle__slide--active" src="sallemajorelle.jpg" alt="Salle Majorelle · vue 1">
+        <img class="salle__slide" src="sallemajorelle2.jpg" alt="Salle Majorelle · vue 2">
+        <img class="salle__slide" src="sallemajorelle3.jpg" alt="Salle Majorelle · vue 3">
+        <div class="salle__dots">
+          <span class="salle__dot salle__dot--active"></span>
+          <span class="salle__dot"></span>
+          <span class="salle__dot"></span>
+        </div>
         <span class="salle__num">02</span>
         <span class="salle__sticker"><span class="pulse"></span>Coup de cœur</span>
       </div>
@@ -1702,8 +1726,8 @@ async function chargerSalles(){
     afficherSalles(salles);
   } catch (e) {
     afficherSalles([
-      { id:'demo-canopee', nom:'Canopée', capacite:8, surface_m2:22, couleur:'#4a7c3a', sur_devis:false },
-      { id:'demo-majorelle', nom:'Majorelle', capacite:12, surface_m2:28, couleur:'#01357b', sur_devis:false },
+      { id:'demo-canopee', nom:'Canopée', capacite:8, surface_m2:22, couleur:'#4a7c3a', photo:'sallecanopee.jpg', sur_devis:false },
+      { id:'demo-majorelle', nom:'Majorelle', capacite:12, surface_m2:28, couleur:'#01357b', photo:'sallemajorelle.jpg', sur_devis:false },
       { id:'demo-annexe', nom:"L'annexe", capacite:60, surface_m2:140, couleur:'#1a1612', sur_devis:true },
     ]);
   }
@@ -1714,7 +1738,7 @@ function afficherSalles(salles){
   salles.forEach(s => {
     const el = document.createElement('button');
     el.className = 'room' + (s.sur_devis ? ' room--devis' : '');
-    el.innerHTML = `<div class="room__swatch" style="background:${s.couleur||'#01357b'}"></div>
+    el.innerHTML = `<div class="room__swatch" style="${s.photo ? `background:url(${s.photo}) center/cover` : `background:${s.couleur||'#01357b'}`}"></div>
       <div class="room__name">${s.nom}</div>
       <div class="room__cap">${s.capacite} pers. · ${s.surface_m2||'—'} m²</div>
       <div class="room__pricerange">${s.sur_devis ? 'Sur devis' : 'À partir de 40€<small>/h</small>'}</div>`;
@@ -1907,6 +1931,23 @@ $b('#pay-btn').addEventListener('click', async () => {
 });
 $$b('[data-back]').forEach(b => b.addEventListener('click', () => goToStep(+b.dataset.back)));
 chargerSalles();
+
+/* ====== Slider photos salles ====== */
+document.querySelectorAll('.salle__photo').forEach(photo => {
+  const slides = photo.querySelectorAll('.salle__slide');
+  const dots = photo.querySelectorAll('.salle__dot');
+  if (slides.length <= 1) return;
+  let cur = 0;
+  function showSlide(n){
+    slides[cur].classList.remove('salle__slide--active');
+    dots[cur].classList.remove('salle__dot--active');
+    cur = ((n % slides.length) + slides.length) % slides.length;
+    slides[cur].classList.add('salle__slide--active');
+    dots[cur].classList.add('salle__dot--active');
+  }
+  dots.forEach((dot, i) => dot.addEventListener('click', e => { e.stopPropagation(); showSlide(i); }));
+  setInterval(() => showSlide(cur + 1), 4000);
+});
 
 /* ====== FAQ accordion ====== */
 document.querySelectorAll('.faq__q').forEach(q => {
