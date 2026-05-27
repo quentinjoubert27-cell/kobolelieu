@@ -298,19 +298,18 @@ img,svg{display:block;max-width:100%}
 /* Hero — bandeau "Depuis 2022" qui défile */
 .hero__since{
   position: absolute;
-  bottom: 24px; left: -10%; right: -10%;
-  display: flex;
+  bottom: 24px; left: 0; right: 0;
+  overflow: hidden;
   font-family: var(--display);
   font-size: 18px;
   color: var(--blue); opacity: .15;
-  overflow: hidden;
   pointer-events: none;
 }
 .hero__since-track{
   display: flex;
   width: max-content;
   white-space: nowrap;
-  animation: scrollX 44s linear infinite;
+  animation: scrollX 60s linear infinite;
 }
 .hero__since-track span{ flex-shrink:0; padding-right: 40px; }
 
@@ -1275,8 +1274,8 @@ img,svg{display:block;max-width:100%}
   <!-- Bandeau "Depuis 2022" en background -->
   <div class="hero__since" aria-hidden="true">
     <div class="hero__since-track">
-      <span>Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ </span>
-      <span aria-hidden="true">Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ </span>
+      <span>Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ </span>
+      <span>Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ </span>
     </div>
   </div>
 </section>
