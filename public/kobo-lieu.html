@@ -1073,6 +1073,54 @@ img,svg{display:block;max-width:100%}
   .foot__grid{grid-template-columns: 1fr 1fr}
   .foot__bottom{flex-direction: column; gap: 8px}
 }
+
+/* ============================== LIGHTBOX ============================== */
+.lb{
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(10,8,5,.93);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
+.lb--open{ opacity: 1; pointer-events: all; }
+.lb__img-wrap{
+  max-width: 90vw; max-height: 88vh;
+  display: flex; align-items: center; justify-content: center;
+}
+.lb__img{
+  max-width: 90vw; max-height: 88vh;
+  object-fit: contain; border-radius: 12px;
+  border: 2px solid rgba(255,255,255,.12);
+  box-shadow: 0 40px 100px rgba(0,0,0,.8);
+  transition: opacity .2s;
+  display: block;
+}
+.lb__close{
+  position: fixed; top: 20px; right: 24px;
+  background: rgba(255,255,255,.1); color: #fff;
+  border: 1.5px solid rgba(255,255,255,.2);
+  border-radius: 999px; width: 44px; height: 44px;
+  font-size: 22px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .2s; z-index: 10;
+}
+.lb__close:hover{ background: rgba(255,255,255,.22); }
+.lb__nav{
+  position: fixed; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.1); color: #fff;
+  border: 1.5px solid rgba(255,255,255,.2);
+  border-radius: 999px; width: 52px; height: 52px;
+  font-size: 30px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .2s; z-index: 10;
+}
+.lb__nav:hover{ background: rgba(255,255,255,.22); }
+.lb__prev{ left: 16px; }
+.lb__next{ right: 16px; }
+.lb__counter{
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,.5); font-size: 13px; font-family: var(--body);
+  letter-spacing: .06em;
+}
+.salle__photo{ cursor: zoom-in; }
 </style>
 </head>
 <body>
@@ -1969,6 +2017,67 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
   });
 });
+</script>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lb" role="dialog" aria-modal="true">
+  <button class="lb__close" id="lb-close" aria-label="Fermer">✕</button>
+  <button class="lb__nav lb__prev" id="lb-prev" aria-label="Photo précédente">‹</button>
+  <div class="lb__img-wrap">
+    <img class="lb__img" id="lb-img" src="" alt="">
+  </div>
+  <button class="lb__nav lb__next" id="lb-next" aria-label="Photo suivante">›</button>
+  <div class="lb__counter" id="lb-counter"></div>
+</div>
+
+<script>
+/* ——— Lightbox ——— */
+(function(){
+  const lb      = document.getElementById('lightbox');
+  const lbImg   = document.getElementById('lb-img');
+  const lbCnt   = document.getElementById('lb-counter');
+  let allPhotos = [];
+  let cur = 0;
+
+  function openLb(idx){
+    cur = idx;
+    lbImg.src = allPhotos[cur].src;
+    lbImg.alt = allPhotos[cur].alt;
+    lbCnt.textContent = allPhotos.length > 1 ? (cur + 1) + ' / ' + allPhotos.length : '';
+    lb.classList.add('lb--open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb(){
+    lb.classList.remove('lb--open');
+    document.body.style.overflow = '';
+  }
+  function prev(){ openLb((cur - 1 + allPhotos.length) % allPhotos.length); }
+  function next(){ openLb((cur + 1) % allPhotos.length); }
+
+  /* Sliders salles */
+  document.querySelectorAll('.salle__photo').forEach(photo => {
+    const slides = photo.querySelectorAll('.salle__slide');
+    const baseIdx = allPhotos.length;
+    slides.forEach(s => allPhotos.push({ src: s.src, alt: s.alt || '' }));
+    photo.addEventListener('click', e => {
+      if(e.target.classList.contains('salle__dot')) return;
+      const active = photo.querySelector('.salle__slide--active');
+      if(!active) return;
+      openLb(baseIdx + [...slides].indexOf(active));
+    });
+  });
+
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  document.getElementById('lb-prev').addEventListener('click', prev);
+  document.getElementById('lb-next').addEventListener('click', next);
+  lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if(!lb.classList.contains('lb--open')) return;
+    if(e.key === 'Escape') closeLb();
+    if(e.key === 'ArrowLeft') prev();
+    if(e.key === 'ArrowRight') next();
+  });
+})();
 </script>
 </body>
 </html>
