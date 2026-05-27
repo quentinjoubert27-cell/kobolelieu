@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/png" href="favicon.png"/>
+<link rel="shortcut icon" href="favicon.png"/>
+<title>Contact — Kōbō Le Lieu · Bordeaux</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Caprasimo&family=Instrument+Serif:ital@0;1&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue: #01357b;
+  --blue-deep: #021f4a;
+  --blue-soft: #d8e2f2;
+  --blue-paper: #eef2fa;
+  --cream: #faf3e3;
+  --cream-2: #f5ebd1;
+  --sun: #f4c542;
+  --tomato: #e6543c;
+  --leaf: #4a7c3a;
+  --ink: #1a1612;
+  --display: "Caprasimo", serif;
+  --hand: "Caveat", cursive;
+  --italic: "Instrument Serif", serif;
+  --body: "Familjen Grotesk", system-ui, sans-serif;
+  --line: 2.5px;
+  --r: 24px;
+  --r-pill: 999px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family: var(--body);
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+svg{display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none}
+::selection{background:var(--sun);color:var(--ink)}
+
+/* ============================== NAV ============================== */
+.nav{
+  position: sticky; top: 0; z-index: 50;
+  background: var(--cream);
+  border-bottom: var(--line) solid var(--ink);
+  display: flex; align-items: center;
+  padding: 0 28px; height: 64px; gap: 40px;
+}
+.nav__logo{display: flex; align-items: center; gap: 8px; margin-right: auto}
+.nav__logo img{height: 36px; width: auto; display: block}
+.dot{width: 11px; height: 11px; background: var(--tomato); border-radius: 50%;}
+.nav__links{display: flex; gap: 24px; font-weight: 600; font-size: 14px}
+.nav__links a{color:var(--ink);opacity:.65;padding:6px 0;transition:opacity .2s;position:relative}
+.nav__links a::after{content:"";position:absolute;bottom:-2px;left:0;width:100%;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav__links a:hover{opacity:1}
+.nav__links a:hover::after{transform:scaleX(1)}
+.nav__links a.active{opacity:1}
+.nav__links a.active::after{transform:scaleX(1)}
+.nav__cta{
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue); color: var(--cream);
+  padding: 10px 20px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 14px;
+  border: var(--line) solid var(--ink);
+  transition: transform .2s, box-shadow .2s;
+  white-space: nowrap;
+}
+.nav__cta:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+
+/* ============================== HERO ============================== */
+.hero{
+  background: var(--blue);
+  color: var(--cream);
+  padding: 100px 28px 80px;
+  border-bottom: var(--line) solid var(--ink);
+  position: relative; overflow: hidden;
+}
+.hero::before{
+  content: "";
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 80% 20%, rgba(244,197,66,.12) 0%, transparent 55%),
+    radial-gradient(circle at 10% 80%, rgba(74,124,58,.1) 0%, transparent 45%);
+  pointer-events: none;
+}
+.hero__inner{
+  max-width: 860px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.hero__eyebrow{
+  font-family: var(--hand); font-size: 26px;
+  color: var(--sun); margin-bottom: 20px;
+}
+.hero__title{
+  font-family: var(--display);
+  font-size: clamp(56px, 9vw, 120px);
+  line-height: .9; letter-spacing: -.02em;
+  margin-bottom: 28px;
+}
+.hero__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--sun); font-weight: 400;
+}
+.hero__sub{
+  font-family: var(--italic); font-style: italic;
+  font-size: clamp(18px, 1.6vw, 24px);
+  opacity: .75; max-width: 480px; line-height: 1.5;
+}
+
+/* ============================== MAIN GRID ============================== */
+.contact-section{
+  padding: 80px 28px;
+  border-bottom: var(--line) solid var(--ink);
+}
+.contact-section__inner{
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px;
+  align-items: flex-start;
+}
+
+/* ——— Infos ——— */
+.contact-info{}
+.contact-info__label{
+  font-family: var(--hand); font-size: 20px;
+  color: var(--blue); margin-bottom: 32px;
+}
+.contact-info__items{
+  display: flex; flex-direction: column; gap: 28px;
+}
+.cinfo{
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.cinfo__icon{
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: var(--blue-paper);
+  border: var(--line) solid var(--ink);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cinfo__icon svg{width:18px;height:18px;stroke:var(--blue);stroke-width:2.2;fill:none}
+.cinfo__body{}
+.cinfo__title{font-weight: 700; font-size: 14px; margin-bottom: 4px}
+.cinfo__val{font-size: 15px; opacity: .75; line-height: 1.5}
+.cinfo__val a:hover{color: var(--blue); opacity: 1}
+
+.contact-info__badge{
+  margin-top: 40px;
+  background: var(--sun);
+  border: var(--line) solid var(--ink);
+  border-radius: var(--r);
+  padding: 20px 24px;
+}
+.contact-info__badge strong{font-size: 15px; display: block; margin-bottom: 4px}
+.contact-info__badge span{font-size: 14px; opacity: .75}
+
+/* ——— Formulaire ——— */
+.contact-form{
+  background: #fff;
+  border: var(--line) solid var(--ink);
+  border-radius: var(--r);
+  padding: 40px;
+}
+.contact-form__title{
+  font-family: var(--display); font-size: 28px;
+  margin-bottom: 8px;
+}
+.contact-form__sub{
+  font-size: 14px; opacity: .65; margin-bottom: 32px;
+}
+.form-row{
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin-bottom: 16px;
+}
+.field{display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px}
+.field label{font-size: 13px; font-weight: 600; opacity: .8}
+.field input,
+.field select,
+.field textarea{
+  font: inherit;
+  padding: 12px 16px;
+  border: 2px solid rgba(26,22,18,.18);
+  border-radius: 12px;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 15px;
+  transition: border-color .2s;
+  outline: none;
+  width: 100%;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{border-color: var(--blue)}
+.field textarea{resize: vertical; min-height: 140px}
+.field select{appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231a1612' stroke-width='2.5'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 14px center}
+
+.btn-submit{
+  width: 100%; padding: 16px;
+  background: var(--blue); color: var(--cream);
+  border: var(--line) solid var(--ink);
+  border-radius: var(--r-pill);
+  font-size: 16px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: transform .2s, box-shadow .2s;
+  cursor: pointer; margin-top: 8px;
+}
+.btn-submit:hover{transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--ink)}
+.btn-submit:disabled{opacity:.5; pointer-events:none}
+
+/* Messages état */
+.form-msg{
+  margin-top: 20px; padding: 14px 18px;
+  border-radius: 12px; font-size: 14px; font-weight: 600;
+  display: none; align-items: center; gap: 10px;
+}
+.form-msg--success{background:#e6f4ea; color:#1e6630; border:1.5px solid #b8dfc2; display:flex}
+.form-msg--error{background:#fdecea; color:#b3261e; border:1.5px solid #f5c2c0; display:flex}
+.form-msg svg{width:18px;height:18px;flex-shrink:0}
+
+/* ============================== FAQ ============================== */
+.faq{
+  padding: 80px 28px;
+  background: var(--cream-2);
+  border-bottom: var(--line) solid var(--ink);
+}
+.faq__inner{max-width: 860px; margin: 0 auto}
+.faq__head{margin-bottom: 48px}
+.faq__eyebrow{
+  font-family: var(--hand); font-size: 22px;
+  color: var(--blue); margin-bottom: 12px;
+}
+.faq__title{
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: .95;
+}
+.faq__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--tomato); font-weight: 400;
+}
+.faq__list{display: flex; flex-direction: column; gap: 0}
+.faq__item{
+  border-top: var(--line) solid var(--ink);
+}
+.faq__item:last-child{border-bottom: var(--line) solid var(--ink)}
+.faq__q{
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  gap: 24px; padding: 22px 0;
+  font-size: 17px; font-weight: 600; text-align: left;
+  cursor: pointer; background: none; border: none; font-family: inherit;
+}
+.faq__icon{
+  width: 32px; height: 32px; flex-shrink: 0;
+  border: var(--line) solid var(--ink);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .3s;
+}
+.faq__icon svg{width:14px;height:14px;stroke:var(--ink);stroke-width:2.5;fill:none;transition:transform .3s}
+.faq__item.open .faq__icon{background: var(--sun)}
+.faq__item.open .faq__icon svg{transform: rotate(45deg)}
+.faq__a{
+  overflow: hidden; max-height: 0;
+  transition: max-height .35s ease, padding .35s ease;
+}
+.faq__a p{
+  padding-bottom: 24px;
+  font-size: 15px; line-height: 1.7; opacity: .8;
+}
+.faq__item.open .faq__a{max-height: 400px}
+
+/* ============================== FOOTER ============================== */
+.foot{
+  background: var(--ink); color: var(--cream);
+  padding: 64px 28px 32px;
+}
+.foot__inner{max-width: 1280px; margin: 0 auto}
+.foot__grid{
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 60px;
+}
+.foot__brand-name{margin-bottom: 16px}
+.foot__brand-name img{height: 50px; width: auto; display: block}
+.foot__brand-desc{
+  font-family: var(--italic); font-style: italic;
+  font-size: 18px; opacity: .8; max-width: 320px;
+}
+.foot h4{font-family: var(--display); font-size: 18px; margin-bottom: 16px; color: var(--sun)}
+.foot ul{list-style: none; display: flex; flex-direction: column; gap: 8px}
+.foot li{font-size: 14px; opacity: .85}
+.foot li a:hover{opacity: 1; color: var(--sun)}
+.foot__bottom{
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  font-size: 12px; opacity: .45;
+}
+
+/* ============================== RESPONSIVE ============================== */
+@media(max-width:900px){
+  .contact-section__inner{grid-template-columns:1fr; gap:48px}
+  .foot__grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .nav__links{display:none}
+  .form-row{grid-template-columns:1fr}
+  .foot__grid{grid-template-columns:1fr}
+  .contact-form{padding:28px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== NAV ============================== -->
+<nav class="nav">
+  <a href="kobo-lieu.html" class="nav__logo">
+    <img src="kobobleu.png" alt="Kōbō">
+    <span class="dot"></span>
+  </a>
+  <div class="nav__links">
+    <a href="reservation.html">Réserver</a>
+    <a href="services.html">Services</a>
+    <a href="contact.html" class="active">Contact</a>
+  </div>
+  <a href="reservation.html" class="nav__cta">
+    Réserver
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+</nav>
+
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <div class="hero__inner">
+    <p class="hero__eyebrow">— on répond vite</p>
+    <h1 class="hero__title">Parlons<span class="accent">.</span></h1>
+    <p class="hero__sub">Une question, un projet, une demande particulière&nbsp;? Écrivez-nous, on vous répond sous 24h.</p>
+  </div>
+</section>
+
+<!-- ============================== CONTACT ============================== -->
+<section class="contact-section">
+  <div class="contact-section__inner">
+
+    <!-- Infos -->
+    <div class="contact-info">
+      <p class="contact-info__label">Où nous trouver</p>
+      <div class="contact-info__items">
+
+        <div class="cinfo">
+          <div class="cinfo__icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="cinfo__body">
+            <p class="cinfo__title">Adresse</p>
+            <p class="cinfo__val">76 rue Mandron<br>33000 Bordeaux</p>
+          </div>
+        </div>
+
+        <div class="cinfo">
+          <div class="cinfo__icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="cinfo__body">
+            <p class="cinfo__title">Email</p>
+            <p class="cinfo__val"><a href="mailto:contact@kobo-bdx.com">contact@kobo-bdx.com</a></p>
+          </div>
+        </div>
+
+        <div class="cinfo">
+          <div class="cinfo__icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="cinfo__body">
+            <p class="cinfo__title">Horaires d'ouverture</p>
+            <p class="cinfo__val">Lundi – Vendredi : 8h – 20h<br>Samedi : 9h – 18h<br>Dimanche : fermé</p>
+          </div>
+        </div>
+
+        <div class="cinfo">
+          <div class="cinfo__icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.08 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+          </div>
+          <div class="cinfo__body">
+            <p class="cinfo__title">Téléphone</p>
+            <p class="cinfo__val"><a href="tel:+33556000000">+33 5 56 00 00 00</a></p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="contact-info__badge">
+        <strong>Réponse garantie sous 24h</strong>
+        <span>Du lundi au vendredi, on traite toutes les demandes le jour même.</span>
+      </div>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="contact-form">
+      <h2 class="contact-form__title">Envoyez-nous un message</h2>
+      <p class="contact-form__sub">Tous les champs marqués * sont obligatoires.</p>
+
+      <form id="contact-form" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="prenom">Prénom *</label>
+            <input type="text" id="prenom" name="prenom" placeholder="Jean" required>
+          </div>
+          <div class="field">
+            <label for="nom">Nom *</label>
+            <input type="text" id="nom" name="nom" placeholder="Dupont" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" placeholder="jean@exemple.com" required>
+        </div>
+
+        <div class="field">
+          <label for="sujet">Sujet *</label>
+          <select id="sujet" name="sujet" required>
+            <option value="" disabled selected>Choisissez un sujet</option>
+            <option value="Réservation">Réservation</option>
+            <option value="Question générale">Question générale</option>
+            <option value="Tarifs & devis">Tarifs & devis</option>
+            <option value="Partenariat">Partenariat</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" placeholder="Décrivez votre besoin…" required></textarea>
+        </div>
+
+        <!-- Anti-spam honeypot (invisible) -->
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+        <button type="submit" class="btn-submit" id="btn-submit">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Envoyer le message
+        </button>
+
+        <div class="form-msg form-msg--success" id="msg-success">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Message envoyé ! On vous répond sous 24h.
+        </div>
+        <div class="form-msg form-msg--error" id="msg-error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Une erreur est survenue. Réessayez ou écrivez-nous directement.
+        </div>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================== FAQ ============================== -->
+<section class="faq">
+  <div class="faq__inner">
+    <div class="faq__head">
+      <p class="faq__eyebrow">— questions fréquentes</p>
+      <h2 class="faq__title">On <span class="accent">anticipe.</span></h2>
+    </div>
+    <div class="faq__list">
+
+      <div class="faq__item">
+        <button class="faq__q">
+          Comment réserver une salle ?
+          <span class="faq__icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq__a"><p>Passez par notre page de réservation en ligne — choisissez votre salle, votre créneau et votre formule (demi-journée ou journée). La confirmation tombe immédiatement par email. Vous pouvez aussi nous écrire ici pour toute demande sur-mesure.</p></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q">
+          Quelles sont les conditions d'annulation ?
+          <span class="faq__icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq__a"><p>Annulation gratuite jusqu'à 48h avant le début de la réservation. Entre 48h et 24h, 50% du montant est conservé. Moins de 24h, la réservation est due en totalité. En cas de force majeure, contactez-nous — on trouve toujours une solution.</p></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q">
+          Les services (café, wifi, écran…) sont-ils vraiment inclus ?
+          <span class="faq__icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq__a"><p>Oui, sans exception. Café & thé en illimité, fibre haut-débit, vidéoprojecteur ou grand écran, tableau véleda, imprimante et accueil — tout est compris dans le tarif. Aucun frais caché, aucune surprice à la facturation.</p></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q">
+          Puis-je venir visiter les salles avant de réserver ?
+          <span class="faq__icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq__a"><p>Absolument ! Envoyez-nous un message via ce formulaire ou appelez-nous pour convenir d'un créneau de visite. On vous accueille volontiers pour vous montrer les espaces et répondre à toutes vos questions en personne.</p></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q">
+          Proposez-vous des tarifs pour des réservations régulières ?
+          <span class="faq__icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq__a"><p>Oui ! Si vous avez des besoins récurrents (hebdomadaires, mensuels), on établit un devis personnalisé avec un tarif préférentiel. Contactez-nous directement pour qu'on construise ensemble une formule adaptée à votre rythme.</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="foot" id="contact-footer">
+  <div class="foot__inner">
+    <div class="foot__grid">
+      <div>
+        <div class="foot__brand-name">
+          <img src="kobojaune.png" alt="Kōbō Le Lieu">
+        </div>
+        <p class="foot__brand-desc">Votre espace de travail & de création, au cœur de Bordeaux.</p>
+      </div>
+      <div>
+        <h4>Le Lieu</h4>
+        <ul>
+          <li><a href="kobo-lieu.html#salles">Canopée</a></li>
+          <li><a href="kobo-lieu.html#salles">Majorelle</a></li>
+          <li><a href="kobo-lieu.html#salles">L'annexe</a></li>
+          <li><a href="services.html">Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>L'Écosystème</h4>
+        <ul>
+          <li><a href="#">PO TECH</a></li>
+          <li><a href="#">Kōbō Design</a></li>
+          <li><a href="#">Kōbō Production</a></li>
+          <li><a href="#">Le Journal</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>76 rue Mandron</li>
+          <li>33000 Bordeaux</li>
+          <li><a href="mailto:contact@kobo-bdx.com">contact@kobo-bdx.com</a></li>
+          <li><a href="#">Instagram</a> · <a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© 2026 Kōbō · Maison commune, Bordeaux</span>
+      <span>Mentions · Confidentialité</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ——— FAQ accordion ——— */
+document.querySelectorAll('.faq__q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq__item.open').forEach(el => el.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+
+/* ——— Formulaire de contact via FormSubmit.co ——— */
+(function(){
+  const form    = document.getElementById('contact-form');
+  const btn     = document.getElementById('btn-submit');
+  const success = document.getElementById('msg-success');
+  const error   = document.getElementById('msg-error');
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    // Validation basique
+    const required = form.querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(el => {
+      if(!el.value.trim()){ el.style.borderColor = 'var(--tomato)'; valid = false; }
+      else { el.style.borderColor = ''; }
+    });
+    if(!valid) return;
+
+    // Honeypot check
+    if(form.querySelector('[name="_honey"]').value) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+    success.style.display = 'none';
+    error.style.display = 'none';
+
+    const data = new FormData(form);
+
+    try {
+      const resp = await fetch('https://formsubmit.co/ajax/contact@kobo-bdx.com', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      const json = await resp.json();
+
+      if(json.success === 'true' || json.success === true){
+        success.style.display = 'flex';
+        form.reset();
+      } else {
+        throw new Error('Erreur serveur');
+      }
+    } catch(err){
+      error.style.display = 'flex';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer le message';
+    }
+  });
+
+  // Reset border rouge sur saisie
+  form.querySelectorAll('input,select,textarea').forEach(el => {
+    el.addEventListener('input', () => { el.style.borderColor = ''; });
+  });
+})();
+</script>
+
+</body>
+</html>
