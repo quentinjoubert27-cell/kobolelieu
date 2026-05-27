@@ -61,7 +61,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 img,svg{display:block;max-width:100%}
 ::selection{background: var(--sun); color: var(--ink)}
 
-/* ============================== MARQUEE TOP (à la Rumbeke) ============================== */
+/* ============================== MARQUEE TOP ============================== */
 .marquee{
   background: var(--blue);
   color: var(--cream);
@@ -69,18 +69,24 @@ img,svg{display:block;max-width:100%}
   font-size: 13px;
   padding: 10px 0;
   overflow: hidden;
-  white-space: nowrap;
   border-bottom: 2px solid var(--ink);
 }
 .marquee__track{
-  display: inline-flex; gap: 24px;
-  animation: scrollX 30s linear infinite;
-  padding-left: 24px;
+  display: flex;
+  width: max-content;
+  animation: scrollX 32s linear infinite;
 }
-.marquee__track span{display:flex; align-items:center; gap:24px}
-.marquee__track span svg{display:inline-block; vertical-align:middle; stroke:var(--sun); flex-shrink:0}
-.marquee__track .dot{display:inline-block; width:6px; height:6px; border-radius:50%; background: var(--sun)}
-@keyframes scrollX{from{transform: translateX(0)}to{transform: translateX(-50%)}}
+.marquee__group{
+  display: flex; align-items: center;
+  gap: 32px;
+  padding-right: 32px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.marquee__group span{display:flex; align-items:center; gap:10px}
+.marquee__group svg{display:inline-block; stroke:var(--sun); flex-shrink:0}
+.marquee__group .dot{display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--sun); flex-shrink:0}
+@keyframes scrollX{to{transform:translateX(-50%)}}
 
 /* ============================== NAV ============================== */
 .nav{
@@ -301,10 +307,12 @@ img,svg{display:block;max-width:100%}
   pointer-events: none;
 }
 .hero__since-track{
-  display: inline-flex; gap: 40px; white-space: nowrap;
-  animation: scrollX 40s linear infinite;
-  padding-left: 40px;
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: scrollX 44s linear infinite;
 }
+.hero__since-track span{ flex-shrink:0; padding-right: 40px; }
 
 /* ============================== SECTION : LES SALLES ============================== */
 .salles-section{
@@ -1172,16 +1180,30 @@ img,svg{display:block;max-width:100%}
 <!-- ============================== MARQUEE TOP ============================== -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee__track">
-    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 76 rue Mandron, Chartrons — Bordeaux <span class="dot"></span></span>
-    <span>Salle Canopée dès 25€/h <span class="dot"></span></span>
-    <span>Salle Majorelle dès 35€/h <span class="dot"></span></span>
-    <span>Annulation gratuite 24h avant <span class="dot"></span></span>
-    <span>Café offert pour les nouveaux <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg> <span class="dot"></span></span>
-    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 76 rue Mandron, Chartrons — Bordeaux <span class="dot"></span></span>
-    <span>Salle Canopée dès 25€/h <span class="dot"></span></span>
-    <span>Salle Majorelle dès 35€/h <span class="dot"></span></span>
-    <span>Annulation gratuite 24h avant <span class="dot"></span></span>
-    <span>Café offert pour les nouveaux <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg> <span class="dot"></span></span>
+    <div class="marquee__group">
+      <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 76 rue Mandron, Chartrons — Bordeaux</span>
+      <span class="dot"></span>
+      <span>Salle Canopée dès 25€/h</span>
+      <span class="dot"></span>
+      <span>Salle Majorelle dès 35€/h</span>
+      <span class="dot"></span>
+      <span>Annulation gratuite 24h avant</span>
+      <span class="dot"></span>
+      <span>Café offert pour les nouveaux <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg></span>
+      <span class="dot"></span>
+    </div>
+    <div class="marquee__group" aria-hidden="true">
+      <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> 76 rue Mandron, Chartrons — Bordeaux</span>
+      <span class="dot"></span>
+      <span>Salle Canopée dès 25€/h</span>
+      <span class="dot"></span>
+      <span>Salle Majorelle dès 35€/h</span>
+      <span class="dot"></span>
+      <span>Annulation gratuite 24h avant</span>
+      <span class="dot"></span>
+      <span>Café offert pour les nouveaux <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg></span>
+      <span class="dot"></span>
+    </div>
   </div>
 </div>
 
@@ -1253,7 +1275,8 @@ img,svg{display:block;max-width:100%}
   <!-- Bandeau "Depuis 2022" en background -->
   <div class="hero__since" aria-hidden="true">
     <div class="hero__since-track">
-      <span>Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★</span>
+      <span>Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ </span>
+      <span aria-hidden="true">Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ Depuis 2022 ★ </span>
     </div>
   </div>
 </section>
