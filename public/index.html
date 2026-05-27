@@ -60,20 +60,19 @@ svg{display:block}
 }
 .intro-curtain.hidden{opacity: 0; visibility: hidden}
 .intro-curtain__logo{
-  font-family: var(--display);
-  font-size: clamp(60px, 12vw, 140px);
-  color: var(--cream);
-  line-height: 1;
-  display: flex; align-items: center; gap: 4px;
+  display: flex; align-items: center; gap: 10px;
   opacity: 0;
   animation: introLogo 1.4s cubic-bezier(.2,.8,.2,1) .2s forwards;
+}
+.intro-curtain__logo img{
+  height: clamp(60px, 10vw, 110px); width: auto; display: block;
 }
 .intro-curtain__dot{
   width: 16px; height: 16px;
   border-radius: 50%;
   background: var(--tomato);
   display: inline-block;
-  margin-bottom: 8px;
+  flex-shrink: 0;
   opacity: 0;
   animation: introDot .5s ease 1.2s forwards;
 }
@@ -105,17 +104,19 @@ svg{display:block}
   pointer-events: none;
 }
 .top-bar__brand{
-  font-family: var(--display);
-  font-size: 26px;
-  color: var(--cream);
   display: flex; align-items: center; gap: 8px;
-  mix-blend-mode: difference;
   pointer-events: auto;
+}
+.top-bar__brand img{
+  height: 28px; width: auto; display: block;
 }
 .top-bar__brand-dot{
   width: 9px; height: 9px; border-radius: 50%;
   background: var(--tomato);
+  flex-shrink: 0;
+  animation: bounce 2s ease-in-out infinite;
 }
+@keyframes bounce{0%,100%{transform: translateY(0)}50%{transform: translateY(-5px)}}
 .top-bar__meta{
   font-family: var(--body); font-weight: 500;
   font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
@@ -476,7 +477,8 @@ svg{display:block}
 <!-- ============================== RIDEAU D'INTRO ============================== -->
 <div class="intro-curtain" id="curtain">
   <div class="intro-curtain__logo">
-    Kōbō<span class="intro-curtain__dot"></span>
+    <img src="kobojaune.png" alt="Kōbō">
+    <span class="intro-curtain__dot"></span>
   </div>
   <div class="intro-curtain__tagline">depuis Bordeaux</div>
 </div>
@@ -484,7 +486,8 @@ svg{display:block}
 <!-- ============================== TOP BAR ============================== -->
 <div class="top-bar">
   <a href="#" class="top-bar__brand">
-    Kōbō<span class="top-bar__brand-dot"></span>
+    <img src="kobojaune.png" alt="Kōbō">
+    <span class="top-bar__brand-dot"></span>
   </a>
   <div class="top-bar__meta">
     <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 1114 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>

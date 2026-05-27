@@ -91,13 +91,14 @@ img,svg{display:block;max-width:100%}
   padding: 12px 28px;
 }
 .nav__logo{
-  font-family: var(--display); font-size: 32px;
-  color: var(--blue); line-height: 1;
   display: flex; align-items: center; gap: 10px;
-  letter-spacing: -.01em;
+}
+.nav__logo img{
+  height: 30px; width: auto; display: block;
 }
 .nav__logo .dot{
   width: 11px; height: 11px; background: var(--tomato); border-radius: 50%;
+  flex-shrink: 0;
   animation: bounce 2s ease-in-out infinite;
 }
 @keyframes bounce{0%,100%{transform: translateY(0)}50%{transform: translateY(-5px)}}
@@ -1097,11 +1098,10 @@ img,svg{display:block;max-width:100%}
   margin-bottom: 60px;
 }
 .foot__brand-name{
-  font-family: var(--display);
-  font-size: 56px;
-  color: var(--sun);
   margin-bottom: 16px;
-  line-height: 1;
+}
+.foot__brand-name img{
+  height: 44px; width: auto; display: block;
 }
 .foot__brand-desc{
   font-family: var(--italic); font-style: italic;
@@ -1153,7 +1153,10 @@ img,svg{display:block;max-width:100%}
 
 <!-- ============================== NAV ============================== -->
 <nav class="nav">
-  <a href="#" class="nav__logo">Kōbō<span class="dot"></span></a>
+  <a href="#" class="nav__logo">
+    <img src="kobobleu.png" alt="Kōbō">
+    <span class="dot"></span>
+  </a>
   <div class="nav__links">
     <a href="#salles">Les salles</a>
     <a href="#reserve">Réserver</a>
@@ -1674,7 +1677,7 @@ img,svg{display:block;max-width:100%}
   <div class="foot__inner">
     <div class="foot__grid">
       <div>
-        <div class="foot__brand-name">Kōbō.</div>
+        <div class="foot__brand-name"><img src="kobojaune.png" alt="Kōbō"></div>
         <p class="foot__brand-desc">Un lieu, deux salles, quatre métiers. Tout part d'ici, depuis Bordeaux.</p>
       </div>
       <div>

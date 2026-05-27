@@ -52,11 +52,14 @@ input,select,textarea{font:inherit}
   border-bottom: var(--line) solid var(--ink);
 }
 .top__brand{
-  font-family: var(--display); font-size: 26px;
-  color: var(--cream);
   display: flex; align-items: center; gap: 8px;
 }
-.top__brand-dot{width: 9px; height: 9px; border-radius: 50%; background: var(--tomato)}
+.top__brand img{ height: 28px; width: auto; display: block; }
+.top__brand-dot{
+  width: 9px; height: 9px; border-radius: 50%; background: var(--tomato); flex-shrink: 0;
+  animation: bounce 2s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .top__back{
   font-family: var(--body); font-weight: 600; font-size: 14px;
   color: var(--cream);
@@ -390,7 +393,10 @@ input,select,textarea{font:inherit}
 <body>
 
 <header class="top">
-  <a href="kobo-lieu.html" class="top__brand">Kōbō<span class="top__brand-dot"></span></a>
+  <a href="kobo-lieu.html" class="top__brand">
+    <img src="koboblanc.png" alt="Kōbō">
+    <span class="top__brand-dot"></span>
+  </a>
   <a href="kobo-lieu.html" class="top__back">
     <svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
     Retour
