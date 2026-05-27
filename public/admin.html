@@ -7,6 +7,10 @@
 <link rel="shortcut icon" href="favicon.png"/>
 <title>Admin — Kōbō Le Lieu</title>
 <meta name="robots" content="noindex,nofollow">
+<!-- ===== SÉCURITÉ ===== -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';">
+<meta http-equiv="Referrer-Policy" content="no-referrer">
+<meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=()">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,6 +94,8 @@ input,select{font:inherit}
   font-weight: 600;
 }
 .gate__err{color: var(--tomato); font-size: 12px; margin-top: 6px; min-height: 16px}
+.gate input:disabled,.gate button:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.gate__attempts{font-size:11px;color:var(--gray);margin-top:4px}
 
 /* ============================================================================
    LAYOUT
@@ -126,6 +132,27 @@ input,select{font:inherit}
 }
 .tab--active{background: var(--ink); color: #fff}
 .tab:hover:not(.tab--active){background: rgba(0,0,0,.05)}
+/* Bouton déconnexion */
+.btn-logout{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:999px;
+  font-size:13px;font-weight:600;
+  color:var(--tomato);border:1.5px solid rgba(230,84,60,.3);
+  transition:all .15s;
+}
+.btn-logout:hover{background:#fdecea;border-color:var(--tomato)}
+.btn-logout svg{stroke:currentColor;stroke-width:2.3;fill:none}
+/* Avertissement inactivité */
+.inactivity-warn{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--sun);color:var(--ink);
+  padding:12px 20px;border-radius:8px;
+  font-size:13px;font-weight:600;
+  border:1.5px solid var(--ink);
+  display:none;align-items:center;gap:10px;
+  z-index:200;box-shadow:4px 4px 0 var(--ink);
+}
+.inactivity-warn svg{stroke:var(--ink);stroke-width:2.2;fill:none;flex-shrink:0}
 
 /* ============================================================================
    BARRE STATS / FILTRES
@@ -504,8 +531,18 @@ input,select{font:inherit}
     <div class="head__right">
       <button class="tab tab--active" data-view="planning">Planning</button>
       <button class="tab" data-view="liste">Liste</button>
+      <div class="head__sep"></div>
+      <button class="btn-logout" id="btn-logout">
+        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Déconnexion
+      </button>
     </div>
   </header>
+  <!-- Avertissement inactivité -->
+  <div class="inactivity-warn" id="inactivity-warn">
+    <svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Déconnexion auto dans 5 min — bougez la souris pour rester connecté
+  </div>
 
   <!-- Stats -->
   <div class="stats-bar">
@@ -645,41 +682,170 @@ function toast(msg, type='success'){
 }
 
 /* ============================================================================
-   AUTHENTIFICATION TOKEN
+   SÉCURITÉ — Brute-force, session, auto-logout
    ============================================================================ */
+const MAX_TENTATIVES  = 5;
+const DUREE_BLOCAGE   = 15 * 60 * 1000;   // 15 min
+const DUREE_SESSION   = 30 * 60 * 1000;   // 30 min d'inactivité
+const SEUIL_AVERT     = 5  * 60 * 1000;   // avertir 5 min avant
+
+let _timerLogout = null;
+let _timerAvert  = null;
+
+/* ——— Brute-force ——— */
+function _bf(){ try{ return JSON.parse(localStorage.getItem('_kba')||'{"n":0,"u":0}'); }catch(e){ return {n:0,u:0}; } }
+function _bfSet(d){ localStorage.setItem('_kba', JSON.stringify(d)); }
+function estBloque(){ return _bf().u > Date.now(); }
+function minRestantes(){ return Math.ceil((_bf().u - Date.now())/60000); }
+function enregistrerEchec(){
+  const d = _bf();
+  d.n = (d.n||0) + 1;
+  if(d.n >= MAX_TENTATIVES){
+    d.u = Date.now() + DUREE_BLOCAGE;
+    d.n = 0;
+    _bfSet(d);
+    appliquerBlocage();
+  } else {
+    _bfSet(d);
+    $('#gate-err').textContent = `Token invalide. Tentative ${d.n}/${MAX_TENTATIVES}.`;
+  }
+}
+function effacerBrute(){ _bfSet({n:0,u:0}); }
+function appliquerBlocage(){
+  $('#gate-input').disabled = true;
+  $('#gate-btn').disabled   = true;
+  const tick = () => {
+    if(!estBloque()){
+      $('#gate-input').disabled = false;
+      $('#gate-btn').disabled   = false;
+      $('#gate-err').textContent = '';
+      return;
+    }
+    $('#gate-err').textContent = `⛔ Accès bloqué ${minRestantes()} min — trop de tentatives échouées.`;
+    setTimeout(tick, 15000);
+  };
+  tick();
+}
+
+/* ——— Session sessionStorage ——— */
+function saveSession(t){
+  sessionStorage.setItem('_ks', t);
+  sessionStorage.setItem('_ks_t', String(Date.now()));
+}
+function loadSession(){
+  const t  = sessionStorage.getItem('_ks');
+  const ts = parseInt(sessionStorage.getItem('_ks_t')||'0', 10);
+  if(!t || (Date.now()-ts > DUREE_SESSION)){ clearSession(); return null; }
+  return t;
+}
+function clearSession(){
+  sessionStorage.removeItem('_ks');
+  sessionStorage.removeItem('_ks_t');
+}
+function touchSession(){
+  sessionStorage.setItem('_ks_t', String(Date.now()));
+}
+
+/* ——— Auto-logout inactivité ——— */
+function resetInactivity(){
+  clearTimeout(_timerLogout);
+  clearTimeout(_timerAvert);
+  touchSession();
+  $('#inactivity-warn').style.display = 'none';
+  _timerAvert  = setTimeout(()=>{ $('#inactivity-warn').style.display='flex'; }, DUREE_SESSION - SEUIL_AVERT);
+  _timerLogout = setTimeout(deconnexion, DUREE_SESSION);
+}
+function startInactivity(){
+  ['mousemove','keydown','click','scroll','touchstart'].forEach(ev =>
+    document.addEventListener(ev, resetInactivity, {passive:true})
+  );
+  resetInactivity();
+}
+
+/* ——— Déconnexion ——— */
+function deconnexion(){
+  clearTimeout(_timerLogout);
+  clearTimeout(_timerAvert);
+  clearSession();
+  token = '';
+  $('#app').classList.remove('ready');
+  $('#gate').style.display = 'flex';
+  $('#gate-input').value = '';
+  $('#gate-err').textContent = 'Session terminée. Reconnectez-vous.';
+  $('#inactivity-warn').style.display = 'none';
+}
+
+$('#btn-logout').addEventListener('click', deconnexion);
+
+/* ——— Authentification ——— */
+$('#gate-btn').addEventListener('click', () => tryToken($('#gate-input').value.trim()));
+$('#gate-input').addEventListener('keydown', e => { if(e.key==='Enter') $('#gate-btn').click(); });
+
+async function tryToken(t){
+  if(!t) return;
+  if(estBloque()){ appliquerBlocage(); return; }
+
+  $('#gate-btn').disabled = true;
+  $('#gate-btn').textContent = 'Vérification…';
+  $('#gate-err').textContent = '';
+
+  try {
+    const r = await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(t)}&du=${isoDate(currentWeek)}&au=${isoDate(addDays(currentWeek,6))}`);
+    if(r.status === 401){
+      enregistrerEchec();
+    } else if(!r.ok){
+      $('#gate-err').textContent = 'Erreur serveur. Réessayez.';
+    } else {
+      // ✅ Succès
+      effacerBrute();
+      token = t;
+      saveSession(t);
+      $('#gate').style.display = 'none';
+      $('#app').classList.add('ready');
+      startInactivity();
+      const data = await r.json();
+      appliquerDonnees(data);
+    }
+  } catch(err){
+    // API indisponible — mode démo
+    effacerBrute();
+    token = t;
+    saveSession(t);
+    $('#gate').style.display = 'none';
+    $('#app').classList.add('ready');
+    startInactivity();
+    chargerSemaine(currentWeek);
+  } finally {
+    if($('#gate-btn').textContent === 'Vérification…'){
+      $('#gate-btn').textContent = 'Accéder';
+      $('#gate-btn').disabled = estBloque();
+    }
+  }
+}
+
+/* ——— Init ——— */
 function init(){
-  // Le token peut venir de l'URL ou être saisi
+  if(estBloque()) appliquerBlocage();
+
+  // Reprendre une session existante
+  const sessionToken = loadSession();
+  if(sessionToken){
+    token = sessionToken;
+    $('#gate').style.display = 'none';
+    $('#app').classList.add('ready');
+    startInactivity();
+    chargerSemaine(currentWeek);
+    return;
+  }
+
+  // Token dans l'URL → nettoyer immédiatement l'URL
   const urlToken = new URLSearchParams(location.search).get('token');
-  if (urlToken){
+  if(urlToken){
+    history.replaceState({}, document.title, location.pathname);
     tryToken(urlToken);
   } else {
     $('#gate').style.display = 'flex';
   }
-}
-$('#gate-btn').addEventListener('click', () => {
-  const v = $('#gate-input').value.trim();
-  if (v) tryToken(v);
-});
-$('#gate-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') $('#gate-btn').click();
-});
-
-async function tryToken(t){
-  const r = await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(t)}&du=${isoDate(currentWeek)}&au=${isoDate(addDays(currentWeek,6))}`);
-  if (r.status === 401){
-    $('#gate-err').textContent = 'Token invalide.';
-    return;
-  }
-  if (!r.ok){
-    $('#gate-err').textContent = 'Erreur, réessayez.';
-    return;
-  }
-  // OK
-  token = t;
-  $('#gate').style.display = 'none';
-  $('#app').classList.add('ready');
-  const data = await r.json();
-  appliquerDonnees(data);
 }
 
 /* ============================================================================
@@ -699,10 +865,15 @@ $('#btn-refresh').addEventListener('click', refresh);
 async function chargerSemaine(weekStart){
   const du = isoDate(weekStart);
   const au = isoDate(addDays(weekStart, 6));
-  const r = await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(token)}&du=${du}&au=${au}`);
-  if (!r.ok){ toast('Erreur de chargement', 'error'); return; }
-  const data = await r.json();
-  appliquerDonnees(data);
+  try {
+    const r = await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(token)}&du=${du}&au=${au}`);
+    if(r.status === 401){ deconnexion(); return; }
+    if(!r.ok){ toast('Erreur de chargement', 'error'); return; }
+    const data = await r.json();
+    appliquerDonnees(data);
+  } catch(err){
+    toast('API indisponible — données non actualisées', 'error');
+  }
 }
 
 function appliquerDonnees(data){
