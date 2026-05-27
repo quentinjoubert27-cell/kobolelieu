@@ -563,7 +563,7 @@ svg{display:block}
   </a>
 
   <!-- ===== PANNEAU ÉCOSYSTÈME ===== -->
-  <a class="panel panel--eco" id="panel-eco" href="kobo-ecosysteme.html" data-target="eco">
+  <a class="panel panel--eco" id="panel-eco" href="ecosysteme.html" data-target="eco">
     <div class="panel__bg"></div>
     <div class="panel__veil"></div>
     <span class="panel__ghost">Éco</span>
@@ -652,7 +652,7 @@ document.querySelectorAll('.panel').forEach(panel => {
 });
 
 /* ====== Préchargement des pages cibles ====== */
-['kobo-lieu.html', 'kobo-ecosysteme.html'].forEach(url => {
+['kobo-lieu.html', 'ecosysteme.html'].forEach(url => {
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = url;
