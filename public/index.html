@@ -254,9 +254,9 @@ svg{display:block}
 }
 .panel__decor svg{stroke-width: 2.4; fill: none}
 
-/* Décors Lieu */
+/* Décors Lieu — regroupés à droite, à hauteur du titre */
 .panel--lieu .panel__decor--a{
-  top: 18%; left: 16%;
+  bottom: 38%; right: 12%;
   width: 96px; height: 96px;
   background: var(--sun);
   border-radius: 50%;
@@ -264,7 +264,7 @@ svg{display:block}
 }
 .panel--lieu .panel__decor--a svg{width: 48px; height: 48px; stroke: var(--ink)}
 .panel--lieu .panel__decor--b{
-  top: 30%; right: 14%;
+  bottom: 20%; right: 22%;
   width: 110px; height: 110px;
   background: var(--tomato);
   border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
@@ -272,7 +272,7 @@ svg{display:block}
 }
 .panel--lieu .panel__decor--b svg{width: 52px; height: 52px; stroke: var(--cream)}
 .panel--lieu .panel__decor--c{
-  bottom: 32%; left: 26%;
+  bottom: 30%; right: 36%;
   width: 78px; height: 78px;
   background: var(--cream);
   border-radius: 50%;
@@ -280,9 +280,9 @@ svg{display:block}
 }
 .panel--lieu .panel__decor--c svg{width: 40px; height: 40px; stroke: var(--blue)}
 
-/* Décors Éco */
+/* Décors Éco — regroupés à gauche, à hauteur du titre */
 .panel--eco .panel__decor--a{
-  top: 20%; right: 18%;
+  bottom: 38%; left: 12%;
   width: 100px; height: 100px;
   background: var(--eco-clay);
   border-radius: 50%;
@@ -290,7 +290,7 @@ svg{display:block}
 }
 .panel--eco .panel__decor--a svg{width: 50px; height: 50px; stroke: var(--cream)}
 .panel--eco .panel__decor--b{
-  top: 34%; left: 14%;
+  bottom: 20%; left: 22%;
   width: 88px; height: 88px;
   background: var(--eco-brass);
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
@@ -298,7 +298,7 @@ svg{display:block}
 }
 .panel--eco .panel__decor--b svg{width: 44px; height: 44px; stroke: var(--ink)}
 .panel--eco .panel__decor--c{
-  bottom: 34%; right: 26%;
+  bottom: 30%; left: 36%;
   width: 70px; height: 70px;
   background: var(--cream);
   border-radius: 50%;
@@ -368,7 +368,7 @@ svg{display:block}
   margin-bottom: 20px;
 }
 .panel__title img{
-  height: clamp(80px, 10vw, 160px);
+  height: clamp(50px, 6vw, 90px);
   width: auto; display: inline-block;
   vertical-align: middle;
 }
