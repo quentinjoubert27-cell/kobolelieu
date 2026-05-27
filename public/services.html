@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/png" href="favicon.png"/>
+<link rel="shortcut icon" href="favicon.png"/>
+<title>Services inclus — Kōbō Le Lieu · Bordeaux</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Caprasimo&family=Instrument+Serif:ital@0;1&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue: #01357b;
+  --blue-deep: #021f4a;
+  --blue-soft: #d8e2f2;
+  --blue-paper: #eef2fa;
+  --cream: #faf3e3;
+  --cream-2: #f5ebd1;
+  --sun: #f4c542;
+  --tomato: #e6543c;
+  --leaf: #4a7c3a;
+  --ink: #1a1612;
+  --display: "Caprasimo", serif;
+  --hand: "Caveat", cursive;
+  --italic: "Instrument Serif", serif;
+  --body: "Familjen Grotesk", system-ui, sans-serif;
+  --line: 2.5px;
+  --r: 24px;
+  --r-pill: 999px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family: var(--body);
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+svg{display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none}
+::selection{background:var(--sun);color:var(--ink)}
+
+/* ============================== NAV ============================== */
+.nav{
+  position: sticky; top: 0; z-index: 50;
+  background: var(--cream);
+  border-bottom: var(--line) solid var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 28px;
+}
+.nav__logo{display: flex; align-items: center; gap: 10px}
+.nav__logo img{height: 36px; width: auto; display: block}
+.nav__logo .dot{
+  width: 11px; height: 11px; background: var(--tomato); border-radius: 50%;
+  flex-shrink: 0; animation: bounce 2s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.nav__links{display: flex; gap: 24px; font-weight: 600; font-size: 14px}
+.nav__links a{color:var(--ink);opacity:.65;padding:6px 0;transition:opacity .2s}
+.nav__links a:hover{opacity:1}
+.nav__links a.active{opacity:1;border-bottom:2px solid var(--blue)}
+.nav__cta{
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue); color: var(--cream);
+  padding: 10px 22px; border-radius: var(--r-pill);
+  font-weight: 600; font-size: 14px;
+  border: var(--line) solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform .2s, box-shadow .2s;
+}
+.nav__cta:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+
+/* ============================== HERO ============================== */
+.hero{
+  background: var(--blue);
+  color: var(--cream);
+  padding: 100px 28px 0;
+  overflow: hidden;
+  position: relative;
+  border-bottom: var(--line) solid var(--ink);
+}
+.hero__inner{
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: flex-end;
+}
+.hero__text{ padding-bottom: 80px }
+.hero__eyebrow{
+  font-family: var(--hand); font-size: 26px;
+  color: var(--sun); margin-bottom: 16px;
+}
+.hero__title{
+  font-family: var(--display);
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: .92; letter-spacing: -.02em;
+  margin-bottom: 28px;
+}
+.hero__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--sun); font-weight: 400;
+}
+.hero__sub{
+  font-family: var(--italic); font-style: italic;
+  font-size: clamp(17px, 1.5vw, 22px);
+  opacity: .8; line-height: 1.5;
+  max-width: 440px;
+}
+.hero__badge{
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 36px;
+  background: var(--sun); color: var(--ink);
+  padding: 12px 22px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 14px;
+  border: var(--line) solid var(--ink);
+}
+.hero__photos{
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  align-self: flex-end;
+}
+.hero__photo{
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  border: var(--line) solid var(--ink);
+  border-bottom: 0;
+  height: 360px;
+}
+.hero__photo:first-child{ height: 300px; align-self: flex-end }
+.hero__photo img{
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+
+/* ============================== INTRO INCLUS ============================== */
+.inclus{
+  background: var(--sun);
+  border-bottom: var(--line) solid var(--ink);
+  padding: 20px 28px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px;
+}
+.inclus__text{
+  font-weight: 700; font-size: 15px;
+}
+.inclus__badge{
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ink); color: var(--cream);
+  padding: 6px 14px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 12px; letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+/* ============================== SERVICES GRID ============================== */
+.services{
+  padding: 100px 28px;
+  background: var(--cream);
+}
+.services__inner{max-width: 1280px; margin: 0 auto}
+.services__head{
+  text-align: center; margin-bottom: 72px;
+}
+.services__eyebrow{
+  font-family: var(--hand); font-size: 28px;
+  color: var(--tomato); margin-bottom: 8px;
+}
+.services__title{
+  font-family: var(--display);
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1; letter-spacing: -.02em;
+}
+.services__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--blue); font-weight: 400;
+}
+.services__sub{
+  margin-top: 16px;
+  font-family: var(--italic); font-style: italic;
+  font-size: 18px; opacity: .7;
+}
+.services__grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.svc{
+  background: #fff;
+  border: var(--line) solid var(--ink);
+  border-radius: var(--r);
+  padding: 36px 32px 40px;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform .25s, box-shadow .25s;
+  position: relative;
+  overflow: hidden;
+}
+.svc:hover{transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--ink)}
+.svc--blue{ background: var(--blue); color: var(--cream) }
+.svc--sun{ background: var(--sun); }
+.svc--tomato{ background: var(--tomato); color: var(--cream) }
+.svc--leaf{ background: var(--leaf); color: var(--cream) }
+.svc--paper{ background: var(--blue-paper) }
+.svc--cream2{ background: var(--cream-2) }
+.svc__icon{
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.18);
+  border: 2px solid currentColor;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+}
+.svc--paper .svc__icon,.svc--cream2 .svc__icon,.svc--sun .svc__icon{
+  background: rgba(0,0,0,.08);
+}
+.svc__icon svg{width: 26px; height: 26px; stroke: currentColor; stroke-width: 2; fill: none}
+.svc__tag{
+  display: inline-flex;
+  background: rgba(255,255,255,.25);
+  font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: var(--r-pill);
+  margin-bottom: 14px;
+}
+.svc--paper .svc__tag,.svc--cream2 .svc__tag,.svc--sun .svc__tag{background: rgba(0,0,0,.1)}
+.svc__name{
+  font-family: var(--display); font-size: 28px; line-height: 1;
+  margin-bottom: 12px;
+}
+.svc__desc{
+  font-size: 15px; line-height: 1.6; opacity: .8;
+}
+.svc__detail{
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.2);
+  font-size: 13px; opacity: .7; display: flex; flex-direction: column; gap: 4px;
+}
+.svc--paper .svc__detail,.svc--cream2 .svc__detail,.svc--sun .svc__detail{
+  border-top-color: rgba(0,0,0,.12);
+}
+.svc__detail span{display: flex; align-items: center; gap: 6px}
+.svc__detail svg{width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.2; fill: none; flex-shrink: 0}
+
+/* ============================== ROOMS SECTION ============================== */
+.rooms{
+  background: var(--blue);
+  color: var(--cream);
+  padding: 100px 28px;
+  border-top: var(--line) solid var(--ink);
+  border-bottom: var(--line) solid var(--ink);
+}
+.rooms__inner{max-width: 1280px; margin: 0 auto}
+.rooms__head{
+  text-align: center; margin-bottom: 64px;
+}
+.rooms__eyebrow{
+  font-family: var(--hand); font-size: 28px;
+  color: var(--sun); margin-bottom: 8px;
+}
+.rooms__title{
+  font-family: var(--display);
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1;
+}
+.rooms__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--sun); font-weight: 400;
+}
+.rooms__grid{
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.room-card{
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: var(--r);
+  border: var(--line) solid var(--ink);
+  box-shadow: 0 8px 0 var(--ink);
+  overflow: hidden;
+}
+.room-card__slider{
+  height: 280px;
+  position: relative; overflow: hidden;
+  background: var(--ink);
+}
+.room-card__slide{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  opacity: 0; transition: opacity .7s ease;
+}
+.room-card__slide--active{opacity: 1}
+.room-card__dots{
+  position: absolute; bottom: 12px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 6px; z-index: 5;
+}
+.room-card__dot{
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,.45);
+  cursor: pointer; transition: background .3s, transform .3s;
+  border: 1.5px solid rgba(255,255,255,.6);
+}
+.room-card__dot--active{background:#fff; transform: scale(1.25)}
+.room-card__overlay{
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.45) 0%, transparent 50%);
+}
+.room-card__badge{
+  position: absolute; top: 18px; right: 18px; z-index: 4;
+  background: var(--sun); color: var(--ink);
+  padding: 6px 14px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 12px;
+  border: var(--line) solid var(--ink);
+}
+.room-card__body{
+  padding: 28px 32px 36px;
+}
+.room-card__num{
+  font-family: var(--hand); font-size: 16px; color: var(--tomato);
+  margin-bottom: 4px;
+}
+.room-card__name{
+  font-family: var(--display); font-size: 36px; line-height: 1;
+  margin-bottom: 8px;
+}
+.room-card__tagline{
+  font-family: var(--italic); font-style: italic;
+  font-size: 16px; opacity: .7; margin-bottom: 20px;
+}
+.room-card__specs{
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 24px;
+}
+.room-card__spec{
+  display: flex; align-items: center; gap: 6px;
+  background: var(--cream-2);
+  padding: 7px 14px; border-radius: var(--r-pill);
+  font-size: 13px; font-weight: 600;
+  border: 1.5px solid rgba(0,0,0,.1);
+}
+.room-card__spec svg{width: 13px; height: 13px; stroke: var(--ink); stroke-width: 2.2; fill: none}
+.room-card__footer{
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 20px;
+  border-top: 1.5px dashed rgba(0,0,0,.12);
+}
+.room-card__price{
+  font-family: var(--display); font-size: 32px; color: var(--blue);
+}
+.room-card__price small{
+  font-family: var(--body); font-size: 14px; font-weight: 500; opacity: .6;
+}
+.room-card__btn{
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue); color: var(--cream);
+  padding: 13px 24px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 14px;
+  border: var(--line) solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform .2s, box-shadow .2s;
+}
+.room-card__btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+
+/* ============================== CTA ============================== */
+.cta{
+  background: var(--cream);
+  padding: 100px 28px;
+  text-align: center;
+}
+.cta__inner{max-width: 720px; margin: 0 auto}
+.cta__eyebrow{
+  font-family: var(--hand); font-size: 26px;
+  color: var(--tomato); margin-bottom: 12px;
+}
+.cta__title{
+  font-family: var(--display);
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1; letter-spacing: -.02em;
+  margin-bottom: 20px;
+}
+.cta__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--blue); font-weight: 400;
+}
+.cta__sub{
+  font-family: var(--italic); font-style: italic;
+  font-size: 18px; opacity: .7; margin-bottom: 40px;
+}
+.cta__btns{
+  display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+}
+.btn{
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 18px 36px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 16px;
+  border: var(--line) solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn--blue{background:var(--blue);color:var(--cream)}
+.btn--ghost{background:transparent;color:var(--ink)}
+.btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.6;fill:none}
+
+/* ============================== FOOTER ============================== */
+.foot{
+  background: var(--ink); color: var(--cream);
+  padding: 60px 28px 32px;
+  border-top: var(--line) solid var(--ink);
+}
+.foot__inner{max-width: 1280px; margin: 0 auto}
+.foot__grid{
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 60px;
+}
+.foot__brand-name{margin-bottom: 16px}
+.foot__brand-name img{height: 50px; width: auto; display: block}
+.foot__brand-desc{
+  font-family: var(--italic); font-style: italic;
+  font-size: 18px; opacity: .8; max-width: 320px;
+}
+.foot h4{
+  font-family: var(--display); font-size: 18px;
+  margin-bottom: 16px; color: var(--sun);
+}
+.foot ul{list-style: none; display: flex; flex-direction: column; gap: 8px}
+.foot li{font-size: 14px; opacity: .85}
+.foot li a:hover{opacity: 1; color: var(--sun)}
+.foot__bottom{
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  font-size: 12px; opacity: .45;
+}
+
+/* ============================== RESPONSIVE ============================== */
+@media(max-width:900px){
+  .hero__inner{grid-template-columns:1fr}
+  .hero__photos{display:none}
+  .services__grid{grid-template-columns:1fr 1fr}
+  .rooms__grid{grid-template-columns:1fr}
+  .foot__grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .services__grid{grid-template-columns:1fr}
+  .nav__links{display:none}
+  .foot__grid{grid-template-columns:1fr}
+  .cta__btns{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== NAV ============================== -->
+<nav class="nav">
+  <a href="kobo-lieu.html" class="nav__logo">
+    <img src="kobobleu.png" alt="Kōbō">
+    <span class="dot"></span>
+  </a>
+  <div class="nav__links">
+    <a href="kobo-lieu.html#salles">Les salles</a>
+    <a href="reservation.html">Réserver</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="kobo-lieu.html#faq">FAQ</a>
+  </div>
+  <a href="reservation.html" class="nav__cta">
+    Réserver
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+</nav>
+
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__text">
+      <p class="hero__eyebrow">— compris dans chaque réservation</p>
+      <h1 class="hero__title">Tout ce qu'il<br>vous <span class="accent">faut.</span></h1>
+      <p class="hero__sub">Pas de surprise, pas de supplément. Tout ce dont vous avez besoin pour travailler est déjà là, dès le premier euro.</p>
+      <span class="hero__badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        6 services inclus, 0€ de plus
+      </span>
+    </div>
+    <div class="hero__photos">
+      <div class="hero__photo">
+        <img src="sallecanopee.jpg" alt="Salle Canopée">
+      </div>
+      <div class="hero__photo" style="height:360px">
+        <img src="sallemajorelle.jpg" alt="Salle Majorelle">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== BAND ============================== -->
+<div class="inclus">
+  <span class="inclus__badge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+    Inclus
+  </span>
+  <span class="inclus__text">Fibre · Café & boissons · Accueil · Écran & projecteur · Tableau véleda · Imprimante</span>
+</div>
+
+<!-- ============================== SERVICES ============================== -->
+<section class="services">
+  <div class="services__inner">
+    <div class="services__head">
+      <p class="services__eyebrow">— sans supplément</p>
+      <h2 class="services__title">Nos <span class="accent">services.</span></h2>
+      <p class="services__sub">Tout ce dont vous avez besoin est déjà prêt à votre arrivée.</p>
+    </div>
+
+    <div class="services__grid">
+
+      <!-- Connect -->
+      <div class="svc svc--blue">
+        <div class="svc__icon">
+          <svg viewBox="0 0 24 24"><path d="M1.42 9a16 16 0 0121.16 0M5 12.55a11 11 0 0114.08 0M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1.5" fill="currentColor"/></svg>
+        </div>
+        <span class="svc__tag">Kōbō Connect</span>
+        <div class="svc__name">Fibre ultra-rapide</div>
+        <div class="svc__desc">Connexion haut débit, illimitée et ultra-stable. Parfaite pour vos visios, transferts de fichiers lourds ou démonstrations en ligne.</div>
+        <div class="svc__detail">
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Fibre symétrique partagée</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Mot de passe fourni à l'arrivée</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Ethernet disponible sur demande</span>
+        </div>
+      </div>
+
+      <!-- Drinks -->
+      <div class="svc svc--sun">
+        <div class="svc__icon">
+          <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><path d="M6 2v2M10 2v2M14 2v2"/></svg>
+        </div>
+        <span class="svc__tag">Kōbō Drinks</span>
+        <div class="svc__name">Café & boissons</div>
+        <div class="svc__desc">Une sélection de boissons chaudes et fraîches est à votre disposition tout au long de votre réservation, à volonté.</div>
+        <div class="svc__detail">
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Café grain, thé, infusions</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Eau plate & pétillante</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Jus de fruits frais</span>
+        </div>
+      </div>
+
+      <!-- Screen -->
+      <div class="svc svc--paper">
+        <div class="svc__icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <span class="svc__tag">Kōbō Screen</span>
+        <div class="svc__name">Écran & projecteur</div>
+        <div class="svc__desc">Chaque salle est équipée pour vos présentations. Connectez votre laptop en secondes et commencez à projeter.</div>
+        <div class="svc__detail">
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Canopée : vidéoprojecteur HD</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Majorelle : écran 65" 4K</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> HDMI, USB-C, Chromecast</span>
+        </div>
+      </div>
+
+      <!-- Tableau véleda -->
+      <div class="svc svc--tomato">
+        <div class="svc__icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="16" rx="2"/><path d="M8 22h8M12 18v4M7 8l3 3 5-5"/></svg>
+        </div>
+        <span class="svc__tag">Kōbō Board</span>
+        <div class="svc__name">Tableau véleda</div>
+        <div class="svc__desc">Un grand tableau blanc magnétique dans chaque salle pour vos brainstorms, mind maps et schémas en temps réel.</div>
+        <div class="svc__detail">
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Grand format (120×90 cm)</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Marqueurs & chiffon fournis</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Surface magnétique</span>
+        </div>
+      </div>
+
+      <!-- Print -->
+      <div class="svc svc--cream2">
+        <div class="svc__icon">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </div>
+        <span class="svc__tag">Kōbō Print</span>
+        <div class="svc__name">Imprimante pro</div>
+        <div class="svc__desc">Une imprimante professionnelle à votre disposition pour vos documents, présentations et supports de réunion.</div>
+        <div class="svc__detail">
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Couleur & noir/blanc</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Format A4 & A3</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Wifi & USB</span>
+        </div>
+      </div>
+
+      <!-- Catering -->
+      <div class="svc svc--leaf">
+        <div class="svc__icon">
+          <svg viewBox="0 0 24 24"><path d="M3 2h1l2 7-1.5 1.5a11 11 0 006 6L12 15l7 2v1a17 17 0 01-17-17z"/><path d="M16 2s0 4-4 6-7 2-7 2"/></svg>
+        </div>
+        <span class="svc__tag">Kōbō Table</span>
+        <div class="svc__name">Catering & repas</div>
+        <div class="svc__desc">Pour vos journées complètes ou demi-journées, commandez un plateau-repas ou un catering traiteur directement via notre partenaire.</div>
+        <div class="svc__detail">
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Plateaux sandwichs & salades</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Traiteur partenaire local</span>
+          <span><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Sur commande à la réservation</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================== SALLES ============================== -->
+<section class="rooms">
+  <div class="rooms__inner">
+    <div class="rooms__head">
+      <p class="rooms__eyebrow">— deux ambiances, un seul lieu</p>
+      <h2 class="rooms__title">Les <span class="accent">salles.</span></h2>
+    </div>
+
+    <div class="rooms__grid">
+
+      <!-- Canopée -->
+      <div class="room-card">
+        <div class="room-card__slider">
+          <img class="room-card__slide room-card__slide--active" src="sallecanopee.jpg" alt="Canopée vue 1">
+          <img class="room-card__slide" src="sallecanopee2.jpg" alt="Canopée vue 2">
+          <img class="room-card__slide" src="sallecanopee3.jpg" alt="Canopée vue 3">
+          <div class="room-card__dots">
+            <span class="room-card__dot room-card__dot--active"></span>
+            <span class="room-card__dot"></span>
+            <span class="room-card__dot"></span>
+          </div>
+          <div class="room-card__overlay"></div>
+          <span class="room-card__badge">Dispo aujourd'hui</span>
+        </div>
+        <div class="room-card__body">
+          <div class="room-card__num">01 — Le Lieu</div>
+          <h3 class="room-card__name">Canopée</h3>
+          <p class="room-card__tagline">— Calme et lumineuse, près du Jardin Public</p>
+          <div class="room-card__specs">
+            <span class="room-card__spec"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> 8 personnes</span>
+            <span class="room-card__spec"><svg viewBox="0 0 24 24"><path d="M21 3L3 21M7 3h14v14"/></svg> 22 m²</span>
+            <span class="room-card__spec"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Vidéoprojecteur</span>
+            <span class="room-card__spec"><svg viewBox="0 0 24 24"><path d="M1.42 9a16 16 0 0121.16 0M5 12.55a11 11 0 0114.08 0M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg> Fibre</span>
+          </div>
+          <div class="room-card__footer">
+            <div class="room-card__price">25€<small>/heure</small></div>
+            <a href="reservation.html?salle=canopee" class="room-card__btn">
+              Réserver
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Majorelle -->
+      <div class="room-card">
+        <div class="room-card__slider">
+          <img class="room-card__slide room-card__slide--active" src="sallemajorelle.jpg" alt="Majorelle vue 1">
+          <img class="room-card__slide" src="sallemajorelle2.jpg" alt="Majorelle vue 2">
+          <img class="room-card__slide" src="sallemajorelle3.jpg" alt="Majorelle vue 3">
+          <div class="room-card__dots">
+            <span class="room-card__dot room-card__dot--active"></span>
+            <span class="room-card__dot"></span>
+            <span class="room-card__dot"></span>
+          </div>
+          <div class="room-card__overlay"></div>
+          <span class="room-card__badge" style="background:var(--tomato);color:var(--cream)">Coup de cœur</span>
+        </div>
+        <div class="room-card__body">
+          <div class="room-card__num">02 — Le Lieu</div>
+          <h3 class="room-card__name">Majorelle</h3>
+          <p class="room-card__tagline">— Colorée et inspirante, l'effet waouh</p>
+          <div class="room-card__specs">
+            <span class="room-card__spec"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> 12 personnes</span>
+            <span class="room-card__spec"><svg viewBox="0 0 24 24"><path d="M21 3L3 21M7 3h14v14"/></svg> 28 m²</span>
+            <span class="room-card__spec"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Écran 65"</span>
+            <span class="room-card__spec"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><path d="M6 2v2M10 2v2M14 2v2"/></svg> Coin café</span>
+          </div>
+          <div class="room-card__footer">
+            <div class="room-card__price">35€<small>/heure</small></div>
+            <a href="reservation.html?salle=majorelle" class="room-card__btn">
+              Réserver
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CTA ============================== -->
+<section class="cta">
+  <div class="cta__inner">
+    <p class="cta__eyebrow">— alors, on réserve ?</p>
+    <h2 class="cta__title">Prêt à <span class="accent">décoller ?</span></h2>
+    <p class="cta__sub">Choisissez votre salle, votre créneau, et c'est parti. Confirmation immédiate.</p>
+    <div class="cta__btns">
+      <a href="reservation.html" class="btn btn--blue">
+        Réserver une salle
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="kobo-lieu.html" class="btn btn--ghost">
+        Retour à l'accueil
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="foot">
+  <div class="foot__inner">
+    <div class="foot__grid">
+      <div>
+        <div class="foot__brand-name"><img src="kobojaune.png" alt="Kōbō"></div>
+        <p class="foot__brand-desc">Un lieu, deux salles, quatre métiers. Tout part d'ici, depuis Bordeaux.</p>
+      </div>
+      <div>
+        <h4>Le Lieu</h4>
+        <ul>
+          <li><a href="kobo-lieu.html#salles">Canopée</a></li>
+          <li><a href="kobo-lieu.html#salles">Majorelle</a></li>
+          <li><a href="kobo-lieu.html#salles">L'annexe</a></li>
+          <li><a href="services.html">Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>L'Écosystème</h4>
+        <ul>
+          <li><a href="#">PO TECH</a></li>
+          <li><a href="#">Kōbō Design</a></li>
+          <li><a href="#">Kōbō Production</a></li>
+          <li><a href="#">Le Journal</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>76 rue Mandron</li>
+          <li>33000 Bordeaux</li>
+          <li><a href="mailto:hello@kobo-bdx.com">hello@kobo-bdx.com</a></li>
+          <li><a href="#">Instagram</a> · <a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© 2026 Kōbō · Maison commune, Bordeaux</span>
+      <span>Mentions · Confidentialité</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Slider photos salles */
+document.querySelectorAll('.room-card__slider').forEach(slider => {
+  const slides = slider.querySelectorAll('.room-card__slide');
+  const dots = slider.querySelectorAll('.room-card__dot');
+  if (slides.length <= 1) return;
+  let cur = 0;
+  function show(n){
+    slides[cur].classList.remove('room-card__slide--active');
+    dots[cur].classList.remove('room-card__dot--active');
+    cur = ((n % slides.length) + slides.length) % slides.length;
+    slides[cur].classList.add('room-card__slide--active');
+    dots[cur].classList.add('room-card__dot--active');
+  }
+  dots.forEach((d, i) => d.addEventListener('click', e => { e.stopPropagation(); show(i); }));
+  setInterval(() => show(cur + 1), 4000);
+});
+</script>
+
+</body>
+</html>
