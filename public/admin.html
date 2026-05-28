@@ -731,8 +731,8 @@ async function tryToken(t){
   if(t !== VALID_TOKEN){ enregistrerEchec(); $('#gate-btn').textContent='Accéder →'; $('#gate-btn').disabled=estBloque(); return }
   // Token valide → accès immédiat
   effacerBrute(); token=t; saveSession(t); entrerApp(); $('#gate-btn').textContent='Accéder →';
-  // Chargement des réservations en arrière-plan
-  chargerSemaine(currentWeek);
+  // Chargement initial sur 30 jours pour voir toutes les réservations récentes
+  chargerSemaine(currentWeek, true);
 }
 
 function entrerApp(){
@@ -747,7 +747,7 @@ function entrerApp(){
 function init(){
   if(estBloque()) appliquerBlocage();
   const sessionToken=loadSession();
-  if(sessionToken){ token=sessionToken; entrerApp(); chargerSemaine(currentWeek); return }
+  if(sessionToken){ token=sessionToken; entrerApp(); chargerSemaine(currentWeek, true); return }
   const urlToken=new URLSearchParams(location.search).get('token');
   if(urlToken){ history.replaceState({},document.title,location.pathname); tryToken(urlToken) }
   else { $('#gate').style.display='flex' }
@@ -773,7 +773,7 @@ function switchPage(id){
   const meta=PAGE_META[id]||{};
   $('#topbar-title').textContent=meta.title||id;
   $('#topbar-sub').textContent=meta.sub||'';
-  if(id==='reservations') chargerSemaine(currentWeek);
+  if(id==='reservations') chargerSemaine(currentWeek, true);
   if(id==='clients') renderClients();
   if(id==='dashboard') renderDashboard();
 }
@@ -783,16 +783,17 @@ $$('.sb-item[data-page]').forEach(b=>b.addEventListener('click',()=>switchPage(b
 /* ═══════════════════════════════════════════════════════
    CHARGEMENT RÉSERVATIONS
 ═══════════════════════════════════════════════════════ */
-async function chargerSemaine(weekStart){
-  const du=isoDate(weekStart), au=isoDate(addDays(weekStart,6));
+async function chargerSemaine(weekStart, large=false){
+  // large=true : charge 30 jours pour la vue initiale
+  const du = large ? isoDate(addDays(new Date(),-7)) : isoDate(weekStart);
+  const au = large ? isoDate(addDays(new Date(), 30)) : isoDate(addDays(weekStart,6));
   try {
     const r=await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(token)}&du=${du}&au=${au}`);
-    if(!r.ok){
-      appliquerDonnees({reservations:[],stats:{total:0,confirmees:0,en_attente:0,annulees:0,ca_total:0}});
-      return;
-    }
+    if(r.status===401){ toast('⛔ Token refusé par le serveur — configurez ADMIN_TOKEN dans Vercel','error'); appliquerDonnees({reservations:[],stats:{total:0,confirmees:0,en_attente:0,annulees:0,ca_total:0}}); return }
+    if(!r.ok){ toast('Erreur API '+r.status,'error'); appliquerDonnees({reservations:[],stats:{total:0,confirmees:0,en_attente:0,annulees:0,ca_total:0}}); return }
     appliquerDonnees(await r.json());
   } catch(err){
+    toast('API injoignable (réseau ou Supabase)','error');
     appliquerDonnees({reservations:[],stats:{total:0,confirmees:0,en_attente:0,annulees:0,ca_total:0}});
   }
 }
