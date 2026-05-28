@@ -475,7 +475,7 @@ input,select,textarea{font:inherit}
           <div class="horaires-pick" id="horaires-pick">
             <div class="horaires-pick__title">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-              Cliquez l'heure de début puis l'heure de fin
+              Cliquez un créneau pour le sélectionner, puis les suivants pour étendre
             </div>
             <div class="slots" id="slots"></div>
             <div class="horaires-pick__hint">Tarif : <strong id="horaires-prix">40€/h</strong></div>
@@ -826,7 +826,7 @@ function afficherCreneaux(){
   state.creneaux.forEach(c => {
     const el = document.createElement('button');
     el.className = 'slot' + (!c.disponible ? ' slot--off' : '');
-    el.textContent = String(c.heure).padStart(2,'0')+':00';
+    el.textContent = `${c.heure}h-${c.heure+1}h`;
     el.dataset.heure = c.heure;
     if (c.disponible){
       el.addEventListener('click', () => selectionnerHeure(c.heure));
@@ -836,26 +836,21 @@ function afficherCreneaux(){
 }
 
 function selectionnerHeure(h){
-  if (state.heureDebut === null || state.heureFin !== null){
+  if (state.heureDebut === null){
+    /* Rien de sélectionné : 1 bloc = 1h */
+    state.heureDebut = h; state.heureFin = h + 1;
+  } else if (h >= state.heureDebut && h < state.heureFin){
+    /* Clic dans la sélection actuelle → reset à ce seul bloc */
+    state.heureDebut = h; state.heureFin = h + 1;
+  } else if (h === state.heureFin){
+    /* Extension vers l'avant (bloc adjacent suivant) */
+    state.heureFin = h + 1;
+  } else if (h === state.heureDebut - 1){
+    /* Extension vers l'arrière (bloc adjacent précédent) */
     state.heureDebut = h;
-    state.heureFin = null;
   } else {
-    if (h <= state.heureDebut){
-      state.heureDebut = h;
-    } else {
-      // Vérifier que les créneaux intermédiaires sont libres
-      let libre = true;
-      for (let x=state.heureDebut; x<h; x++){
-        const c = state.creneaux.find(k=>k.heure===x);
-        if (!c || !c.disponible) libre = false;
-      }
-      if (!libre){
-        showAlert('Un créneau pris se trouve dans cette plage. Choisissez une plage continue.');
-        state.heureDebut = h; state.heureFin = null;
-      } else {
-        state.heureFin = h + 1;
-      }
-    }
+    /* Bloc non adjacent → nouvelle sélection d'1 bloc */
+    state.heureDebut = h; state.heureFin = h + 1;
   }
   rafraichirSelectionCreneaux();
 }
@@ -865,11 +860,10 @@ function rafraichirSelectionCreneaux(){
     el.classList.remove('slot--start','slot--inrange','slot--end');
     const h = +el.dataset.heure;
     if (state.heureDebut !== null && state.heureFin !== null){
-      if (h === state.heureDebut) el.classList.add('slot--start');
-      else if (h === state.heureFin-1) el.classList.add('slot--end');
-      else if (h > state.heureDebut && h < state.heureFin-1) el.classList.add('slot--inrange');
-    } else if (state.heureDebut !== null && h === state.heureDebut){
-      el.classList.add('slot--start');
+      if (h === state.heureDebut && state.heureFin - state.heureDebut === 1) el.classList.add('slot--start');
+      else if (h === state.heureDebut) el.classList.add('slot--start');
+      else if (h === state.heureFin - 1) el.classList.add('slot--end');
+      else if (h > state.heureDebut && h < state.heureFin - 1) el.classList.add('slot--inrange');
     }
   });
   const ok = state.heureDebut !== null && state.heureFin !== null;
