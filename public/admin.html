@@ -702,8 +702,10 @@ let currentClientId=null;
 const VALID_TOKEN='2d4d7f2f8844274b292e7b189cad9fe2c4c942da78d90412a7c5189d74563bec';
 const MAX_TENTATIVES=5, DUREE_BLOCAGE=15*60*1000, DUREE_SESSION=30*60*1000, SEUIL_AVERT=5*60*1000;
 let _timerLogout=null, _timerAvert=null;
-function _bf(){ try{ return JSON.parse(localStorage.getItem('_kba')||'{"n":0,"u":0}') }catch(e){ return {n:0,u:0} } }
-function _bfSet(d){ localStorage.setItem('_kba',JSON.stringify(d)) }
+// Vider les anciens compteurs brute-force (clé _kba obsolète)
+localStorage.removeItem('_kba');
+function _bf(){ try{ return JSON.parse(localStorage.getItem('_kba2')||'{"n":0,"u":0}') }catch(e){ return {n:0,u:0} } }
+function _bfSet(d){ localStorage.setItem('_kba2',JSON.stringify(d)) }
 function estBloque(){ return _bf().u>Date.now() }
 function minRestantes(){ return Math.ceil((_bf().u-Date.now())/60000) }
 function enregistrerEchec(){ const d=_bf(); d.n=(d.n||0)+1; if(d.n>=MAX_TENTATIVES){d.u=Date.now()+DUREE_BLOCAGE;d.n=0;_bfSet(d);appliquerBlocage()}else{_bfSet(d);$('#gate-err').textContent=`Token invalide. Tentative ${d.n}/${MAX_TENTATIVES}.`} }
