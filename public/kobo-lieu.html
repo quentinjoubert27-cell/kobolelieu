@@ -1504,7 +1504,7 @@ img,svg{display:block;max-width:100%}
             <div class="horaires-pick" id="horaires-pick">
               <div class="horaires-pick__title">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                Cliquez l'heure de début, puis l'heure de fin
+                Cliquez un créneau pour le sélectionner, puis les suivants pour étendre
               </div>
               <div class="slots" id="slots"></div>
               <div class="horaires-pick__hint">Tarif : <strong id="horaires-prix">—</strong></div>
@@ -1978,9 +1978,9 @@ async function chargerCreneaux(){
     if (!r.ok) throw new Error();
     creneaux = (await r.json()).creneaux || [];
   } catch (e) {
-    for (let h=9; h<=19; h++) creneaux.push({heure:h, disponible: h < 19 ? (Math.random() > 0.25) : true});
+    for (let h=9; h<19; h++) creneaux.push({heure:h, disponible: Math.random() > 0.25});
   }
-  creneaux = creneaux.filter(c => c.heure >= state.formule.heure_debut && c.heure <= state.formule.heure_fin);
+  creneaux = creneaux.filter(c => c.heure >= state.formule.heure_debut && c.heure < state.formule.heure_fin);
   state.creneaux = creneaux; afficherCreneaux();
 }
 function afficherCreneaux(){
@@ -1988,24 +1988,28 @@ function afficherCreneaux(){
   state.creneaux.forEach(c => {
     const el = document.createElement('button');
     el.className = 'slot' + (!c.disponible ? ' slot--off' : '');
-    const isLast = c.heure === state.formule.heure_fin;
-    el.textContent = `${String(c.heure).padStart(2,'0')}h00`;
-    if (isLast) el.title = 'Heure de fin maximum';
+    el.textContent = `${c.heure}h-${c.heure+1}h`;
     el.dataset.heure = c.heure;
     if (c.disponible) el.addEventListener('click', () => selectionnerHeure(c.heure));
     cont.appendChild(el);
   });
 }
 function selectionnerHeure(h){
-  if (state.heureDebut === null || state.heureFin !== null){ state.heureDebut = h; state.heureFin = null; }
-  else {
-    if (h <= state.heureDebut){ state.heureDebut = h; state.heureFin = null; }
-    else {
-      let libre = true;
-      for (let x=state.heureDebut; x<h; x++){ const c=state.creneaux.find(k=>k.heure===x); if (!c||!c.disponible) libre=false; }
-      if (!libre){ showAlert('Un créneau pris se trouve dans cette plage.'); state.heureDebut=h; state.heureFin=null; }
-      else { state.heureFin = h; }
-    }
+  if (state.heureDebut === null){
+    /* Rien de sélectionné : 1 bloc = 1h */
+    state.heureDebut = h; state.heureFin = h + 1;
+  } else if (h >= state.heureDebut && h < state.heureFin){
+    /* Clic dans la sélection actuelle → reset à ce seul bloc */
+    state.heureDebut = h; state.heureFin = h + 1;
+  } else if (h === state.heureFin){
+    /* Extension vers l'avant (bloc adjacent suivant) */
+    state.heureFin = h + 1;
+  } else if (h === state.heureDebut - 1){
+    /* Extension vers l'arrière (bloc adjacent précédent) */
+    state.heureDebut = h;
+  } else {
+    /* Bloc non adjacent → nouvelle sélection d'1 bloc */
+    state.heureDebut = h; state.heureFin = h + 1;
   }
   rafraichirSelectionCreneaux();
 }
@@ -2014,10 +2018,11 @@ function rafraichirSelectionCreneaux(){
     el.classList.remove('slot--start','slot--inrange','slot--end');
     const h = +el.dataset.heure;
     if (state.heureDebut!==null && state.heureFin!==null){
-      if (h===state.heureDebut) el.classList.add('slot--start');
-      else if (h===state.heureFin) el.classList.add('slot--end');
-      else if (h>state.heureDebut && h<state.heureFin) el.classList.add('slot--inrange');
-    } else if (state.heureDebut!==null && h===state.heureDebut) el.classList.add('slot--start');
+      if (h===state.heureDebut && state.heureFin-state.heureDebut===1) el.classList.add('slot--start');
+      else if (h===state.heureDebut) el.classList.add('slot--start');
+      else if (h===state.heureFin-1) el.classList.add('slot--end');
+      else if (h>state.heureDebut && h<state.heureFin-1) el.classList.add('slot--inrange');
+    }
   });
   $b('#to-step-3').disabled = !(state.heureDebut!==null && state.heureFin!==null);
 }
