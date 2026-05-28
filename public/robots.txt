@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Ne pas indexer le panneau d'administration
+Disallow: /admin.html
+Disallow: /admin
+
+# Ne pas indexer les API serverless
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://kobo-bdx.com/sitemap.xml
