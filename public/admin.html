@@ -699,6 +699,7 @@ let currentClientId=null;
 /* ═══════════════════════════════════════════════════════
    SÉCURITÉ
 ═══════════════════════════════════════════════════════ */
+const VALID_TOKEN='2d4d7f2f8844274b292e7b189cad9fe2c4c942da78d90412a7c5189d74563bec';
 const MAX_TENTATIVES=5, DUREE_BLOCAGE=15*60*1000, DUREE_SESSION=30*60*1000, SEUIL_AVERT=5*60*1000;
 let _timerLogout=null, _timerAvert=null;
 function _bf(){ try{ return JSON.parse(localStorage.getItem('_kba')||'{"n":0,"u":0}') }catch(e){ return {n:0,u:0} } }
@@ -724,13 +725,12 @@ async function tryToken(t){
   if(!t) return;
   if(estBloque()){ appliquerBlocage(); return }
   $('#gate-btn').disabled=true; $('#gate-btn').textContent='Vérification…'; $('#gate-err').textContent='';
-  try {
-    const r=await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(t)}&du=${isoDate(currentWeek)}&au=${isoDate(addDays(currentWeek,6))}`);
-    if(r.status===401){ enregistrerEchec() }
-    else if(!r.ok){ $('#gate-err').textContent='Erreur serveur.' }
-    else { effacerBrute(); token=t; saveSession(t); entrerApp(); const data=await r.json(); appliquerDonnees(data) }
-  } catch(err){ effacerBrute(); token=t; saveSession(t); entrerApp(); chargerSemaine(currentWeek) }
-  finally { if($('#gate-btn').textContent==='Vérification…'){ $('#gate-btn').textContent='Accéder →'; $('#gate-btn').disabled=estBloque() } }
+  // Vérification locale — le token doit correspondre exactement
+  if(t !== VALID_TOKEN){ enregistrerEchec(); $('#gate-btn').textContent='Accéder →'; $('#gate-btn').disabled=estBloque(); return }
+  // Token valide → accès immédiat
+  effacerBrute(); token=t; saveSession(t); entrerApp(); $('#gate-btn').textContent='Accéder →';
+  // Chargement des réservations en arrière-plan
+  chargerSemaine(currentWeek);
 }
 
 function entrerApp(){
