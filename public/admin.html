@@ -4,1167 +4,1318 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" type="image/png" href="favicon.png"/>
-<link rel="shortcut icon" href="favicon.png"/>
-<title>Admin — Kōbō Le Lieu</title>
+<title>CRM — Kōbō Le Lieu</title>
 <meta name="robots" content="noindex,nofollow">
-<!-- ===== SÉCURITÉ ===== -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';">
 <meta http-equiv="Referrer-Policy" content="no-referrer">
 <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=()">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caprasimo&display=swap" rel="stylesheet">
-
 <style>
-/* ============================================================================
-   ADMIN — Interface back-office sobre et dense
-   On change volontairement la DA par rapport au public :
-   typographie plus neutre (Inter), interface dense, gris/blanc
-   ============================================================================ */
 :root{
-  --blue: #01357b;
-  --blue-soft: #e6ecf6;
-  --leaf: #4a7c3a;
-  --tomato: #e6543c;
-  --sun: #f4c542;
-  --ink: #1a1612;
-  --paper: #f8f7f4;
-  --rule: #e3e0d8;
-  --gray: #6b6660;
-  --display: "Caprasimo", serif;
-  --body: "Inter", system-ui, sans-serif;
+  --sw: 230px;
+  --blue: #01357b; --blue-lt: #dbeafe;
+  --green: #16a34a; --green-lt: #dcfce7;
+  --amber: #d97706; --amber-lt: #fef3c7;
+  --red: #dc2626;   --red-lt: #fee2e2;
+  --purple: #7c3aed; --purple-lt: #f3e8ff;
+  --slate: #1e293b; --slate2: #334155;
+  --paper: #f8fafc; --card: #ffffff;
+  --rule: #e2e8f0; --muted: #94a3b8; --ink: #0f172a;
+  --tomato: #e6543c; --sun: #f4c542; --leaf: #4a7c3a;
+  --display: "Caprasimo",serif; --body: "Inter",system-ui,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{
-  font-family: var(--body);
-  background: var(--paper);
-  color: var(--ink);
-  font-size: 14px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-a{color:inherit;text-decoration:none}
-button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
-svg{display:block}
-input,select{font:inherit}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);font-size:14px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none} button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select,textarea{font:inherit} svg{display:block}
 
-/* ============================================================================
-   ÉCRAN BLOCAGE TOKEN
-   ============================================================================ */
-.gate{
-  position: fixed; inset: 0;
-  background: var(--paper);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 50;
-}
-.gate__card{
-  background: #fff;
-  padding: 40px;
-  border-radius: 12px;
-  border: 1px solid var(--rule);
-  max-width: 380px; width: 92%;
-  text-align: center;
-}
-.gate__icon{
-  width: 56px; height: 56px;
-  margin: 0 auto 20px;
-  background: var(--ink); color: var(--paper);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-}
-.gate__icon svg{width: 24px; height: 24px; stroke: currentColor; stroke-width: 2; fill: none}
-.gate h1{font-family: var(--display); font-size: 28px; margin-bottom: 8px}
-.gate p{color: var(--gray); margin-bottom: 24px; font-size: 14px}
-.gate input{
-  width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid var(--rule);
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 12px;
-}
-.gate input:focus{outline: none; border-color: var(--blue)}
-.gate button{
-  width: 100%;
-  padding: 12px;
-  background: var(--blue); color: #fff;
-  border-radius: 8px;
-  font-weight: 600;
-}
-.gate__err{color: var(--tomato); font-size: 12px; margin-top: 6px; min-height: 16px}
+/* ── GATE ── */
+.gate{position:fixed;inset:0;background:var(--paper);display:flex;align-items:center;justify-content:center;z-index:50}
+.gate__card{background:#fff;padding:40px;border-radius:16px;border:1px solid var(--rule);max-width:380px;width:92%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.gate__icon{width:56px;height:56px;margin:0 auto 20px;background:var(--ink);color:var(--paper);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.gate__icon svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none}
+.gate h1{font-family:var(--display);font-size:26px;margin-bottom:6px}
+.gate p{color:var(--muted);margin-bottom:24px;font-size:13px;line-height:1.5}
+.gate input{width:100%;padding:12px 14px;border:1.5px solid var(--rule);border-radius:10px;font-size:14px;margin-bottom:12px}
+.gate input:focus{outline:none;border-color:var(--blue)}
+.gate button{width:100%;padding:12px;background:var(--blue);color:#fff;border-radius:10px;font-weight:600;font-size:14px}
+.gate__err{color:var(--red);font-size:12px;margin-top:6px;min-height:16px}
 .gate input:disabled,.gate button:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
-.gate__attempts{font-size:11px;color:var(--gray);margin-top:4px}
 
-/* ============================================================================
-   LAYOUT
-   ============================================================================ */
-.app{display: none; min-height: 100vh; flex-direction: column}
-.app.ready{display: flex}
+/* ── LAYOUT ── */
+.app{display:none;min-height:100vh}
+.app.ready{display:grid;grid-template-columns:var(--sw) 1fr;min-height:100vh}
 
-.head{
-  background: #fff;
-  border-bottom: 1px solid var(--rule);
-  padding: 14px 24px;
-  display: flex; align-items: center; gap: 24px;
-  position: sticky; top: 0; z-index: 10;
-}
-.head__brand{
-  display: flex; align-items: center; gap: 8px;
-}
-.head__brand img{ height: 32px; width: auto; display: block; }
-.head__brand-dot{
-  width: 8px; height: 8px; border-radius: 50%; background: var(--tomato); flex-shrink: 0;
-  animation: bounce 2s ease-in-out infinite;
-}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.head__sep{width: 1px; height: 24px; background: var(--rule)}
-.head__title{font-weight: 600; font-size: 14px; color: var(--gray); text-transform: uppercase; letter-spacing: .08em}
-.head__right{margin-left: auto; display: flex; gap: 8px; align-items: center}
+/* ── SIDEBAR ── */
+.sidebar{grid-row:1/-1;background:var(--slate);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;overflow-x:hidden}
+.sb-brand{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
+.sb-brand img{height:26px;filter:brightness(0) invert(1)}
+.sb-brand-dot{width:7px;height:7px;border-radius:50%;background:var(--tomato);flex-shrink:0;animation:sbounce 2s ease-in-out infinite}
+@keyframes sbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.sb-label{padding:18px 18px 6px;font-size:10px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.09em}
+.sb-nav{padding:6px 10px;flex:1}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:13px;font-weight:500;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;margin-bottom:1px;position:relative}
+.sb-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.sb-item.active{background:rgba(255,255,255,.13);color:#fff}
+.sb-item svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+.sb-item span{flex:1}
+.sb-badge{background:var(--red);color:#fff;min-width:18px;height:18px;border-radius:9px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.sb-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 10px}
+.sb-foot{padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;margin-top:auto}
+.sb-avatar{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.sb-foot-info{flex:1;overflow:hidden}
+.sb-foot-name{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-foot-role{font-size:11px;color:rgba(255,255,255,.35)}
+.sb-logout-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);transition:all .15s}
+.sb-logout-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.sb-logout-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.2;fill:none}
 
-.tab{
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 13px; font-weight: 500;
-  color: var(--gray);
-  transition: all .15s;
-}
-.tab--active{background: var(--ink); color: #fff}
-.tab:hover:not(.tab--active){background: rgba(0,0,0,.05)}
-/* Bouton déconnexion */
-.btn-logout{
-  display:flex;align-items:center;gap:6px;
-  padding:7px 14px;border-radius:999px;
-  font-size:13px;font-weight:600;
-  color:var(--tomato);border:1.5px solid rgba(230,84,60,.3);
-  transition:all .15s;
-}
-.btn-logout:hover{background:#fdecea;border-color:var(--tomato)}
-.btn-logout svg{stroke:currentColor;stroke-width:2.3;fill:none}
-/* Avertissement inactivité */
-.inactivity-warn{
-  position:fixed;bottom:24px;right:24px;
-  background:var(--sun);color:var(--ink);
-  padding:12px 20px;border-radius:8px;
-  font-size:13px;font-weight:600;
-  border:1.5px solid var(--ink);
-  display:none;align-items:center;gap:10px;
-  z-index:200;box-shadow:4px 4px 0 var(--ink);
-}
-.inactivity-warn svg{stroke:var(--ink);stroke-width:2.2;fill:none;flex-shrink:0}
+/* ── TOPBAR ── */
+.topbar{background:var(--card);border-bottom:1px solid var(--rule);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar__left{}
+.topbar__title{font-size:17px;font-weight:700}
+.topbar__sub{font-size:12px;color:var(--muted);margin-top:1px}
+.topbar__right{display:flex;align-items:center;gap:10px}
 
-/* ============================================================================
-   BARRE STATS / FILTRES
-   ============================================================================ */
-.stats-bar{
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1px;
-  background: var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-.stat{
-  background: #fff;
-  padding: 16px 20px;
-}
-.stat__label{font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px}
-.stat__value{font-family: var(--display); font-size: 24px; line-height: 1; color: var(--ink)}
-.stat--ca .stat__value{color: var(--leaf)}
-.stat--pending .stat__value{color: var(--sun)}
+/* ── MAIN ── */
+.main{padding:28px;overflow-y:auto;max-width:1400px}
+.page{display:none}
+.page.active{display:block}
 
-.toolbar{
-  padding: 14px 24px;
-  display: flex; align-items: center; gap: 12px;
-  background: #fff;
-  border-bottom: 1px solid var(--rule);
-}
-.toolbar__group{
-  display: flex; align-items: center;
-  background: var(--paper);
-  border-radius: 8px;
-  border: 1px solid var(--rule);
-  padding: 2px;
-}
-.toolbar__btn{
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px; font-weight: 500;
-  color: var(--gray);
-  transition: all .15s;
-}
-.toolbar__btn--active{background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.06)}
-.toolbar__date{
-  display: flex; align-items: center; gap: 8px;
-  font-weight: 600; font-size: 14px;
-  padding: 6px 14px;
-  background: #fff;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  text-transform: capitalize;
-}
-.toolbar__nav{
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--rule);
-  background: #fff;
-  display: flex; align-items: center; justify-content: center;
-}
-.toolbar__nav:hover{background: var(--paper)}
-.toolbar__nav svg{width: 14px; height: 14px; stroke: var(--ink); stroke-width: 2; fill: none}
-.toolbar__spacer{flex: 1}
-.toolbar__btn-ico{
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 14px;
-  background: #fff;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  font-size: 13px; font-weight: 500;
-}
-.toolbar__btn-ico:hover{background: var(--paper)}
-.toolbar__btn-ico svg{width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none}
+/* ── KPI ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.kpi__data{}
+.kpi__label{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:6px}
+.kpi__value{font-family:var(--display);font-size:28px;line-height:1;margin-bottom:4px}
+.kpi__delta{font-size:11px;font-weight:600}
+.kpi__delta--up{color:var(--green)} .kpi__delta--down{color:var(--red)} .kpi__delta--neutral{color:var(--muted)}
+.kpi__icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.kpi__icon svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none}
+.kpi__icon--blue{background:var(--blue-lt);color:#2563eb}
+.kpi__icon--green{background:var(--green-lt);color:var(--green)}
+.kpi__icon--amber{background:var(--amber-lt);color:var(--amber)}
+.kpi__icon--purple{background:var(--purple-lt);color:var(--purple)}
 
-/* ============================================================================
-   VUE PLANNING
-   ============================================================================ */
-.main{flex: 1; overflow: auto; padding: 24px}
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.g3{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:24px}
 
-.planning{
-  background: #fff;
-  border: 1px solid var(--rule);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.planning__head{
-  display: grid;
-  grid-template-columns: 64px repeat(7, 1fr);
-  border-bottom: 1px solid var(--rule);
-  background: var(--paper);
-}
-.planning__day-h{
-  padding: 12px 8px;
-  text-align: center;
-  border-left: 1px solid var(--rule);
-  font-size: 12px;
-}
-.planning__day-h:first-child{border-left: 0}
-.planning__day-h-name{color: var(--gray); text-transform: uppercase; letter-spacing: .05em; font-size: 10px}
-.planning__day-h-num{font-family: var(--display); font-size: 22px; line-height: 1.2; margin-top: 2px}
-.planning__day-h--today .planning__day-h-num{
-  display: inline-block;
-  background: var(--blue); color: #fff;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  line-height: 32px;
-}
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.card__head{padding:16px 20px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between}
+.card__title{font-size:14px;font-weight:600}
+.card__body{padding:20px}
 
-.planning__body{
-  display: grid;
-  grid-template-columns: 64px repeat(7, 1fr);
-  position: relative;
-}
-.planning__hours{
-  border-right: 1px solid var(--rule);
-}
-.planning__hour{
-  height: 56px;
-  padding: 6px 8px;
-  font-size: 11px;
-  color: var(--gray);
-  text-align: right;
-  border-top: 1px solid var(--rule);
-  font-variant-numeric: tabular-nums;
-}
-.planning__col{
-  border-left: 1px solid var(--rule);
-  position: relative;
-}
-.planning__col:first-child{border-left: 0}
-.planning__col-row{
-  height: 56px;
-  border-top: 1px solid var(--rule);
-}
-.planning__col--today{background: rgba(1,53,123,.03)}
-.planning__col--off{background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(0,0,0,.025) 6px 7px)}
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;padding:10px 16px;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;background:var(--paper);border-bottom:1px solid var(--rule);white-space:nowrap}
+.tbl td{padding:13px 16px;border-bottom:1px solid var(--rule);font-size:13px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tbody tr:hover td{background:#fafbfc;cursor:pointer}
+.tbl tbody tr.no-click:hover td{background:transparent;cursor:default}
 
-.event{
-  position: absolute;
-  left: 4px; right: 4px;
-  background: var(--blue);
-  color: #fff;
-  border-radius: 6px;
-  padding: 6px 8px;
-  font-size: 11px;
-  line-height: 1.3;
-  overflow: hidden;
-  cursor: pointer;
-  border-left: 3px solid var(--ink);
-  transition: transform .15s;
-  z-index: 2;
-}
-.event:hover{transform: scale(1.02); z-index: 3}
-.event--pending{
-  background: var(--sun); color: var(--ink);
-  border-left-color: #b58e1e;
-}
-.event--cancelled{
-  background: #e8e6e0; color: var(--gray);
-  text-decoration: line-through;
-  border-left-color: var(--gray);
-}
-.event__name{font-weight: 600; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis}
-.event__meta{opacity: .85; font-size: 10px}
+/* ── BADGE ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.badge--green{background:var(--green-lt);color:var(--green)}
+.badge--amber{background:var(--amber-lt);color:var(--amber)}
+.badge--red{background:var(--red-lt);color:var(--red)}
+.badge--blue{background:var(--blue-lt);color:#2563eb}
+.badge--gray{background:#f1f5f9;color:var(--muted)}
+.badge--purple{background:var(--purple-lt);color:var(--purple)}
 
-/* ============================================================================
-   VUE LISTE
-   ============================================================================ */
-.list-view{display: none}
-.list-view.show{display: block}
-.planning-view{display: block}
-.planning-view.hide{display: none}
+/* ── BTN ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;border:1.5px solid var(--rule);background:var(--card);transition:all .15s;white-space:nowrap}
+.btn:hover{background:var(--paper)}
+.btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+.btn--primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn--primary:hover{background:#021f4a;border-color:#021f4a}
+.btn--danger{background:var(--red);color:#fff;border-color:var(--red)}
+.btn--danger:hover{background:#b91c1c;border-color:#b91c1c}
+.btn--ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn--ghost:hover{background:var(--paper);color:var(--ink);border-color:var(--rule)}
+.btn--sm{padding:6px 12px;font-size:12px}
+.btn:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
 
-.list{
-  background: #fff;
-  border: 1px solid var(--rule);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.list__row{
-  display: grid;
-  grid-template-columns: 32px 110px 140px 120px 1fr 80px 100px 80px;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--rule);
-  font-size: 13px;
-  gap: 12px;
-  transition: background .15s;
-}
-.list__row:last-child{border-bottom: 0}
-.list__row:hover{background: var(--paper); cursor: pointer}
-.list__head{
-  background: var(--paper);
-  font-size: 11px;
-  color: var(--gray);
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  font-weight: 600;
-  padding: 10px 16px;
-}
-.list__head:hover{background: var(--paper); cursor: default}
-.list__status{
-  display: inline-block;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-}
-.list__status--confirmee{background: var(--leaf)}
-.list__status--en_attente{background: var(--sun)}
-.list__status--annulee{background: var(--gray)}
-.list__status--expiree{background: var(--rule)}
-.list__date{font-weight: 600; font-variant-numeric: tabular-nums}
-.list__client{font-weight: 500}
-.list__client small{color: var(--gray); font-weight: 400; display: block; font-size: 11px}
-.list__salle{
-  display: inline-flex; align-items: center; gap: 6px;
-  font-weight: 500;
-}
-.list__salle-dot{width: 8px; height: 8px; border-radius: 50%}
-.list__amount{font-family: var(--display); font-size: 16px; color: var(--blue); text-align: right}
-.list__amount--cancelled{color: var(--gray); text-decoration: line-through}
-.list__formule{font-size: 11px; color: var(--gray)}
-.list__arrow{color: var(--gray); justify-self: end}
+/* ── FORM ── */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1.5px solid var(--rule);border-radius:8px;font-size:14px;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue)}
+.field textarea{min-height:80px;resize:vertical}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-hint{font-size:11px;color:var(--muted);margin-top:4px}
 
-.empty{
-  padding: 60px 24px;
-  text-align: center;
-  color: var(--gray);
-  font-size: 14px;
-}
+/* ── MODAL ── */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;backdrop-filter:blur(4px)}
+.modal.open{display:flex}
+.modal__card{background:var(--card);border-radius:14px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto}
+.modal__card--wide{max-width:700px}
+.modal__head{padding:20px 24px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:1}
+.modal__title{font-size:17px;font-weight:700}
+.modal__close{width:32px;height:32px;border-radius:8px;background:var(--paper);display:flex;align-items:center;justify-content:center}
+.modal__close svg{width:14px;height:14px;stroke:var(--ink);stroke-width:2.5;fill:none}
+.modal__body{padding:24px}
+.modal__foot{padding:16px 24px;border-top:1px solid var(--rule);display:flex;justify-content:flex-end;gap:8px;background:var(--paper);border-radius:0 0 14px 14px}
 
-/* ============================================================================
-   MODALE DÉTAIL RÉSERVATION
-   ============================================================================ */
-.modal{
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.5);
-  display: none; align-items: center; justify-content: center;
-  z-index: 40;
-  padding: 20px;
-  backdrop-filter: blur(4px);
-}
-.modal.open{display: flex}
-.modal__card{
-  background: #fff;
-  border-radius: 12px;
-  max-width: 560px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-.modal__head{
-  padding: 24px 28px;
-  border-bottom: 1px solid var(--rule);
-  display: flex; justify-content: space-between; align-items: center;
-}
-.modal__title{font-family: var(--display); font-size: 22px}
-.modal__close{
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: var(--paper);
-  display: flex; align-items: center; justify-content: center;
-}
-.modal__close svg{width: 14px; height: 14px; stroke: var(--ink); stroke-width: 2.5; fill: none}
-.modal__body{padding: 24px 28px}
-.modal__chip{
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 11px; font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-  margin-bottom: 16px;
-}
-.modal__chip--confirmee{background: rgba(74,124,58,.15); color: var(--leaf)}
-.modal__chip--en_attente{background: rgba(244,197,66,.2); color: #8a6b16}
-.modal__chip--annulee{background: rgba(107,102,96,.15); color: var(--gray)}
-.modal__chip--expiree{background: rgba(107,102,96,.15); color: var(--gray)}
+/* ── CHART ── */
+.chart{display:flex;align-items:flex-end;gap:6px;height:100px}
+.chart-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.chart-track{flex:1;width:100%;background:var(--paper);border-radius:4px 4px 0 0;display:flex;align-items:flex-end;overflow:hidden;position:relative}
+.chart-fill{width:100%;background:var(--blue);border-radius:4px 4px 0 0;transition:height .5s cubic-bezier(.4,0,.2,1);min-height:2px}
+.chart-lbl{font-size:10px;color:var(--muted);text-align:center;white-space:nowrap}
 
-.modal__grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding: 16px;
-  background: var(--paper);
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-.modal__cell small{font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: .05em; display: block; margin-bottom: 2px}
-.modal__cell strong{font-weight: 600; font-size: 14px}
+/* ── ACTIVITY ── */
+.act-item{display:flex;align-items:flex-start;gap:12px;padding:12px 20px;border-bottom:1px solid var(--rule)}
+.act-item:last-child{border-bottom:0}
+.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.act-body{flex:1;min-width:0}
+.act-main{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.act-time{font-size:11px;color:var(--muted);flex-shrink:0;white-space:nowrap}
 
-.modal__field{margin-bottom: 14px}
-.modal__field label{font-size: 12px; color: var(--gray); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .04em; font-weight: 600}
-.modal__field input,.modal__field textarea{
-  width: 100%;
-  padding: 10px 12px;
-  border: 1.5px solid var(--rule);
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: inherit;
-}
-.modal__field input:focus,.modal__field textarea:focus{outline: none; border-color: var(--blue)}
-.modal__field textarea{min-height: 60px; resize: vertical}
+/* ── AVATAR ── */
+.av{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
 
-.modal__actions{
-  padding: 20px 28px;
-  border-top: 1px solid var(--rule);
-  display: flex; gap: 8px; justify-content: space-between;
-  background: var(--paper);
-}
-.btn{
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-size: 13px; font-weight: 600;
-  border: 1.5px solid var(--rule);
-  background: #fff;
-  display: inline-flex; align-items: center; gap: 6px;
-  transition: all .15s;
-}
-.btn:hover{background: var(--paper)}
-.btn--primary{background: var(--blue); color: #fff; border-color: var(--blue)}
-.btn--primary:hover{background: var(--ink); border-color: var(--ink)}
-.btn--danger{background: var(--tomato); color: #fff; border-color: var(--tomato)}
-.btn--danger:hover{background: #c53d28; border-color: #c53d28}
-.btn svg{width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none}
-.btn:disabled{opacity: .5; cursor: not-allowed}
+/* ── STATS MINI ── */
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule)}
+.stat-row:last-child{border-bottom:0}
+.stat-row__label{font-size:13px;color:var(--muted)}
+.stat-row__val{font-family:var(--display);font-size:18px}
 
-/* Toast notif */
-.toast{
-  position: fixed; bottom: 24px; left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--ink); color: #fff;
-  padding: 12px 20px;
-  border-radius: 999px;
-  font-size: 14px; font-weight: 500;
-  z-index: 60;
-  display: flex; align-items: center; gap: 10px;
-  transition: transform .3s cubic-bezier(.2,.8,.2,1);
-  box-shadow: 0 10px 30px rgba(0,0,0,.3);
-}
-.toast.show{transform: translateX(-50%) translateY(0)}
-.toast--success{background: var(--leaf)}
-.toast--error{background: var(--tomato)}
+/* ── OCCUPANCY BAR ── */
+.occ-bar{height:8px;background:var(--rule);border-radius:4px;overflow:hidden;margin-top:6px}
+.occ-fill{height:100%;background:var(--blue);border-radius:4px;transition:width .6s}
 
-@media (max-width: 900px){
-  .stats-bar{grid-template-columns: repeat(2, 1fr)}
-  .planning__head, .planning__body{grid-template-columns: 50px repeat(7, 1fr)}
-  .list__row{grid-template-columns: 24px 90px 1fr 80px; gap: 8px; font-size: 12px}
-  .list__head .list__col-formule, .list__head .list__col-salle, .list__head .list__col-creneau,
-  .list__col-formule, .list__col-salle, .list__col-creneau{display: none}
+/* ── PROMO CODE ── */
+.code-pill{font-family:monospace;font-size:14px;font-weight:700;background:var(--paper);border:1.5px solid var(--rule);padding:4px 10px;border-radius:6px;letter-spacing:.08em;display:inline-block}
+.copy-btn{background:none;border:none;padding:4px;border-radius:4px;color:var(--muted);cursor:pointer;transition:color .15s}
+.copy-btn:hover{color:var(--blue)}
+.copy-btn svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none}
+
+/* ── MESSAGE ── */
+.msg-preview{max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:12px}
+.msg-unread .msg-preview{color:var(--ink);font-weight:500}
+.msg-unread td{font-weight:600}
+
+/* ── PLANNING (conservé) ── */
+.planning{background:var(--card);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.planning__head{display:grid;grid-template-columns:64px repeat(7,1fr);border-bottom:1px solid var(--rule);background:var(--paper)}
+.planning__day-h{padding:12px 8px;text-align:center;border-left:1px solid var(--rule);font-size:12px}
+.planning__day-h:first-child{border-left:0}
+.planning__day-h-name{color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-size:10px}
+.planning__day-h-num{font-family:var(--display);font-size:22px;line-height:1.2;margin-top:2px}
+.planning__day-h--today .planning__day-h-num{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);color:#fff;width:32px;height:32px;border-radius:50%}
+.planning__body{display:grid;grid-template-columns:64px repeat(7,1fr);position:relative}
+.planning__hours{border-right:1px solid var(--rule)}
+.planning__hour{height:56px;padding:6px 8px;font-size:11px;color:var(--muted);text-align:right;border-top:1px solid var(--rule);font-variant-numeric:tabular-nums}
+.planning__col{border-left:1px solid var(--rule);position:relative}
+.planning__col:first-child{border-left:0}
+.planning__col-row{height:56px;border-top:1px solid var(--rule)}
+.planning__col--today{background:rgba(1,53,123,.03)}
+.planning__col--off{background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(0,0,0,.025) 6px 7px)}
+.event{position:absolute;left:4px;right:4px;background:var(--blue);color:#fff;border-radius:6px;padding:6px 8px;font-size:11px;line-height:1.3;overflow:hidden;cursor:pointer;border-left:3px solid rgba(0,0,0,.2);transition:transform .15s;z-index:2}
+.event:hover{transform:scale(1.02);z-index:3}
+.event--pending{background:var(--sun);color:var(--ink);border-left-color:#b58e1e}
+.event--cancelled{background:#e8e6e0;color:var(--muted);text-decoration:line-through;border-left-color:var(--rule)}
+.event__name{font-weight:600;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.event__meta{opacity:.85;font-size:10px}
+
+/* ── TOOLBAR (réservations) ── */
+.toolbar{padding:12px 20px;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--rule);border-radius:12px 12px 0 0;border-bottom:0;margin-bottom:0}
+.toolbar__nav{width:32px;height:32px;border-radius:8px;border:1px solid var(--rule);background:var(--card);display:flex;align-items:center;justify-content:center}
+.toolbar__nav:hover{background:var(--paper)}
+.toolbar__nav svg{width:14px;height:14px;stroke:var(--ink);stroke-width:2;fill:none}
+.toolbar__date{font-weight:600;font-size:14px}
+.toolbar__spacer{flex:1}
+.toolbar__btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid var(--rule);border-radius:8px;background:var(--card);font-size:13px;font-weight:500}
+.toolbar__btn:hover{background:var(--paper)}
+.toolbar__btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+.tab-group{display:flex;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:2px;gap:2px}
+.tab{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;color:var(--muted);transition:all .15s}
+.tab.active{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.tab:hover:not(.active){color:var(--ink)}
+
+/* ── LIST VIEW (réservations) ── */
+.resa-list{background:var(--card);border:1px solid var(--rule);border-radius:0 0 12px 12px;overflow:hidden}
+
+/* ── MODAL RESA (conservé) ── */
+.modal__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px;background:var(--paper);border-radius:10px;margin-bottom:20px}
+.modal__cell small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px}
+.modal__cell strong{font-weight:600;font-size:14px}
+.modal__chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:16px}
+.modal__chip--confirmee{background:var(--green-lt);color:var(--green)}
+.modal__chip--en_attente{background:var(--amber-lt);color:var(--amber)}
+.modal__chip--annulee,.modal__chip--expiree{background:#f1f5f9;color:var(--muted)}
+.modal__field{margin-bottom:14px}
+.modal__field label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.modal__field input,.modal__field textarea{width:100%;padding:10px 12px;border:1.5px solid var(--rule);border-radius:8px;font-size:14px;font-family:inherit}
+.modal__field input:focus,.modal__field textarea:focus{outline:none;border-color:var(--blue)}
+.modal__field textarea{min-height:60px;resize:vertical}
+
+/* ── INACTIVITY / TOAST ── */
+.inactivity-warn{position:fixed;bottom:24px;right:24px;background:var(--amber-lt);color:#92400e;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;border:1.5px solid var(--amber);display:none;align-items:center;gap:10px;z-index:200;box-shadow:4px 4px 0 var(--amber)}
+.inactivity-warn svg{stroke:currentColor;stroke-width:2.2;fill:none;flex-shrink:0}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:500;z-index:200;display:flex;align-items:center;gap:10px;transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast--success{background:var(--green)} .toast--error{background:var(--red)}
+
+/* ── EMPTY ── */
+.empty-state{text-align:center;padding:60px 24px;color:var(--muted)}
+.empty-state svg{width:36px;height:36px;margin:0 auto 12px;stroke:currentColor;stroke-width:1.5;fill:none}
+.empty-state p{font-size:14px;font-weight:500}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  :root{--sw:66px}
+  .sb-label,.sb-item span,.sb-foot-info{display:none}
+  .sb-item{justify-content:center}
+  .sb-badge{position:absolute;top:6px;right:6px;min-width:14px;height:14px;font-size:9px}
+  .sb-foot{justify-content:center}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .g2,.g3{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .main{padding:16px}
 }
 </style>
 </head>
 <body>
 
-<!-- ===================== ÉCRAN DE BLOCAGE ===================== -->
+<!-- GATE -->
 <div class="gate" id="gate">
   <div class="gate__card">
-    <div class="gate__icon">
-      <svg viewBox="0 0 24 24"><path d="M12 15v3M6 11V8a6 6 0 1112 0v3"/><rect x="4" y="11" width="16" height="11" rx="2"/></svg>
-    </div>
-    <h1>Accès admin</h1>
-    <p>Saisissez le token d'accès, ou utilisez le lien complet reçu par email.</p>
+    <div class="gate__icon"><svg viewBox="0 0 24 24"><path d="M12 15v3M6 11V8a6 6 0 1112 0v3"/><rect x="4" y="11" width="16" height="11" rx="2"/></svg></div>
+    <h1>Kōbō CRM</h1>
+    <p>Saisissez le token d'accès ou utilisez le lien envoyé par email.</p>
     <input type="password" id="gate-input" placeholder="Token d'accès" autocomplete="off">
-    <button id="gate-btn">Accéder</button>
+    <button id="gate-btn">Accéder →</button>
     <div class="gate__err" id="gate-err"></div>
   </div>
 </div>
 
-<!-- ===================== APP ===================== -->
+<!-- APP -->
 <div class="app" id="app">
 
-  <header class="head">
-    <div class="head__brand">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">
       <img src="kobobleu.png" alt="Kōbō">
-      <span class="head__brand-dot"></span>
+      <span class="sb-brand-dot"></span>
     </div>
-    <div class="head__sep"></div>
-    <div class="head__title">Administration des réservations</div>
-    <div class="head__right">
-      <button class="tab tab--active" data-view="planning">Planning</button>
-      <button class="tab" data-view="liste">Liste</button>
-      <div class="head__sep"></div>
-      <button class="btn-logout" id="btn-logout">
-        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Déconnexion
+    <div class="sb-label">Menu principal</div>
+    <nav class="sb-nav">
+      <div class="sb-item active" data-page="dashboard">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Tableau de bord</span>
+      </div>
+      <div class="sb-item" data-page="reservations">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Réservations</span>
+      </div>
+      <div class="sb-item" data-page="clients">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>Clients</span>
+      </div>
+      <div class="sb-item" data-page="promos">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        <span>Codes promo</span>
+      </div>
+      <div class="sb-item" data-page="messages">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span>Messages</span>
+        <span class="sb-badge" id="sb-msg-badge" style="display:none">0</span>
+      </div>
+      <div class="sb-divider"></div>
+      <a href="kobo-lieu.html" class="sb-item" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <span>Voir le site</span>
+      </a>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-avatar">A</div>
+      <div class="sb-foot-info">
+        <div class="sb-foot-name">Admin</div>
+        <div class="sb-foot-role">Kōbō Le Lieu</div>
+      </div>
+      <button class="sb-logout-btn" id="btn-logout" title="Déconnexion">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </button>
     </div>
-  </header>
-  <!-- Avertissement inactivité -->
-  <div class="inactivity-warn" id="inactivity-warn">
-    <svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    Déconnexion auto dans 5 min — bougez la souris pour rester connecté
-  </div>
+  </aside>
 
-  <!-- Stats -->
-  <div class="stats-bar">
-    <div class="stat">
-      <div class="stat__label">Total période</div>
-      <div class="stat__value" id="s-total">—</div>
-    </div>
-    <div class="stat">
-      <div class="stat__label">Confirmées</div>
-      <div class="stat__value" id="s-conf">—</div>
-    </div>
-    <div class="stat stat--pending">
-      <div class="stat__label">En attente</div>
-      <div class="stat__value" id="s-pend">—</div>
-    </div>
-    <div class="stat">
-      <div class="stat__label">Annulées</div>
-      <div class="stat__value" id="s-canc">—</div>
-    </div>
-    <div class="stat stat--ca">
-      <div class="stat__label">CA confirmé</div>
-      <div class="stat__value" id="s-ca">—</div>
-    </div>
-  </div>
+  <!-- RIGHT SIDE -->
+  <div style="display:flex;flex-direction:column;min-height:100vh;overflow:hidden">
 
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <button class="toolbar__nav" id="nav-prev" aria-label="Précédent">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <div class="toolbar__date" id="period-label">—</div>
-    <button class="toolbar__nav" id="nav-next" aria-label="Suivant">
-      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-    <button class="toolbar__btn-ico" id="nav-today">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-      Aujourd'hui
-    </button>
-    <div class="toolbar__spacer"></div>
-    <button class="toolbar__btn-ico" id="btn-refresh">
-      <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-3-7M21 4v6h-6"/></svg>
-      Actualiser
-    </button>
-  </div>
-
-  <main class="main">
-    <!-- Vue planning -->
-    <div class="planning-view" id="view-planning">
-      <div class="planning">
-        <div class="planning__head" id="planning-head"></div>
-        <div class="planning__body" id="planning-body"></div>
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar__left">
+        <div class="topbar__title" id="topbar-title">Tableau de bord</div>
+        <div class="topbar__sub" id="topbar-sub">Vue d'ensemble de l'activité</div>
       </div>
+      <div class="topbar__right">
+        <button class="btn btn--ghost btn--sm" id="btn-refresh-top">
+          <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-3-7M21 4v6h-6"/></svg>
+          Actualiser
+        </button>
+      </div>
+    </header>
+
+    <div class="inactivity-warn" id="inactivity-warn">
+      <svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Déconnexion auto dans 5 min
     </div>
 
-    <!-- Vue liste -->
-    <div class="list-view" id="view-liste">
-      <div class="list">
-        <div class="list__row list__head">
-          <div></div>
-          <div>Date</div>
-          <div>Créneau</div>
-          <div class="list__col-salle">Salle</div>
-          <div>Client</div>
-          <div class="list__col-formule">Formule</div>
-          <div style="text-align:right">Montant</div>
-          <div></div>
+    <!-- PAGES -->
+    <div class="main" id="main-content">
+
+      <!-- ═══════════════ DASHBOARD ═══════════════ -->
+      <div class="page active" id="page-dashboard">
+        <div class="kpi-grid" id="kpi-grid">
+          <div class="kpi">
+            <div class="kpi__data"><div class="kpi__label">CA ce mois</div><div class="kpi__value" id="kpi-ca">—</div><div class="kpi__delta kpi__delta--neutral" id="kpi-ca-delta">—</div></div>
+            <div class="kpi__icon kpi__icon--green"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__data"><div class="kpi__label">Réservations semaine</div><div class="kpi__value" id="kpi-week">—</div><div class="kpi__delta" id="kpi-week-delta">—</div></div>
+            <div class="kpi__icon kpi__icon--blue"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__data"><div class="kpi__label">Taux d'occupation</div><div class="kpi__value" id="kpi-occ">—</div><div class="kpi__delta kpi__delta--neutral" id="kpi-occ-delta">—</div></div>
+            <div class="kpi__icon kpi__icon--amber"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi__data"><div class="kpi__label">Clients total</div><div class="kpi__value" id="kpi-clients">—</div><div class="kpi__delta kpi__delta--neutral" id="kpi-clients-delta">—</div></div>
+            <div class="kpi__icon kpi__icon--purple"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          </div>
         </div>
-        <div id="list-rows"></div>
+
+        <div class="g3">
+          <div class="card" style="margin-bottom:0">
+            <div class="card__head">
+              <div class="card__title">CA des 7 derniers jours</div>
+              <span class="badge badge--blue" id="chart-total-label">—</span>
+            </div>
+            <div class="card__body">
+              <div class="chart" id="revenue-chart"></div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:0">
+            <div class="card__head"><div class="card__title">Salles</div></div>
+            <div class="card__body" style="padding-top:12px">
+              <div class="stat-row">
+                <span class="stat-row__label">🌿 Canopée</span>
+                <div>
+                  <div class="stat-row__val" id="s-canopee">—</div>
+                  <div class="occ-bar"><div class="occ-fill" id="s-canopee-bar" style="width:0%"></div></div>
+                </div>
+              </div>
+              <div class="stat-row">
+                <span class="stat-row__label">🎨 Majorelle</span>
+                <div>
+                  <div class="stat-row__val" id="s-majorelle">—</div>
+                  <div class="occ-bar"><div class="occ-fill" id="s-majorelle-bar" style="width:0%;background:#7c3aed"></div></div>
+                </div>
+              </div>
+              <div class="stat-row" style="border:0;margin-top:8px">
+                <span class="stat-row__label" style="font-size:12px;color:var(--muted)">En attente de paiement</span>
+                <span class="badge badge--amber" id="s-pending-count">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head">
+            <div class="card__title">Activité récente</div>
+            <button class="btn btn--ghost btn--sm" onclick="switchPage('reservations')">Tout voir →</button>
+          </div>
+          <div id="recent-activity"></div>
+        </div>
       </div>
-    </div>
-  </main>
 
-</div>
+      <!-- ═══════════════ RÉSERVATIONS ═══════════════ -->
+      <div class="page" id="page-reservations">
+        <div class="toolbar">
+          <button class="toolbar__nav" id="nav-prev"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="toolbar__date" id="period-label">—</div>
+          <button class="toolbar__nav" id="nav-next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+          <button class="toolbar__btn" id="nav-today">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Aujourd'hui
+          </button>
+          <div class="toolbar__spacer"></div>
+          <div class="tab-group">
+            <button class="tab active" data-rview="planning">Planning</button>
+            <button class="tab" data-rview="liste">Liste</button>
+          </div>
+          <button class="toolbar__btn" id="btn-refresh">
+            <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-3-7M21 4v6h-6"/></svg>Actualiser
+          </button>
+        </div>
+        <div class="planning" id="view-planning" style="border-radius:0 0 12px 12px">
+          <div class="planning__head" id="planning-head"></div>
+          <div class="planning__body" id="planning-body"></div>
+        </div>
+        <div class="resa-list" id="view-liste" style="display:none">
+          <table class="tbl">
+            <thead><tr>
+              <th style="width:32px"></th>
+              <th>Date</th><th>Créneau</th><th>Salle</th><th>Client</th><th>Formule</th><th style="text-align:right">Montant</th><th></th>
+            </tr></thead>
+            <tbody id="list-rows"></tbody>
+          </table>
+        </div>
+      </div>
 
-<!-- ===================== MODALE DÉTAIL ===================== -->
-<div class="modal" id="modal">
+      <!-- ═══════════════ CLIENTS ═══════════════ -->
+      <div class="page" id="page-clients">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div>
+            <input type="text" id="client-search" placeholder="🔍  Rechercher un client…" style="padding:9px 14px;border:1.5px solid var(--rule);border-radius:8px;font-size:13px;width:280px">
+          </div>
+          <span class="badge badge--gray" id="clients-count">0 client</span>
+        </div>
+        <div class="card">
+          <table class="tbl" id="clients-table">
+            <thead><tr>
+              <th style="width:40px"></th>
+              <th>Client</th><th>Email</th><th>Réservations</th><th style="text-align:right">CA total</th><th>Dernière résa</th><th>Tag</th><th></th>
+            </tr></thead>
+            <tbody id="clients-rows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════════════ CODES PROMO ═══════════════ -->
+      <div class="page" id="page-promos">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div>
+            <p style="font-size:13px;color:var(--muted)">Gérez vos codes de réduction. Ils sont appliqués lors de la réservation.</p>
+          </div>
+          <button class="btn btn--primary" id="btn-new-promo">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouveau code
+          </button>
+        </div>
+        <div class="card">
+          <table class="tbl" id="promos-table">
+            <thead><tr>
+              <th>Code</th><th>Remise</th><th>Validité</th><th>Utilisations</th><th>Min. commande</th><th>Statut</th><th></th>
+            </tr></thead>
+            <tbody id="promos-rows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════════════ MESSAGES ═══════════════ -->
+      <div class="page" id="page-messages">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div class="tab-group">
+            <button class="tab active" data-mfilter="all">Tous</button>
+            <button class="tab" data-mfilter="nouveau">Nouveaux</button>
+            <button class="tab" data-mfilter="lu">Lus</button>
+          </div>
+          <span class="badge badge--red" id="msg-new-count" style="display:none">0 nouveau</span>
+        </div>
+        <div class="card">
+          <table class="tbl">
+            <thead><tr>
+              <th style="width:8px"></th>
+              <th>De</th><th>Sujet / aperçu</th><th>Date</th><th>Statut</th><th></th>
+            </tr></thead>
+            <tbody id="messages-rows"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /right side -->
+</div><!-- /app -->
+
+<!-- MODAL RÉSERVATION -->
+<div class="modal" id="modal-resa">
   <div class="modal__card">
     <div class="modal__head">
       <div class="modal__title">Réservation</div>
-      <button class="modal__close" id="modal-close">
-        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
+      <button class="modal__close" id="modal-resa-close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
-    <div class="modal__body" id="modal-body"></div>
-    <div class="modal__actions">
-      <button class="btn btn--danger" id="modal-cancel">
+    <div class="modal__body" id="modal-resa-body"></div>
+    <div class="modal__foot" id="modal-resa-foot">
+      <button class="btn btn--danger" id="modal-cancel" style="margin-right:auto">
         <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
         Annuler & rembourser
       </button>
+      <button class="btn" id="modal-resa-close2">Fermer</button>
       <button class="btn btn--primary" id="modal-save">
-        <svg viewBox="0 0 24 24"><path d="M5 13l5 5L20 6"/></svg>
-        Enregistrer
+        <svg viewBox="0 0 24 24"><path d="M5 13l5 5L20 6"/></svg>Enregistrer
       </button>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
+<!-- MODAL CLIENT -->
+<div class="modal" id="modal-client">
+  <div class="modal__card modal__card--wide">
+    <div class="modal__head">
+      <div class="modal__title" id="mc-title">Client</div>
+      <button class="modal__close" id="mc-close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="modal__body" id="mc-body"></div>
+    <div class="modal__foot">
+      <button class="btn" id="mc-close2">Fermer</button>
+      <button class="btn btn--primary" id="mc-save">
+        <svg viewBox="0 0 24 24"><path d="M5 13l5 5L20 6"/></svg>Sauver note
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PROMO -->
+<div class="modal" id="modal-promo">
+  <div class="modal__card">
+    <div class="modal__head">
+      <div class="modal__title" id="mp-title">Nouveau code promo</div>
+      <button class="modal__close" id="mp-close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="modal__body">
+      <div class="field">
+        <label>Code <span style="color:var(--muted);font-weight:400;text-transform:none">(majuscules, chiffres, tirets)</span></label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="mp-code" placeholder="EX: BIENVENUE20" style="text-transform:uppercase;letter-spacing:.06em;font-weight:700">
+          <button class="btn btn--ghost btn--sm" id="mp-gen" title="Générer aléatoirement">
+            <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Type de remise</label>
+          <select id="mp-type">
+            <option value="percent">Pourcentage (%)</option>
+            <option value="fixed">Montant fixe (€)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Valeur</label>
+          <input type="number" id="mp-value" placeholder="20" min="1" max="100">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Valide du</label>
+          <input type="date" id="mp-from">
+        </div>
+        <div class="field">
+          <label>Valide jusqu'au</label>
+          <input type="date" id="mp-until">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Nb max d'utilisations</label>
+          <input type="number" id="mp-maxuses" placeholder="Illimité" min="1">
+          <div class="field-hint">Laisser vide = illimité</div>
+        </div>
+        <div class="field">
+          <label>Montant min. de résa (€)</label>
+          <input type="number" id="mp-min" placeholder="0" min="0">
+        </div>
+      </div>
+      <div class="field">
+        <label>Note interne</label>
+        <textarea id="mp-desc" placeholder="Usage interne uniquement…"></textarea>
+      </div>
+    </div>
+    <div class="modal__foot">
+      <button class="btn btn--danger btn--sm" id="mp-delete" style="margin-right:auto;display:none">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+        Supprimer
+      </button>
+      <button class="btn" id="mp-close2">Annuler</button>
+      <button class="btn btn--primary" id="mp-save">
+        <svg viewBox="0 0 24 24"><path d="M5 13l5 5L20 6"/></svg>Enregistrer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MESSAGE -->
+<div class="modal" id="modal-msg">
+  <div class="modal__card">
+    <div class="modal__head">
+      <div class="modal__title">Message</div>
+      <button class="modal__close" id="mm-close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="modal__body" id="mm-body"></div>
+    <div class="modal__foot">
+      <button class="btn btn--ghost btn--sm btn--danger" id="mm-delete" style="margin-right:auto">Supprimer</button>
+      <button class="btn" id="mm-close2">Fermer</button>
+      <button class="btn btn--primary" id="mm-reply">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Répondre par email
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-/* ============================================================================
-   ÉTAT & API
-   ============================================================================ */
+/* ═══════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════ */
 const API_BASE = '';
-let token = '';
-let view = 'planning';
-let currentWeek = startOfWeek(new Date()); // lundi de la semaine courante
-let allReservations = [];
-let modalResa = null;
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+function euros(c){ return (c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'}) }
+function eurosShort(c){ return Math.round(c/100)+'€' }
+function isoDate(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0') }
+function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x }
+function startOfWeek(d){ const x=new Date(d); x.setHours(0,0,0,0); const day=x.getDay(); x.setDate(x.getDate()+(day===0?-6:1-day)); return x }
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])) }
+function initials(nom){ return (nom||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) }
+const MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+const JOURS_COURT=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+function formatDateCourte(iso){ const d=new Date(iso+'T00:00:00'); return JOURS_COURT[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()] }
+function formatDateHeure(iso){ const d=new Date(iso); return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) }
+function labelStatut(s){ return {confirmee:'Confirmée',en_attente:'En attente',annulee:'Annulée',expiree:'Expirée'}[s]||s }
+function toast(msg,type='success'){ const t=$('#toast'); t.className='toast toast--'+type+' show'; t.textContent=msg; setTimeout(()=>t.classList.remove('show'),3000) }
 
-const JOURS_LONG = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-const JOURS_COURT = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-const MOIS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+let token='';
+let currentWeek=startOfWeek(new Date());
+let allReservations=[];
+let modalResa=null;
+let currentMsgFilter='all';
+let editingPromoId=null;
+let currentClientId=null;
 
-function $ (s) { return document.querySelector(s); }
-function $$ (s) { return document.querySelectorAll(s); }
-
-function startOfWeek(d){
-  const x = new Date(d); x.setHours(0,0,0,0);
-  const day = x.getDay();
-  const diff = (day === 0 ? -6 : 1 - day);
-  x.setDate(x.getDate() + diff);
-  return x;
-}
-function isoDate(d){
-  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-}
-function euros(c){ return (c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'}); }
-function eurosShort(c){ return Math.round(c/100) + '€'; }
-
-function toast(msg, type='success'){
-  const t = $('#toast');
-  t.className = 'toast toast--'+type+' show';
-  t.textContent = msg;
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-/* ============================================================================
-   SÉCURITÉ — Brute-force, session, auto-logout
-   ============================================================================ */
-const MAX_TENTATIVES  = 5;
-const DUREE_BLOCAGE   = 15 * 60 * 1000;   // 15 min
-const DUREE_SESSION   = 30 * 60 * 1000;   // 30 min d'inactivité
-const SEUIL_AVERT     = 5  * 60 * 1000;   // avertir 5 min avant
-
-let _timerLogout = null;
-let _timerAvert  = null;
-
-/* ——— Brute-force ——— */
-function _bf(){ try{ return JSON.parse(localStorage.getItem('_kba')||'{"n":0,"u":0}'); }catch(e){ return {n:0,u:0}; } }
-function _bfSet(d){ localStorage.setItem('_kba', JSON.stringify(d)); }
-function estBloque(){ return _bf().u > Date.now(); }
-function minRestantes(){ return Math.ceil((_bf().u - Date.now())/60000); }
-function enregistrerEchec(){
-  const d = _bf();
-  d.n = (d.n||0) + 1;
-  if(d.n >= MAX_TENTATIVES){
-    d.u = Date.now() + DUREE_BLOCAGE;
-    d.n = 0;
-    _bfSet(d);
-    appliquerBlocage();
-  } else {
-    _bfSet(d);
-    $('#gate-err').textContent = `Token invalide. Tentative ${d.n}/${MAX_TENTATIVES}.`;
-  }
-}
-function effacerBrute(){ _bfSet({n:0,u:0}); }
-function appliquerBlocage(){
-  $('#gate-input').disabled = true;
-  $('#gate-btn').disabled   = true;
-  const tick = () => {
-    if(!estBloque()){
-      $('#gate-input').disabled = false;
-      $('#gate-btn').disabled   = false;
-      $('#gate-err').textContent = '';
-      return;
-    }
-    $('#gate-err').textContent = `⛔ Accès bloqué ${minRestantes()} min — trop de tentatives échouées.`;
-    setTimeout(tick, 15000);
-  };
-  tick();
-}
-
-/* ——— Session sessionStorage ——— */
-function saveSession(t){
-  sessionStorage.setItem('_ks', t);
-  sessionStorage.setItem('_ks_t', String(Date.now()));
-}
-function loadSession(){
-  const t  = sessionStorage.getItem('_ks');
-  const ts = parseInt(sessionStorage.getItem('_ks_t')||'0', 10);
-  if(!t || (Date.now()-ts > DUREE_SESSION)){ clearSession(); return null; }
-  return t;
-}
-function clearSession(){
-  sessionStorage.removeItem('_ks');
-  sessionStorage.removeItem('_ks_t');
-}
-function touchSession(){
-  sessionStorage.setItem('_ks_t', String(Date.now()));
-}
-
-/* ——— Auto-logout inactivité ——— */
-function resetInactivity(){
-  clearTimeout(_timerLogout);
-  clearTimeout(_timerAvert);
-  touchSession();
-  $('#inactivity-warn').style.display = 'none';
-  _timerAvert  = setTimeout(()=>{ $('#inactivity-warn').style.display='flex'; }, DUREE_SESSION - SEUIL_AVERT);
-  _timerLogout = setTimeout(deconnexion, DUREE_SESSION);
-}
-function startInactivity(){
-  ['mousemove','keydown','click','scroll','touchstart'].forEach(ev =>
-    document.addEventListener(ev, resetInactivity, {passive:true})
-  );
-  resetInactivity();
-}
-
-/* ——— Déconnexion ——— */
-function deconnexion(){
-  clearTimeout(_timerLogout);
-  clearTimeout(_timerAvert);
-  clearSession();
-  token = '';
-  $('#app').classList.remove('ready');
-  $('#gate').style.display = 'flex';
-  $('#gate-input').value = '';
-  $('#gate-err').textContent = 'Session terminée. Reconnectez-vous.';
-  $('#inactivity-warn').style.display = 'none';
-}
+/* ═══════════════════════════════════════════════════════
+   SÉCURITÉ
+═══════════════════════════════════════════════════════ */
+const MAX_TENTATIVES=5, DUREE_BLOCAGE=15*60*1000, DUREE_SESSION=30*60*1000, SEUIL_AVERT=5*60*1000;
+let _timerLogout=null, _timerAvert=null;
+function _bf(){ try{ return JSON.parse(localStorage.getItem('_kba')||'{"n":0,"u":0}') }catch(e){ return {n:0,u:0} } }
+function _bfSet(d){ localStorage.setItem('_kba',JSON.stringify(d)) }
+function estBloque(){ return _bf().u>Date.now() }
+function minRestantes(){ return Math.ceil((_bf().u-Date.now())/60000) }
+function enregistrerEchec(){ const d=_bf(); d.n=(d.n||0)+1; if(d.n>=MAX_TENTATIVES){d.u=Date.now()+DUREE_BLOCAGE;d.n=0;_bfSet(d);appliquerBlocage()}else{_bfSet(d);$('#gate-err').textContent=`Token invalide. Tentative ${d.n}/${MAX_TENTATIVES}.`} }
+function effacerBrute(){ _bfSet({n:0,u:0}) }
+function appliquerBlocage(){ $('#gate-input').disabled=true; $('#gate-btn').disabled=true; const tick=()=>{ if(!estBloque()){$('#gate-input').disabled=false;$('#gate-btn').disabled=false;$('#gate-err').textContent='';return} $('#gate-err').textContent=`⛔ Accès bloqué ${minRestantes()} min.`; setTimeout(tick,15000) }; tick() }
+function saveSession(t){ sessionStorage.setItem('_ks',t); sessionStorage.setItem('_ks_t',String(Date.now())) }
+function loadSession(){ const t=sessionStorage.getItem('_ks'),ts=parseInt(sessionStorage.getItem('_ks_t')||'0',10); if(!t||(Date.now()-ts>DUREE_SESSION)){clearSession();return null} return t }
+function clearSession(){ sessionStorage.removeItem('_ks'); sessionStorage.removeItem('_ks_t') }
+function touchSession(){ sessionStorage.setItem('_ks_t',String(Date.now())) }
+function resetInactivity(){ clearTimeout(_timerLogout); clearTimeout(_timerAvert); touchSession(); $('#inactivity-warn').style.display='none'; _timerAvert=setTimeout(()=>{$('#inactivity-warn').style.display='flex'},DUREE_SESSION-SEUIL_AVERT); _timerLogout=setTimeout(deconnexion,DUREE_SESSION) }
+function startInactivity(){ ['mousemove','keydown','click','scroll','touchstart'].forEach(ev=>document.addEventListener(ev,resetInactivity,{passive:true})); resetInactivity() }
+function deconnexion(){ clearTimeout(_timerLogout); clearTimeout(_timerAvert); clearSession(); token=''; $('#app').classList.remove('ready'); $('#gate').style.display='flex'; $('#gate-input').value=''; $('#gate-err').textContent='Session terminée.'; $('#inactivity-warn').style.display='none' }
 
 $('#btn-logout').addEventListener('click', deconnexion);
-
-/* ——— Authentification ——— */
-$('#gate-btn').addEventListener('click', () => tryToken($('#gate-input').value.trim()));
-$('#gate-input').addEventListener('keydown', e => { if(e.key==='Enter') $('#gate-btn').click(); });
+$('#gate-btn').addEventListener('click', ()=>tryToken($('#gate-input').value.trim()));
+$('#gate-input').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#gate-btn').click() });
 
 async function tryToken(t){
   if(!t) return;
-  if(estBloque()){ appliquerBlocage(); return; }
-
-  $('#gate-btn').disabled = true;
-  $('#gate-btn').textContent = 'Vérification…';
-  $('#gate-err').textContent = '';
-
+  if(estBloque()){ appliquerBlocage(); return }
+  $('#gate-btn').disabled=true; $('#gate-btn').textContent='Vérification…'; $('#gate-err').textContent='';
   try {
-    const r = await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(t)}&du=${isoDate(currentWeek)}&au=${isoDate(addDays(currentWeek,6))}`);
-    if(r.status === 401){
-      enregistrerEchec();
-    } else if(!r.ok){
-      $('#gate-err').textContent = 'Erreur serveur. Réessayez.';
-    } else {
-      // ✅ Succès
-      effacerBrute();
-      token = t;
-      saveSession(t);
-      $('#gate').style.display = 'none';
-      $('#app').classList.add('ready');
-      startInactivity();
-      const data = await r.json();
-      appliquerDonnees(data);
-    }
-  } catch(err){
-    // API indisponible — mode démo
-    effacerBrute();
-    token = t;
-    saveSession(t);
-    $('#gate').style.display = 'none';
-    $('#app').classList.add('ready');
-    startInactivity();
-    chargerSemaine(currentWeek);
-  } finally {
-    if($('#gate-btn').textContent === 'Vérification…'){
-      $('#gate-btn').textContent = 'Accéder';
-      $('#gate-btn').disabled = estBloque();
-    }
-  }
+    const r=await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(t)}&du=${isoDate(currentWeek)}&au=${isoDate(addDays(currentWeek,6))}`);
+    if(r.status===401){ enregistrerEchec() }
+    else if(!r.ok){ $('#gate-err').textContent='Erreur serveur.' }
+    else { effacerBrute(); token=t; saveSession(t); entrerApp(); const data=await r.json(); appliquerDonnees(data) }
+  } catch(err){ effacerBrute(); token=t; saveSession(t); entrerApp(); chargerSemaine(currentWeek) }
+  finally { if($('#gate-btn').textContent==='Vérification…'){ $('#gate-btn').textContent='Accéder →'; $('#gate-btn').disabled=estBloque() } }
 }
 
-/* ——— Init ——— */
+function entrerApp(){
+  $('#gate').style.display='none';
+  $('#app').classList.add('ready');
+  startInactivity();
+  renderDashboard();
+  renderPromos();
+  renderMessages();
+}
+
 function init(){
   if(estBloque()) appliquerBlocage();
-
-  // Reprendre une session existante
-  const sessionToken = loadSession();
-  if(sessionToken){
-    token = sessionToken;
-    $('#gate').style.display = 'none';
-    $('#app').classList.add('ready');
-    startInactivity();
-    chargerSemaine(currentWeek);
-    return;
-  }
-
-  // Token dans l'URL → nettoyer immédiatement l'URL
-  const urlToken = new URLSearchParams(location.search).get('token');
-  if(urlToken){
-    history.replaceState({}, document.title, location.pathname);
-    tryToken(urlToken);
-  } else {
-    $('#gate').style.display = 'flex';
-  }
+  const sessionToken=loadSession();
+  if(sessionToken){ token=sessionToken; entrerApp(); chargerSemaine(currentWeek); return }
+  const urlToken=new URLSearchParams(location.search).get('token');
+  if(urlToken){ history.replaceState({},document.title,location.pathname); tryToken(urlToken) }
+  else { $('#gate').style.display='flex' }
 }
 
-/* ============================================================================
-   NAVIGATION TEMPORELLE
-   ============================================================================ */
-function addDays(d, n){ const x = new Date(d); x.setDate(x.getDate()+n); return x; }
-function refresh(){ chargerSemaine(currentWeek); }
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION PAGES
+═══════════════════════════════════════════════════════ */
+const PAGE_META={
+  dashboard:{title:'Tableau de bord',sub:'Vue d\'ensemble de l\'activité'},
+  reservations:{title:'Réservations',sub:'Planning et gestion des réservations'},
+  clients:{title:'Clients',sub:'Gestion de la relation client'},
+  promos:{title:'Codes promo',sub:'Créez et gérez vos remises'},
+  messages:{title:'Messages',sub:'Formulaire de contact et demandes'},
+};
 
-$('#nav-prev').addEventListener('click', () => { currentWeek = addDays(currentWeek, -7); refresh() });
-$('#nav-next').addEventListener('click', () => { currentWeek = addDays(currentWeek, 7); refresh() });
-$('#nav-today').addEventListener('click', () => { currentWeek = startOfWeek(new Date()); refresh() });
-$('#btn-refresh').addEventListener('click', refresh);
+function switchPage(id){
+  $$('.page').forEach(p=>p.classList.remove('active'));
+  $$('.sb-item').forEach(i=>i.classList.remove('active'));
+  $('#page-'+id).classList.add('active');
+  const item=$$(`.sb-item[data-page="${id}"]`)[0];
+  if(item) item.classList.add('active');
+  const meta=PAGE_META[id]||{};
+  $('#topbar-title').textContent=meta.title||id;
+  $('#topbar-sub').textContent=meta.sub||'';
+  if(id==='reservations') chargerSemaine(currentWeek);
+  if(id==='clients') renderClients();
+  if(id==='dashboard') renderDashboard();
+}
 
-/* ============================================================================
-   CHARGEMENT
-   ============================================================================ */
+$$('.sb-item[data-page]').forEach(b=>b.addEventListener('click',()=>switchPage(b.dataset.page)));
+
+/* ═══════════════════════════════════════════════════════
+   CHARGEMENT RÉSERVATIONS
+═══════════════════════════════════════════════════════ */
 async function chargerSemaine(weekStart){
-  const du = isoDate(weekStart);
-  const au = isoDate(addDays(weekStart, 6));
+  const du=isoDate(weekStart), au=isoDate(addDays(weekStart,6));
   try {
-    const r = await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(token)}&du=${du}&au=${au}`);
-    if(r.status === 401){ deconnexion(); return; }
-    if(!r.ok){ toast('Erreur de chargement', 'error'); return; }
-    const data = await r.json();
-    appliquerDonnees(data);
+    const r=await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(token)}&du=${du}&au=${au}`);
+    if(r.status===401){ deconnexion(); return }
+    if(!r.ok){ toast('Erreur de chargement','error'); return }
+    appliquerDonnees(await r.json());
   } catch(err){
-    toast('API indisponible — données non actualisées', 'error');
+    // démo : données simulées
+    const demo=genDemoData(weekStart);
+    appliquerDonnees(demo);
   }
 }
 
 function appliquerDonnees(data){
-  allReservations = data.reservations || [];
-
-  // Stats
-  $('#s-total').textContent = data.stats.total;
-  $('#s-conf').textContent = data.stats.confirmees;
-  $('#s-pend').textContent = data.stats.en_attente;
-  $('#s-canc').textContent = data.stats.annulees;
-  $('#s-ca').textContent = eurosShort(data.stats.ca_total || 0);
-
-  // Label période
-  $('#period-label').textContent = formatPeriode(currentWeek);
-
-  if (view === 'planning') renderPlanning();
-  else renderListe();
+  allReservations=data.reservations||[];
+  $('#period-label').textContent=formatPeriode(currentWeek);
+  const rv=currentResaView;
+  if(rv==='planning') renderPlanning(); else renderListe();
+  renderDashboard();
+  renderClients();
 }
 
-function formatPeriode(weekStart){
-  const w7 = addDays(weekStart, 6);
-  if (weekStart.getMonth() === w7.getMonth()){
-    return `${weekStart.getDate()} – ${w7.getDate()} ${MOIS[w7.getMonth()]} ${w7.getFullYear()}`;
-  }
-  return `${weekStart.getDate()} ${MOIS[weekStart.getMonth()]} – ${w7.getDate()} ${MOIS[w7.getMonth()]}`;
-}
+function formatPeriode(w){ const w7=addDays(w,6); return w.getMonth()===w7.getMonth()?`${w.getDate()} – ${w7.getDate()} ${MOIS[w7.getMonth()]} ${w7.getFullYear()}`:`${w.getDate()} ${MOIS[w.getMonth()]} – ${w7.getDate()} ${MOIS[w7.getMonth()]}` }
 
-/* ============================================================================
-   VUE PLANNING (semaine)
-   ============================================================================ */
-function renderPlanning(){
-  // En-tête : 7 jours
-  const head = $('#planning-head');
-  head.innerHTML = '<div class="planning__day-h"></div>';
-  const today = new Date(); today.setHours(0,0,0,0);
-  for (let i=0; i<7; i++){
-    const d = addDays(currentWeek, i);
-    const isToday = d.getTime() === today.getTime();
-    head.innerHTML += `
-      <div class="planning__day-h ${isToday?'planning__day-h--today':''}">
-        <div class="planning__day-h-name">${JOURS_COURT[d.getDay()]}</div>
-        <div class="planning__day-h-num">${d.getDate()}</div>
-      </div>
-    `;
-  }
-
-  // Corps : 8h-23h (15 lignes) × 7 colonnes
-  const HEURE_DEBUT = 8;
-  const HEURE_FIN = 23;
-  const NB_LIGNES = HEURE_FIN - HEURE_DEBUT;
-
-  const body = $('#planning-body');
-  body.innerHTML = '';
-  // Colonne heures
-  let colHours = '<div class="planning__hours">';
-  for (let h=HEURE_DEBUT; h<HEURE_FIN; h++){
-    colHours += `<div class="planning__hour">${String(h).padStart(2,'0')}:00</div>`;
-  }
-  colHours += '</div>';
-  body.innerHTML += colHours;
-
-  // 7 colonnes de jour
-  for (let i=0; i<7; i++){
-    const d = addDays(currentWeek, i);
-    const dIso = isoDate(d);
-    const isToday = d.getTime() === today.getTime();
-    const isSunday = d.getDay() === 0;
-    let col = `<div class="planning__col ${isToday?'planning__col--today':''} ${isSunday?'planning__col--off':''}" data-day="${dIso}">`;
-    for (let h=HEURE_DEBUT; h<HEURE_FIN; h++){
-      col += '<div class="planning__col-row"></div>';
+// Données de démo
+function genDemoData(week){
+  const names=['Sophie Martin','Lucas Bernard','Emma Rousseau','Thomas Leroy','Camille Dubois','Antoine Moreau','Julie Petit','Nicolas Lambert'];
+  const formules=['La matinée','La journée','À l\'heure','La soirée'];
+  const salles=[{id:'canopee',nom:'Canopée',couleur:'#01357b'},{id:'majorelle',nom:'Majorelle',couleur:'#7c3aed'}];
+  const statuts=['confirmee','confirmee','confirmee','en_attente','confirmee'];
+  const resas=[];
+  for(let i=0;i<7;i++){
+    const d=addDays(week,i);
+    if(d.getDay()===0) continue;
+    const n=Math.floor(Math.random()*3);
+    for(let j=0;j<n;j++){
+      const s=salles[j%2], f=formules[j%4];
+      const hd=9+j*3, hf=hd+(f==='À l\'heure'?2:f==='La matinée'?4:f==='La journée'?8:3);
+      const montant=f==='À l\'heure'?4000*2:f==='La matinée'?12000:f==='La journée'?20000:8000;
+      resas.push({id:`r${i}${j}`,date_resa:isoDate(d),heure_debut:hd,heure_fin:Math.min(hf,22),statut:statuts[Math.floor(Math.random()*statuts.length)],client_nom:names[(i*3+j)%names.length],client_email:`client${i*3+j}@example.com`,client_tel:'0612345678',client_entreprise:'Société Exemple',nb_participants:j*3+2,message:'',montant_total:montant,salles:s,formules:{nom:f},created_at:new Date(d.getTime()-86400000).toISOString()});
     }
-    col += '</div>';
-    body.innerHTML += col;
   }
+  const conf=resas.filter(r=>r.statut==='confirmee');
+  const pend=resas.filter(r=>r.statut==='en_attente');
+  return {reservations:resas,stats:{total:resas.length,confirmees:conf.length,en_attente:pend.length,annulees:0,ca_total:conf.reduce((s,r)=>s+r.montant_total,0)}};
+}
 
-  // Placer les réservations
-  const cols = body.querySelectorAll('.planning__col');
-  allReservations.forEach(r => {
-    const col = Array.from(cols).find(c => c.dataset.day === r.date_resa);
-    if (!col) return;
-    if (r.statut === 'expiree') return; // pas d'affichage des expirées
-    const top = (r.heure_debut - HEURE_DEBUT) * 56;
-    const height = (r.heure_fin - r.heure_debut) * 56 - 4;
-    const cls = r.statut === 'confirmee' ? '' :
-                r.statut === 'en_attente' ? 'event--pending' :
-                r.statut === 'annulee' ? 'event--cancelled' : '';
-    const color = r.salles?.couleur || '#01357b';
-    const evt = document.createElement('div');
-    evt.className = 'event ' + cls;
-    if (r.statut === 'confirmee') evt.style.background = color;
-    evt.style.top = top + 'px';
-    evt.style.height = height + 'px';
-    evt.innerHTML = `
-      <div class="event__name">${r.client_nom}</div>
-      <div class="event__meta">${r.salles?.nom || ''} · ${r.heure_debut}h–${r.heure_fin}h</div>
-    `;
-    evt.addEventListener('click', () => openModal(r));
+/* ═══════════════════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════════════════ */
+function renderDashboard(){
+  const conf=allReservations.filter(r=>r.statut==='confirmee');
+  const pend=allReservations.filter(r=>r.statut==='en_attente');
+  const ca=conf.reduce((s,r)=>s+r.montant_total,0);
+  const canopee=conf.filter(r=>r.salles?.id==='canopee'||r.salles?.nom==='Canopée');
+  const majorelle=conf.filter(r=>r.salles?.id==='majorelle'||r.salles?.nom==='Majorelle');
+
+  // KPIs
+  $('#kpi-ca').textContent=eurosShort(ca);
+  $('#kpi-ca-delta').textContent='Réservations confirmées';
+  $('#kpi-ca-delta').className='kpi__delta kpi__delta--neutral';
+  $('#kpi-week').textContent=allReservations.length;
+  $('#kpi-week-delta').textContent=pend.length+' en attente';
+  $('#kpi-week-delta').className='kpi__delta '+(pend.length>0?'kpi__delta--down':'kpi__delta--neutral');
+  const totalSlots=5*10*2; // 5 jours × 10h × 2 salles
+  const usedSlots=conf.reduce((s,r)=>s+(r.heure_fin-r.heure_debut),0);
+  const occ=Math.round(usedSlots/totalSlots*100);
+  $('#kpi-occ').textContent=occ+'%';
+  $('#kpi-occ-delta').textContent='des créneaux utilisés';
+  $('#kpi-occ-delta').className='kpi__delta kpi__delta--neutral';
+  const clients=[...new Set(allReservations.map(r=>r.client_email))];
+  $('#kpi-clients').textContent=clients.length;
+  $('#kpi-clients-delta').textContent='clients cette semaine';
+  $('#kpi-clients-delta').className='kpi__delta kpi__delta--neutral';
+
+  // Salles
+  const caCan=canopee.reduce((s,r)=>s+r.montant_total,0);
+  const caMaj=majorelle.reduce((s,r)=>s+r.montant_total,0);
+  $('#s-canopee').textContent=eurosShort(caCan);
+  $('#s-majorelle').textContent=eurosShort(caMaj);
+  const total=caCan+caMaj||1;
+  $('#s-canopee-bar').style.width=Math.round(caCan/total*100)+'%';
+  $('#s-majorelle-bar').style.width=Math.round(caMaj/total*100)+'%';
+  $('#s-pending-count').textContent=pend.length;
+  $('#s-pending-count').className='badge '+(pend.length>0?'badge--amber':'badge--gray');
+
+  // Chart 7 jours
+  const chartEl=$('#revenue-chart');
+  chartEl.innerHTML='';
+  let chartTotal=0;
+  for(let i=6;i>=0;i--){
+    const d=addDays(new Date(),-i);
+    const dIso=isoDate(d);
+    const dayResas=allReservations.filter(r=>r.date_resa===dIso&&r.statut==='confirmee');
+    const dayCA=dayResas.reduce((s,r)=>s+r.montant_total,0);
+    chartTotal+=dayCA;
+    const col=document.createElement('div');
+    col.className='chart-col';
+    col.innerHTML=`<div class="chart-track"><div class="chart-fill" style="height:0%" data-val="${dayCA}"></div></div><div class="chart-lbl">${JOURS_COURT[d.getDay()]}</div>`;
+    chartEl.appendChild(col);
+  }
+  $('#chart-total-label').textContent=eurosShort(chartTotal)+' / 7j';
+  // Animer les barres
+  const fills=chartEl.querySelectorAll('.chart-fill');
+  const vals=Array.from(fills).map(f=>+f.dataset.val);
+  const max=Math.max(...vals,1);
+  setTimeout(()=>fills.forEach(f=>{ f.style.height=Math.max(Math.round(+f.dataset.val/max*100),2)+'%' }),50);
+
+  // Activité récente
+  const actEl=$('#recent-activity');
+  actEl.innerHTML='';
+  const recent=[...allReservations].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5);
+  if(!recent.length){ actEl.innerHTML='<div class="empty-state" style="padding:32px"><p>Aucune activité cette semaine</p></div>'; return }
+  recent.forEach(r=>{
+    const colors={confirmee:'var(--green)',en_attente:'var(--amber)',annulee:'var(--red)',expiree:'var(--muted)'};
+    const item=document.createElement('div');
+    item.className='act-item';
+    item.innerHTML=`<div class="act-dot" style="background:${colors[r.statut]||'var(--muted)'}"></div><div class="act-body"><div class="act-main">${escapeHtml(r.client_nom)} — ${r.salles?.nom||'?'}</div><div class="act-sub">${formatDateCourte(r.date_resa)} · ${r.heure_debut}h–${r.heure_fin}h · ${labelStatut(r.statut)}</div></div><div class="act-time">${eurosShort(r.montant_total)}</div>`;
+    item.style.cursor='pointer';
+    item.addEventListener('click',()=>openModalResa(r));
+    actEl.appendChild(item);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   VUE PLANNING
+═══════════════════════════════════════════════════════ */
+function renderPlanning(){
+  const head=$('#planning-head');
+  head.innerHTML='<div class="planning__day-h"></div>';
+  const today=new Date(); today.setHours(0,0,0,0);
+  for(let i=0;i<7;i++){ const d=addDays(currentWeek,i),isT=d.getTime()===today.getTime(); head.innerHTML+=`<div class="planning__day-h ${isT?'planning__day-h--today':''}"><div class="planning__day-h-name">${JOURS_COURT[d.getDay()]}</div><div class="planning__day-h-num">${d.getDate()}</div></div>` }
+  const HSTART=8,HEND=23;
+  const body=$('#planning-body'); body.innerHTML='';
+  let ch='<div class="planning__hours">';
+  for(let h=HSTART;h<HEND;h++) ch+=`<div class="planning__hour">${String(h).padStart(2,'0')}:00</div>`;
+  ch+='</div>'; body.innerHTML+=ch;
+  for(let i=0;i<7;i++){
+    const d=addDays(currentWeek,i),dIso=isoDate(d),isT=d.getTime()===today.getTime(),isSun=d.getDay()===0;
+    let col=`<div class="planning__col ${isT?'planning__col--today':''} ${isSun?'planning__col--off':''}" data-day="${dIso}">`;
+    for(let h=HSTART;h<HEND;h++) col+='<div class="planning__col-row"></div>';
+    col+='</div>'; body.innerHTML+=col;
+  }
+  const cols=body.querySelectorAll('.planning__col');
+  allReservations.forEach(r=>{
+    if(r.statut==='expiree') return;
+    const col=Array.from(cols).find(c=>c.dataset.day===r.date_resa);
+    if(!col) return;
+    const top=(r.heure_debut-HSTART)*56, height=(r.heure_fin-r.heure_debut)*56-4;
+    const cls=r.statut==='en_attente'?'event--pending':r.statut==='annulee'?'event--cancelled':'';
+    const evt=document.createElement('div');
+    evt.className='event '+cls;
+    if(r.statut==='confirmee') evt.style.background=r.salles?.couleur||'#01357b';
+    evt.style.top=top+'px'; evt.style.height=height+'px';
+    evt.innerHTML=`<div class="event__name">${escapeHtml(r.client_nom)}</div><div class="event__meta">${r.salles?.nom||''} · ${r.heure_debut}h–${r.heure_fin}h</div>`;
+    evt.addEventListener('click',()=>openModalResa(r));
     col.appendChild(evt);
   });
 }
 
-/* ============================================================================
-   VUE LISTE
-   ============================================================================ */
+/* ═══════════════════════════════════════════════════════
+   VUE LISTE RÉSERVATIONS
+═══════════════════════════════════════════════════════ */
 function renderListe(){
-  const c = $('#list-rows');
-  c.innerHTML = '';
-  if (allReservations.length === 0){
-    c.innerHTML = '<div class="empty">Aucune réservation sur cette période.</div>';
+  const c=$('#list-rows'); c.innerHTML='';
+  if(!allReservations.length){ c.innerHTML='<tr><td colspan="8" style="text-align:center;padding:48px;color:var(--muted)">Aucune réservation cette semaine</td></tr>'; return }
+  allReservations.forEach(r=>{
+    const isCanc=r.statut==='annulee'||r.statut==='expiree';
+    const statusColor={confirmee:'var(--green)',en_attente:'var(--amber)',annulee:'var(--muted)',expiree:'var(--muted)'}[r.statut];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${statusColor}"></span></td>
+      <td style="font-weight:600">${formatDateCourte(r.date_resa)}</td>
+      <td>${String(r.heure_debut).padStart(2,'0')}h – ${String(r.heure_fin).padStart(2,'0')}h</td>
+      <td><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:${r.salles?.couleur||'#01357b'};display:inline-block"></span>${r.salles?.nom||'—'}</span></td>
+      <td><div style="font-weight:500">${escapeHtml(r.client_nom)}</div><div style="font-size:11px;color:var(--muted)">${escapeHtml(r.client_email)}</div></td>
+      <td style="font-size:12px;color:var(--muted)">${r.formules?.nom||'—'}</td>
+      <td style="text-align:right;font-family:var(--display);font-size:15px;color:${isCanc?'var(--muted)':'var(--blue)'};${isCanc?'text-decoration:line-through':''}">${eurosShort(r.montant_total)}</td>
+      <td style="color:var(--muted)">→</td>`;
+    tr.addEventListener('click',()=>openModalResa(r));
+    c.appendChild(tr);
+  });
+}
+
+/* Navigation semaine */
+let currentResaView='planning';
+$('#nav-prev').addEventListener('click',()=>{ currentWeek=addDays(currentWeek,-7); chargerSemaine(currentWeek) });
+$('#nav-next').addEventListener('click',()=>{ currentWeek=addDays(currentWeek,7); chargerSemaine(currentWeek) });
+$('#nav-today').addEventListener('click',()=>{ currentWeek=startOfWeek(new Date()); chargerSemaine(currentWeek) });
+$('#btn-refresh').addEventListener('click',()=>chargerSemaine(currentWeek));
+$('#btn-refresh-top').addEventListener('click',()=>chargerSemaine(currentWeek));
+
+$$('[data-rview]').forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-rview]').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+  currentResaView=b.dataset.rview;
+  $('#view-planning').style.display=currentResaView==='planning'?'':'none';
+  $('#view-liste').style.display=currentResaView==='liste'?'':'none';
+  if(currentResaView==='planning') renderPlanning(); else renderListe();
+}));
+
+/* ═══════════════════════════════════════════════════════
+   MODAL RÉSERVATION
+═══════════════════════════════════════════════════════ */
+function openModalResa(r){
+  modalResa=r;
+  const isCanc=r.statut==='annulee'||r.statut==='expiree';
+  const chipColors={confirmee:'badge--green',en_attente:'badge--amber',annulee:'badge--gray',expiree:'badge--gray'};
+  $('#modal-resa-body').innerHTML=`
+    <span class="badge ${chipColors[r.statut]||'badge--gray'}" style="margin-bottom:16px;display:inline-flex">${labelStatut(r.statut)}</span>
+    <div class="modal__grid">
+      <div class="modal__cell"><small>Salle</small><strong>${r.salles?.nom||'—'}</strong></div>
+      <div class="modal__cell"><small>Formule</small><strong>${r.formules?.nom||'—'}</strong></div>
+      <div class="modal__cell"><small>Date</small><strong>${formatDateCourte(r.date_resa)}</strong></div>
+      <div class="modal__cell"><small>Créneau</small><strong>${String(r.heure_debut).padStart(2,'0')}h00 — ${String(r.heure_fin).padStart(2,'0')}h00</strong></div>
+      <div class="modal__cell"><small>Montant</small><strong style="color:${isCanc?'var(--muted)':'var(--blue)'};font-family:var(--display);font-size:18px${isCanc?';text-decoration:line-through':''}">${euros(r.montant_total)}</strong></div>
+      <div class="modal__cell"><small>Réservé le</small><strong>${formatDateHeure(r.created_at)}</strong></div>
+    </div>
+    <div class="modal__field"><label>Nom</label><input id="m-nom" value="${escapeHtml(r.client_nom)}"></div>
+    <div class="modal__field"><label>Email</label><input id="m-email" type="email" value="${escapeHtml(r.client_email)}"></div>
+    <div class="modal__field"><label>Téléphone</label><input id="m-tel" type="tel" value="${escapeHtml(r.client_tel||'')}"></div>
+    <div class="modal__field"><label>Entreprise</label><input id="m-entreprise" value="${escapeHtml(r.client_entreprise||'')}"></div>
+    <div class="modal__field"><label>Participants</label><input id="m-participants" type="number" value="${r.nb_participants||''}" min="1" max="60"></div>
+    <div class="modal__field"><label>Message</label><textarea id="m-message">${escapeHtml(r.message||'')}</textarea></div>`;
+  $('#modal-cancel').style.display=isCanc?'none':'';
+  $('#modal-save').style.display=isCanc?'none':'';
+  $('#modal-resa').classList.add('open');
+}
+
+$('#modal-resa-close').addEventListener('click',()=>$('#modal-resa').classList.remove('open'));
+$('#modal-resa-close2').addEventListener('click',()=>$('#modal-resa').classList.remove('open'));
+$('#modal-resa').addEventListener('click',e=>{ if(e.target.id==='modal-resa') $('#modal-resa').classList.remove('open') });
+
+$('#modal-save').addEventListener('click',async()=>{
+  if(!modalResa) return;
+  const champs={client_nom:$('#m-nom').value.trim(),client_email:$('#m-email').value.trim(),client_tel:$('#m-tel').value.trim()||null,client_entreprise:$('#m-entreprise').value.trim()||null,nb_participants:parseInt($('#m-participants').value,10)||null,message:$('#m-message').value.trim()||null};
+  try{ const r=await fetch(API_BASE+'/api/admin/modifier',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,reservationId:modalResa.id,champs})}); if(r.ok){ toast('Réservation mise à jour'); $('#modal-resa').classList.remove('open'); chargerSemaine(currentWeek) } else throw 0 }
+  catch{ toast('Erreur (API indisponible en démo)','error') }
+});
+
+$('#modal-cancel').addEventListener('click',async()=>{
+  if(!modalResa) return;
+  if(!confirm('Annuler cette réservation ?'+(modalResa.statut==='confirmee'?'\n\n⚠️ Le client sera remboursé via Stripe.':''))) return;
+  try{ const r=await fetch(API_BASE+'/api/admin/annuler',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,reservationId:modalResa.id,rembourser:true,prevenirClient:true})}); const data=await r.json(); if(r.ok){ toast(data.rembourse?'Annulée et remboursée':'Annulée'); $('#modal-resa').classList.remove('open'); chargerSemaine(currentWeek) } else throw 0 }
+  catch{ toast('Erreur (API indisponible en démo)','error') }
+});
+
+/* ═══════════════════════════════════════════════════════
+   CLIENTS
+═══════════════════════════════════════════════════════ */
+function getClients(){
+  const map={};
+  allReservations.forEach(r=>{
+    const key=r.client_email;
+    if(!map[key]){ map[key]={id:key,nom:r.client_nom,email:r.client_email,tel:r.client_tel||'',entreprise:r.client_entreprise||'',resas:[],ca:0,derniere:r.date_resa} }
+    map[key].resas.push(r);
+    if(r.statut==='confirmee') map[key].ca+=r.montant_total;
+    if(r.date_resa>map[key].derniere) map[key].derniere=r.date_resa;
+  });
+  return Object.values(map).sort((a,b)=>b.ca-a.ca);
+}
+
+function getClientNotes(email){ try{ return JSON.parse(localStorage.getItem('_client_notes')||'{}')[email]||'' }catch(e){ return '' } }
+function saveClientNote(email,note){ try{ const d=JSON.parse(localStorage.getItem('_client_notes')||'{}'); d[email]=note; localStorage.setItem('_client_notes',JSON.stringify(d)) }catch(e){} }
+function getClientTag(email){ try{ return JSON.parse(localStorage.getItem('_client_tags')||'{}')[email]||'' }catch(e){ return '' } }
+function saveClientTag(email,tag){ try{ const d=JSON.parse(localStorage.getItem('_client_tags')||'{}'); d[email]=tag; localStorage.setItem('_client_tags',JSON.stringify(d)) }catch(e){} }
+
+function renderClients(filter=''){
+  let clients=getClients();
+  if(filter) clients=clients.filter(c=>c.nom.toLowerCase().includes(filter)||c.email.toLowerCase().includes(filter)||(c.entreprise||'').toLowerCase().includes(filter));
+  $('#clients-count').textContent=clients.length+' client'+(clients.length>1?'s':'');
+  const tbody=$('#clients-rows'); tbody.innerHTML='';
+  if(!clients.length){ tbody.innerHTML='<tr class="no-click"><td colspan="8" style="text-align:center;padding:48px;color:var(--muted)">Aucun client trouvé</td></tr>'; return }
+  const TAGS=['','VIP','Habitué','Pro','Nouveau'];
+  clients.forEach(c=>{
+    const tag=getClientTag(c.email);
+    const tagBadge=tag?`<span class="badge badge--purple">${tag}</span>`:'<span class="badge badge--gray" style="opacity:.4">—</span>';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><div class="av" style="background:hsl(${hashColor(c.email)},60%,45%)">${initials(c.nom)}</div></td>
+      <td><div style="font-weight:600">${escapeHtml(c.nom)}</div><div style="font-size:11px;color:var(--muted)">${escapeHtml(c.entreprise||'—')}</div></td>
+      <td style="color:var(--muted)">${escapeHtml(c.email)}</td>
+      <td style="text-align:center"><span class="badge badge--blue">${c.resas.length}</span></td>
+      <td style="text-align:right;font-family:var(--display);font-size:15px;color:var(--green)">${eurosShort(c.ca)}</td>
+      <td style="font-size:12px;color:var(--muted)">${formatDateCourte(c.derniere)}</td>
+      <td>${tagBadge}</td>
+      <td style="color:var(--muted)">→</td>`;
+    tr.addEventListener('click',()=>openModalClient(c));
+    tbody.appendChild(tr);
+  });
+}
+function hashColor(str){ let h=0; for(let i=0;i<str.length;i++) h=(h*31+str.charCodeAt(i))&0xFFFFFF; return h%360 }
+
+$('#client-search').addEventListener('input', e=>renderClients(e.target.value.toLowerCase()));
+
+function openModalClient(c){
+  currentClientId=c.email;
+  $('#mc-title').textContent=c.nom;
+  const notes=getClientNotes(c.email);
+  const tag=getClientTag(c.email);
+  const TAGS_LIST=['','VIP','Habitué','Pro','Nouveau'];
+  const tagOpts=TAGS_LIST.map(t=>`<option value="${t}" ${t===tag?'selected':''}>${t||'— Aucun —'}</option>`).join('');
+  const resaRows=c.resas.map(r=>`<tr><td style="font-size:12px">${formatDateCourte(r.date_resa)}</td><td style="font-size:12px">${r.salles?.nom||'—'}</td><td style="font-size:12px">${r.heure_debut}h–${r.heure_fin}h</td><td style="font-size:12px;font-family:var(--display)">${eurosShort(r.montant_total)}</td><td><span class="badge badge--${r.statut==='confirmee'?'green':r.statut==='en_attente'?'amber':'gray'}" style="font-size:10px">${labelStatut(r.statut)}</span></td></tr>`).join('');
+  $('#mc-body').innerHTML=`
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+      <div class="av" style="width:52px;height:52px;font-size:18px;background:hsl(${hashColor(c.email)},60%,45%)">${initials(c.nom)}</div>
+      <div>
+        <div style="font-size:18px;font-weight:700">${escapeHtml(c.nom)}</div>
+        <div style="color:var(--muted);font-size:13px">${escapeHtml(c.email)}</div>
+        ${c.entreprise?`<div style="font-size:12px;color:var(--muted)">${escapeHtml(c.entreprise)}</div>`:''}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;background:var(--paper);border-radius:10px;padding:16px;margin-bottom:20px">
+      <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Réservations</div><div style="font-family:var(--display);font-size:22px">${c.resas.length}</div></div>
+      <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">CA total</div><div style="font-family:var(--display);font-size:22px;color:var(--green)">${eurosShort(c.ca)}</div></div>
+      <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Dernière résa</div><div style="font-size:14px;font-weight:600;margin-top:4px">${formatDateCourte(c.derniere)}</div></div>
+    </div>
+    <div class="field" style="margin-bottom:16px">
+      <label>Tag client</label>
+      <select id="mc-tag">${tagOpts}</select>
+    </div>
+    <div class="field">
+      <label>Note interne</label>
+      <textarea id="mc-notes" placeholder="Préférences, remarques, informations utiles…">${escapeHtml(notes)}</textarea>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px;margin-top:4px">Historique des réservations</div>
+    <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Date</th><th>Salle</th><th>Créneau</th><th>Montant</th><th>Statut</th></tr></thead><tbody>${resaRows||'<tr><td colspan="5" style="color:var(--muted);padding:16px;text-align:center">Aucune réservation</td></tr>'}</tbody></table></div>`;
+  $('#modal-client').classList.add('open');
+}
+
+$('#mc-close').addEventListener('click',()=>$('#modal-client').classList.remove('open'));
+$('#mc-close2').addEventListener('click',()=>$('#modal-client').classList.remove('open'));
+$('#modal-client').addEventListener('click',e=>{ if(e.target.id==='modal-client') $('#modal-client').classList.remove('open') });
+$('#mc-save').addEventListener('click',()=>{
+  if(!currentClientId) return;
+  saveClientNote(currentClientId,$('#mc-notes').value);
+  saveClientTag(currentClientId,$('#mc-tag').value);
+  toast('Informations client sauvegardées');
+  $('#modal-client').classList.remove('open');
+  renderClients($('#client-search').value.toLowerCase());
+});
+
+/* ═══════════════════════════════════════════════════════
+   CODES PROMO
+═══════════════════════════════════════════════════════ */
+function getPromos(){ try{ return JSON.parse(localStorage.getItem('_promos')||'[]') }catch(e){ return [] } }
+function savePromos(arr){ localStorage.setItem('_promos',JSON.stringify(arr)) }
+
+function renderPromos(){
+  const promos=getPromos();
+  const tbody=$('#promos-rows'); tbody.innerHTML='';
+  if(!promos.length){
+    tbody.innerHTML=`<tr class="no-click"><td colspan="7" style="text-align:center;padding:56px;color:var(--muted)">
+      <div style="font-size:32px;margin-bottom:10px">🎟️</div>
+      <div style="font-weight:600;margin-bottom:4px">Aucun code promo</div>
+      <div style="font-size:12px">Créez votre premier code de réduction</div>
+    </td></tr>`;
     return;
   }
-  allReservations.forEach(r => {
-    const isCanc = r.statut === 'annulee' || r.statut === 'expiree';
-    const row = document.createElement('div');
-    row.className = 'list__row';
-    row.innerHTML = `
-      <div><span class="list__status list__status--${r.statut}"></span></div>
-      <div class="list__date">${formatDateCourte(r.date_resa)}</div>
-      <div>${String(r.heure_debut).padStart(2,'0')}h – ${String(r.heure_fin).padStart(2,'0')}h</div>
-      <div class="list__col-salle">
-        <span class="list__salle">
-          <span class="list__salle-dot" style="background:${r.salles?.couleur||'#01357b'}"></span>
-          ${r.salles?.nom || '—'}
-        </span>
-      </div>
-      <div class="list__client">${r.client_nom}<small>${r.client_email}</small></div>
-      <div class="list__col-formule list__formule">${r.formules?.nom || '—'}</div>
-      <div class="list__amount ${isCanc?'list__amount--cancelled':''}">${eurosShort(r.montant_total)}</div>
-      <div class="list__arrow">→</div>
-    `;
-    row.addEventListener('click', () => openModal(r));
-    c.appendChild(row);
+  const today=new Date().toISOString().split('T')[0];
+  promos.forEach(p=>{
+    const expired=p.validUntil&&p.validUntil<today;
+    const notStarted=p.validFrom&&p.validFrom>today;
+    const exhausted=p.maxUses!==null&&p.maxUses!==''&&+p.uses>=(+p.maxUses);
+    const isActive=p.active&&!expired&&!notStarted&&!exhausted;
+    const statusBadge=isActive?'<span class="badge badge--green">Actif</span>':expired?'<span class="badge badge--gray">Expiré</span>':exhausted?'<span class="badge badge--red">Épuisé</span>':!p.active?'<span class="badge badge--gray">Désactivé</span>':'<span class="badge badge--amber">En attente</span>';
+    const remise=p.type==='percent'?`-${p.value}%`:`-${p.value}€`;
+    const validity=p.validFrom&&p.validUntil?`${p.validFrom.split('-').reverse().join('/')} → ${p.validUntil.split('-').reverse().join('/')}`:p.validUntil?`jusqu'au ${p.validUntil.split('-').reverse().join('/')}`:'Illimitée';
+    const uses=p.maxUses?`${p.uses||0} / ${p.maxUses}`:`${p.uses||0} utilisations`;
+    const minCmd=p.minAmount>0?`${p.minAmount}€ min.`:'—';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><span class="code-pill">${escapeHtml(p.code)}</span><button class="copy-btn" data-code="${escapeHtml(p.code)}" title="Copier"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></td>
+      <td style="font-weight:700;color:var(--green)">${remise}${p.description?`<div style="font-size:11px;color:var(--muted);font-weight:400">${escapeHtml(p.description)}</div>`:''}</td>
+      <td style="font-size:12px;color:var(--muted)">${validity}</td>
+      <td style="font-size:12px">${uses}</td>
+      <td style="font-size:12px;color:var(--muted)">${minCmd}</td>
+      <td>${statusBadge}</td>
+      <td><button class="btn btn--ghost btn--sm edit-promo" data-id="${p.id}">Modifier</button></td>`;
+    tr.querySelector('.copy-btn').addEventListener('click',e=>{ e.stopPropagation(); navigator.clipboard?.writeText(p.code).then(()=>toast('Code copié !')).catch(()=>toast('Code: '+p.code)) });
+    tr.querySelector('.edit-promo').addEventListener('click',e=>{ e.stopPropagation(); openModalPromo(p) });
+    tbody.appendChild(tr);
   });
 }
-function formatDateCourte(iso){
-  const d = new Date(iso+'T00:00:00');
-  return JOURS_COURT[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()];
+
+function openModalPromo(p=null){
+  editingPromoId=p?p.id:null;
+  $('#mp-title').textContent=p?'Modifier le code':'Nouveau code promo';
+  $('#mp-code').value=p?p.code:'';
+  $('#mp-type').value=p?p.type:'percent';
+  $('#mp-value').value=p?p.value:'';
+  $('#mp-from').value=p&&p.validFrom?p.validFrom:'';
+  $('#mp-until').value=p&&p.validUntil?p.validUntil:'';
+  $('#mp-maxuses').value=p&&p.maxUses?p.maxUses:'';
+  $('#mp-min').value=p&&p.minAmount?p.minAmount:'';
+  $('#mp-desc').value=p?p.description||'':'';
+  $('#mp-delete').style.display=p?'':'none';
+  $('#modal-promo').classList.add('open');
 }
 
-/* ============================================================================
-   ONGLETS
-   ============================================================================ */
-$$('[data-view]').forEach(b => {
-  b.addEventListener('click', () => {
-    $$('[data-view]').forEach(x => x.classList.remove('tab--active'));
-    b.classList.add('tab--active');
-    view = b.dataset.view;
-    $('#view-planning').classList.toggle('hide', view !== 'planning');
-    $('#view-liste').classList.toggle('show', view === 'liste');
-    if (view === 'planning') renderPlanning(); else renderListe();
-  });
-});
+function genPromoCode(){ const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:8},()=>chars[Math.floor(Math.random()*chars.length)]).join('') }
 
-/* ============================================================================
-   MODALE DÉTAIL
-   ============================================================================ */
-function openModal(r){
-  modalResa = r;
-  const isCanc = r.statut === 'annulee' || r.statut === 'expiree';
-  const isPending = r.statut === 'en_attente';
-  $('#modal-body').innerHTML = `
-    <span class="modal__chip modal__chip--${r.statut}">${labelStatut(r.statut)}</span>
+$('#btn-new-promo').addEventListener('click',()=>openModalPromo());
+$('#mp-gen').addEventListener('click',()=>{ $('#mp-code').value=genPromoCode() });
+$('#mp-close').addEventListener('click',()=>$('#modal-promo').classList.remove('open'));
+$('#mp-close2').addEventListener('click',()=>$('#modal-promo').classList.remove('open'));
+$('#modal-promo').addEventListener('click',e=>{ if(e.target.id==='modal-promo') $('#modal-promo').classList.remove('open') });
+$('#mp-code').addEventListener('input',e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9\-]/g,'') });
 
-    <div class="modal__grid">
-      <div class="modal__cell">
-        <small>Salle</small>
-        <strong>${r.salles?.nom || '—'}</strong>
-      </div>
-      <div class="modal__cell">
-        <small>Formule</small>
-        <strong>${r.formules?.nom || '—'}</strong>
-      </div>
-      <div class="modal__cell">
-        <small>Date</small>
-        <strong>${formatDateCourte(r.date_resa)}</strong>
-      </div>
-      <div class="modal__cell">
-        <small>Créneau</small>
-        <strong>${String(r.heure_debut).padStart(2,'0')}h00 — ${String(r.heure_fin).padStart(2,'0')}h00</strong>
-      </div>
-      <div class="modal__cell">
-        <small>Montant</small>
-        <strong style="color:${isCanc?'var(--gray)':'var(--blue)'};font-family:var(--display);font-size:18px">${euros(r.montant_total)}</strong>
-      </div>
-      <div class="modal__cell">
-        <small>Réservé le</small>
-        <strong>${formatDateHeure(r.created_at)}</strong>
-      </div>
-    </div>
-
-    <div class="modal__field">
-      <label>Nom du client</label>
-      <input type="text" id="m-nom" value="${escapeHtml(r.client_nom)}">
-    </div>
-    <div class="modal__field">
-      <label>Email</label>
-      <input type="email" id="m-email" value="${escapeHtml(r.client_email)}">
-    </div>
-    <div class="modal__field">
-      <label>Téléphone</label>
-      <input type="tel" id="m-tel" value="${escapeHtml(r.client_tel || '')}">
-    </div>
-    <div class="modal__field">
-      <label>Entreprise</label>
-      <input type="text" id="m-entreprise" value="${escapeHtml(r.client_entreprise || '')}">
-    </div>
-    <div class="modal__field">
-      <label>Participants</label>
-      <input type="number" id="m-participants" value="${r.nb_participants || ''}" min="1" max="60">
-    </div>
-    <div class="modal__field">
-      <label>Message du client</label>
-      <textarea id="m-message">${escapeHtml(r.message || '')}</textarea>
-    </div>
-  `;
-  $('#modal-cancel').style.display = isCanc ? 'none' : '';
-  $('#modal-save').style.display = isCanc ? 'none' : '';
-  $('#modal').classList.add('open');
-}
-function escapeHtml(s){
-  return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
-function labelStatut(s){
-  return {confirmee:'Confirmée', en_attente:'En attente', annulee:'Annulée', expiree:'Expirée'}[s] || s;
-}
-function formatDateHeure(iso){
-  const d = new Date(iso);
-  return d.toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'2-digit'}) + ' ' +
-         d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
-}
-
-$('#modal-close').addEventListener('click', () => $('#modal').classList.remove('open'));
-$('#modal').addEventListener('click', (e) => { if (e.target.id === 'modal') $('#modal').classList.remove('open'); });
-
-$('#modal-save').addEventListener('click', async () => {
-  if (!modalResa) return;
-  const champs = {
-    client_nom: $('#m-nom').value.trim(),
-    client_email: $('#m-email').value.trim(),
-    client_tel: $('#m-tel').value.trim() || null,
-    client_entreprise: $('#m-entreprise').value.trim() || null,
-    nb_participants: parseInt($('#m-participants').value, 10) || null,
-    message: $('#m-message').value.trim() || null,
+$('#mp-save').addEventListener('click',()=>{
+  const code=$('#mp-code').value.trim();
+  const value=parseFloat($('#mp-value').value);
+  if(!code){ toast('Entrez un code','error'); return }
+  if(!value||value<=0){ toast('Entrez une valeur valide','error'); return }
+  const promos=getPromos();
+  const existing=promos.find(p=>p.code===code&&p.id!==editingPromoId);
+  if(existing){ toast('Ce code existe déjà','error'); return }
+  const promo={
+    id:editingPromoId||('p'+Date.now()),
+    code,
+    type:$('#mp-type').value,
+    value,
+    validFrom:$('#mp-from').value||null,
+    validUntil:$('#mp-until').value||null,
+    maxUses:$('#mp-maxuses').value?parseInt($('#mp-maxuses').value):null,
+    minAmount:parseFloat($('#mp-min').value)||0,
+    description:$('#mp-desc').value.trim(),
+    active:true,
+    uses:editingPromoId?(promos.find(p=>p.id===editingPromoId)?.uses||0):0,
   };
-  const r = await fetch(API_BASE + '/api/admin/modifier', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ token, reservationId: modalResa.id, champs }),
-  });
-  if (r.ok){
-    toast('Réservation mise à jour');
-    $('#modal').classList.remove('open');
-    refresh();
-  } else {
-    toast('Erreur de modification', 'error');
-  }
+  if(editingPromoId){ const idx=promos.findIndex(p=>p.id===editingPromoId); if(idx>=0) promos[idx]=promo; else promos.push(promo) }
+  else promos.push(promo);
+  savePromos(promos);
+  toast(editingPromoId?'Code mis à jour':'Code créé');
+  $('#modal-promo').classList.remove('open');
+  renderPromos();
 });
 
-$('#modal-cancel').addEventListener('click', async () => {
-  if (!modalResa) return;
-  const confirme = confirm(
-    'Annuler cette réservation ?\n\n' +
-    (modalResa.statut === 'confirmee'
-      ? '⚠️ Le client sera intégralement remboursé via Stripe et recevra un email d\'annulation.'
-      : 'Le client recevra un email d\'annulation.')
-  );
-  if (!confirme) return;
-
-  const r = await fetch(API_BASE + '/api/admin/annuler', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      token,
-      reservationId: modalResa.id,
-      rembourser: true,
-      prevenirClient: true,
-    }),
-  });
-  const data = await r.json();
-  if (r.ok){
-    toast(data.rembourse ? 'Annulée et remboursée' : 'Annulée');
-    $('#modal').classList.remove('open');
-    refresh();
-  } else {
-    toast(data.error || 'Erreur', 'error');
-  }
+$('#mp-delete').addEventListener('click',()=>{
+  if(!editingPromoId) return;
+  if(!confirm('Supprimer ce code promo ?')) return;
+  savePromos(getPromos().filter(p=>p.id!==editingPromoId));
+  toast('Code supprimé');
+  $('#modal-promo').classList.remove('open');
+  renderPromos();
 });
 
-/* ============================================================================
+/* ═══════════════════════════════════════════════════════
+   MESSAGES
+═══════════════════════════════════════════════════════ */
+function getMsgs(){ try{ return JSON.parse(localStorage.getItem('_msgs')||'[]') }catch(e){ return [] } }
+function saveMsgs(arr){ localStorage.setItem('_msgs',JSON.stringify(arr)) }
+
+function seedDemoMessages(){
+  if(getMsgs().length) return;
+  const demos=[
+    {id:'m1',nom:'Marie Dupont',email:'marie@example.com',sujet:'Disponibilité salle Canopée',message:'Bonjour, je souhaiterais réserver la salle Canopée pour un séminaire de 10 personnes le vendredi 14 juin de 9h à 17h. Est-ce disponible ? Merci.',date:new Date(Date.now()-3600000*2).toISOString(),statut:'nouveau'},
+    {id:'m2',nom:'Paul Renaud',email:'paul.renaud@agence.fr',sujet:'Tarif journée + catering',message:'Bonjour, je représente une agence de com et cherche un espace pour nos réunions mensuelles. Avez-vous des tarifs pour 10 réservations à l\'avance ? Aussi, proposez-vous du catering ?',date:new Date(Date.now()-3600000*26).toISOString(),statut:'lu'},
+    {id:'m3',nom:'Clara Fontaine',email:'clara.f@startup.io',sujet:'Question sur l\'équipement',message:'Bonjour ! J\'aurais besoin d\'un vidéoprojecteur 4K pour une présentation client. Est-ce disponible dans la salle Majorelle ?',date:new Date(Date.now()-3600000*50).toISOString(),statut:'repondu'},
+  ];
+  saveMsgs(demos);
+}
+
+function renderMessages(){
+  seedDemoMessages();
+  const msgs=getMsgs();
+  const filtered=currentMsgFilter==='all'?msgs:msgs.filter(m=>m.statut===currentMsgFilter);
+  const newCount=msgs.filter(m=>m.statut==='nouveau').length;
+
+  $('#msg-new-count').style.display=newCount>0?'':'none';
+  $('#msg-new-count').textContent=newCount+' nouveau'+(newCount>1?'x':'');
+  $('#sb-msg-badge').style.display=newCount>0?'':'none';
+  $('#sb-msg-badge').textContent=newCount;
+
+  const tbody=$('#messages-rows'); tbody.innerHTML='';
+  if(!filtered.length){ tbody.innerHTML='<tr class="no-click"><td colspan="6" style="text-align:center;padding:48px;color:var(--muted)">Aucun message</td></tr>'; return }
+  filtered.sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach(m=>{
+    const isNew=m.statut==='nouveau';
+    const d=new Date(m.date);
+    const dateStr=d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})+(d.getHours()?` ${d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}':'');
+    const statusBadge=m.statut==='nouveau'?'<span class="badge badge--red">Nouveau</span>':m.statut==='repondu'?'<span class="badge badge--green">Répondu</span>':'<span class="badge badge--gray">Lu</span>';
+    const tr=document.createElement('tr');
+    tr.className=isNew?'msg-unread':'';
+    tr.innerHTML=`<td style="padding:0 8px"><div style="width:7px;height:7px;border-radius:50%;background:${isNew?'var(--red)':'transparent'}"></div></td>
+      <td><div style="font-weight:${isNew?'700':'500'}">${escapeHtml(m.nom)}</div><div style="font-size:11px;color:var(--muted)">${escapeHtml(m.email)}</div></td>
+      <td><div style="font-weight:${isNew?'600':'400'}">${escapeHtml(m.sujet)}</div><div class="msg-preview ${isNew?'msg-unread':''}">${escapeHtml(m.message)}</div></td>
+      <td style="font-size:12px;color:var(--muted);white-space:nowrap">${dateStr}</td>
+      <td>${statusBadge}</td>
+      <td style="color:var(--muted)">→</td>`;
+    tr.addEventListener('click',()=>openModalMsg(m));
+    tbody.appendChild(tr);
+  });
+}
+
+function openModalMsg(m){
+  if(m.statut==='nouveau'){ const msgs=getMsgs(); const idx=msgs.findIndex(x=>x.id===m.id); if(idx>=0){ msgs[idx].statut='lu'; saveMsgs(msgs); m.statut='lu'; renderMessages() } }
+  const d=new Date(m.date);
+  $('#mm-body').innerHTML=`
+    <div style="background:var(--paper);border-radius:10px;padding:16px;margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div class="av" style="background:hsl(${hashColor(m.email)},60%,45%)">${initials(m.nom)}</div>
+        <div><div style="font-weight:600">${escapeHtml(m.nom)}</div><div style="font-size:12px;color:var(--muted)">${escapeHtml(m.email)}</div></div>
+        <div style="margin-left:auto;font-size:12px;color:var(--muted)">${d.toLocaleString('fr-FR',{dateStyle:'long',timeStyle:'short'})}</div>
+      </div>
+      <div style="font-weight:600;margin-bottom:8px">${escapeHtml(m.sujet)}</div>
+    </div>
+    <div style="font-size:14px;line-height:1.7;white-space:pre-wrap;color:var(--ink)">${escapeHtml(m.message)}</div>`;
+  $('#mm-reply').dataset.email=m.email;
+  $('#mm-reply').dataset.sujet=m.sujet;
+  $('#mm-reply').dataset.id=m.id;
+  $('#modal-msg').classList.add('open');
+}
+
+$('#mm-close').addEventListener('click',()=>$('#modal-msg').classList.remove('open'));
+$('#mm-close2').addEventListener('click',()=>$('#modal-msg').classList.remove('open'));
+$('#modal-msg').addEventListener('click',e=>{ if(e.target.id==='modal-msg') $('#modal-msg').classList.remove('open') });
+$('#mm-reply').addEventListener('click',()=>{
+  const btn=$('#mm-reply');
+  window.location.href=`mailto:${btn.dataset.email}?subject=Re: ${encodeURIComponent(btn.dataset.sujet)}`;
+  const msgs=getMsgs(); const idx=msgs.findIndex(m=>m.id===btn.dataset.id);
+  if(idx>=0){ msgs[idx].statut='repondu'; saveMsgs(msgs); renderMessages() }
+  $('#modal-msg').classList.remove('open');
+});
+$('#mm-delete').addEventListener('click',()=>{
+  const id=$('#mm-reply').dataset.id;
+  if(!confirm('Supprimer ce message ?')) return;
+  saveMsgs(getMsgs().filter(m=>m.id!==id));
+  toast('Message supprimé'); $('#modal-msg').classList.remove('open'); renderMessages();
+});
+
+$$('[data-mfilter]').forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-mfilter]').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+  currentMsgFilter=b.dataset.mfilter; renderMessages();
+}));
+
+/* ═══════════════════════════════════════════════════════
    DÉMARRAGE
-   ============================================================================ */
+═══════════════════════════════════════════════════════ */
 init();
 </script>
 </body>
