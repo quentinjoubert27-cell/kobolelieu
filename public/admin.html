@@ -787,11 +787,15 @@ async function chargerSemaine(weekStart){
   const du=isoDate(weekStart), au=isoDate(addDays(weekStart,6));
   try {
     const r=await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(token)}&du=${du}&au=${au}`);
-    if(r.status===401){ deconnexion(); return }
-    if(!r.ok){ toast('Erreur de chargement','error'); return }
+    if(!r.ok){
+      // API non configurée ou indisponible → mode démo (ne pas déconnecter)
+      const demo=genDemoData(weekStart);
+      appliquerDonnees(demo);
+      return;
+    }
     appliquerDonnees(await r.json());
   } catch(err){
-    // démo : données simulées
+    // réseau indisponible → mode démo
     const demo=genDemoData(weekStart);
     appliquerDonnees(demo);
   }
