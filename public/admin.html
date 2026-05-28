@@ -440,6 +440,19 @@ input,select,textarea{font:inherit} svg{display:block}
           </div>
           <div id="recent-activity"></div>
         </div>
+
+        <div class="card" style="margin-top:16px;border:2px dashed var(--rule)">
+          <div class="card__head">
+            <div class="card__title" style="font-size:13px;color:var(--muted)">🔧 Diagnostic</div>
+          </div>
+          <div style="padding:0 20px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <span style="font-size:13px;color:var(--muted)">Tester l'envoi d'email Resend :</span>
+            <button class="btn btn--primary" id="btn-test-email-dash">
+              <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+              Envoyer un email de test
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- ═══════════════ RÉSERVATIONS ═══════════════ -->
@@ -961,21 +974,24 @@ function renderListe(){
 }
 
 /* Test email */
-$('#btn-test-email').addEventListener('click', async()=>{
+async function lancerTestEmail(btn){
   const to = prompt('Adresse email où envoyer le test :');
   if(!to || !to.includes('@')) return;
-  $('#btn-test-email').textContent='Envoi…'; $('#btn-test-email').disabled=true;
+  const orig = btn.textContent;
+  btn.textContent='Envoi en cours…'; btn.disabled=true;
   try{
     const r = await fetch(API_BASE+'/api/admin/test-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,to})});
     const d = await r.json();
     if(d.ok){
-      alert('✅ Email envoyé avec succès à '+to+'\n\nVérifie ta boîte (et les spams).\n\nConfig détectée :\n'+JSON.stringify(d.config,null,2));
+      alert('✅ Email envoyé à '+to+'\nVérifie ta boîte (et les spams).\n\nConfig :\n'+JSON.stringify(d.config,null,2));
     } else {
-      alert('❌ Échec :\n\n'+d.erreur+'\n\nConfig Vercel :\n'+JSON.stringify(d.config,null,2));
+      alert('❌ Erreur :\n'+d.erreur+'\n\nConfig Vercel :\n'+JSON.stringify(d.config,null,2));
     }
   }catch(e){ alert('❌ API injoignable : '+e.message) }
-  finally{ $('#btn-test-email').textContent='Test email'; $('#btn-test-email').disabled=false }
-});
+  finally{ btn.textContent=orig; btn.disabled=false }
+}
+$('#btn-test-email').addEventListener('click', ()=>lancerTestEmail($('#btn-test-email')));
+$('#btn-test-email-dash').addEventListener('click', ()=>lancerTestEmail($('#btn-test-email-dash')));
 
 /* Navigation semaine */
 let currentResaView='liste';
