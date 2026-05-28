@@ -1259,7 +1259,7 @@ function renderMessages(){
   filtered.sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach(m=>{
     const isNew=m.statut==='nouveau';
     const d=new Date(m.date);
-    const dateStr=d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})+(d.getHours()?` ${d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}':'');
+    const dateStr=d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})+(d.getHours()?` ${d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`:'');
     const statusBadge=m.statut==='nouveau'?'<span class="badge badge--red">Nouveau</span>':m.statut==='repondu'?'<span class="badge badge--green">Répondu</span>':'<span class="badge badge--gray">Lu</span>';
     const tr=document.createElement('tr');
     tr.className=isNew?'msg-unread':'';
