@@ -552,6 +552,12 @@ input,select,textarea{font:inherit} svg{display:block}
         <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
         Annuler & rembourser
       </button>
+      <button class="btn" id="modal-confirmer" style="background:var(--green-lt);color:var(--green);border:1.5px solid var(--green)">
+        <svg viewBox="0 0 24 24"><path d="M5 13l5 5L20 6"/></svg>Confirmer
+      </button>
+      <button class="btn" id="modal-renvoyer-email" style="background:var(--blue-lt);color:var(--blue);border:1.5px solid var(--blue)">
+        <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>Renvoyer email
+      </button>
       <button class="btn" id="modal-resa-close2">Fermer</button>
       <button class="btn btn--primary" id="modal-save">
         <svg viewBox="0 0 24 24"><path d="M5 13l5 5L20 6"/></svg>Enregistrer
@@ -1006,6 +1012,10 @@ function openModalResa(r){
     <div class="modal__field"><label>Message</label><textarea id="m-message" ${isCanc?'disabled':''}>${escapeHtml(r.message||'')}</textarea></div>`;
   $('#modal-cancel').style.display=isCanc?'none':'';
   $('#modal-save').style.display=isCanc?'none':'';
+  // Bouton "Confirmer" : seulement si en_attente
+  $('#modal-confirmer').style.display=r.statut==='en_attente'?'':'none';
+  // Bouton "Renvoyer email" : seulement si confirmée
+  $('#modal-renvoyer-email').style.display=r.statut==='confirmee'?'':'none';
   $('#modal-resa').classList.add('open');
 }
 
@@ -1025,8 +1035,34 @@ $('#modal-save').addEventListener('click',async()=>{
 $('#modal-cancel').addEventListener('click',async()=>{
   if(!modalResa) return;
   if(!confirm('Annuler cette réservation ?'+(modalResa.statut==='confirmee'?'\n\n⚠️ Le client sera remboursé via Stripe.':''))) return;
-  try{ const r=await fetch(API_BASE+'/api/admin/annuler',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,reservationId:modalResa.id,rembourser:true,prevenirClient:true})}); const data=await r.json(); if(r.ok){ toast(data.rembourse?'Annulée et remboursée':'Annulée'); $('#modal-resa').classList.remove('open'); chargerSemaine(currentWeek) } else throw 0 }
-  catch{ toast('Erreur (API indisponible en démo)','error') }
+  try{ const r=await fetch(API_BASE+'/api/admin/annuler',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,reservationId:modalResa.id,rembourser:true,prevenirClient:true})}); const data=await r.json(); if(r.ok){ toast(data.rembourse?'Annulée et remboursée':'Annulée'); $('#modal-resa').classList.remove('open'); chargerSemaine(currentWeek,true) } else throw 0 }
+  catch{ toast('Erreur API','error') }
+});
+
+$('#modal-confirmer').addEventListener('click',async()=>{
+  if(!modalResa) return;
+  if(!confirm(`Confirmer manuellement cette réservation et envoyer l'email de confirmation à ${modalResa.client_email} ?`)) return;
+  $('#modal-confirmer').disabled=true; $('#modal-confirmer').textContent='En cours…';
+  try{
+    const r=await fetch(API_BASE+'/api/admin/confirmer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,reservationId:modalResa.id})});
+    const data=await r.json();
+    if(r.ok){ toast('✓ Réservation confirmée + email envoyé'); $('#modal-resa').classList.remove('open'); chargerSemaine(currentWeek,true) }
+    else toast(data.error||'Erreur','error')
+  }catch{ toast('API injoignable','error') }
+  finally{ $('#modal-confirmer').disabled=false; $('#modal-confirmer').textContent='Confirmer' }
+});
+
+$('#modal-renvoyer-email').addEventListener('click',async()=>{
+  if(!modalResa) return;
+  if(!confirm(`Renvoyer l'email de confirmation à ${modalResa.client_email} ?`)) return;
+  $('#modal-renvoyer-email').disabled=true; $('#modal-renvoyer-email').textContent='Envoi…';
+  try{
+    const r=await fetch(API_BASE+'/api/admin/confirmer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,reservationId:modalResa.id,renvoyerEmail:true})});
+    const data=await r.json();
+    if(r.ok) toast('✓ Email renvoyé')
+    else toast(data.error||'Erreur','error')
+  }catch{ toast('API injoignable','error') }
+  finally{ $('#modal-renvoyer-email').disabled=false; $('#modal-renvoyer-email').textContent='Renvoyer email' }
 });
 
 /* ═══════════════════════════════════════════════════════
