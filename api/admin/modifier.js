@@ -18,6 +18,8 @@ const CHAMPS_AUTORISES = new Set([
   'client_entreprise',
   'nb_participants',
   'message',
+  'heure_debut',
+  'heure_fin',
 ]);
 
 export default async function handler(req, res) {

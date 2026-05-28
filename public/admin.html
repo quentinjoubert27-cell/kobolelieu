@@ -908,7 +908,7 @@ function renderPlanning(){
   }
   const cols=body.querySelectorAll('.planning__col');
   allReservations.forEach(r=>{
-    if(r.statut==='expiree') return;
+    if(r.statut==='expiree'||r.statut==='annulee') return;
     const col=Array.from(cols).find(c=>c.dataset.day===r.date_resa);
     if(!col) return;
     const top=(r.heure_debut-HSTART)*56, height=(r.heure_fin-r.heure_debut)*56-4;
@@ -976,16 +976,19 @@ function openModalResa(r){
       <div class="modal__cell"><small>Salle</small><strong>${r.salles?.nom||'—'}</strong></div>
       <div class="modal__cell"><small>Formule</small><strong>${r.formules?.nom||'—'}</strong></div>
       <div class="modal__cell"><small>Date</small><strong>${formatDateCourte(r.date_resa)}</strong></div>
-      <div class="modal__cell"><small>Créneau</small><strong>${String(r.heure_debut).padStart(2,'0')}h00 — ${String(r.heure_fin).padStart(2,'0')}h00</strong></div>
       <div class="modal__cell"><small>Montant</small><strong style="color:${isCanc?'var(--muted)':'var(--blue)'};font-family:var(--display);font-size:18px${isCanc?';text-decoration:line-through':''}">${euros(r.montant_total)}</strong></div>
       <div class="modal__cell"><small>Réservé le</small><strong>${formatDateHeure(r.created_at)}</strong></div>
     </div>
-    <div class="modal__field"><label>Nom</label><input id="m-nom" value="${escapeHtml(r.client_nom)}"></div>
-    <div class="modal__field"><label>Email</label><input id="m-email" type="email" value="${escapeHtml(r.client_email)}"></div>
-    <div class="modal__field"><label>Téléphone</label><input id="m-tel" type="tel" value="${escapeHtml(r.client_tel||'')}"></div>
-    <div class="modal__field"><label>Entreprise</label><input id="m-entreprise" value="${escapeHtml(r.client_entreprise||'')}"></div>
-    <div class="modal__field"><label>Participants</label><input id="m-participants" type="number" value="${r.nb_participants||''}" min="1" max="60"></div>
-    <div class="modal__field"><label>Message</label><textarea id="m-message">${escapeHtml(r.message||'')}</textarea></div>`;
+    <div class="modal__field" style="display:flex;gap:12px">
+      <div style="flex:1"><label>Début (h)</label><input id="m-hdebut" type="number" min="7" max="22" value="${r.heure_debut}" ${isCanc?'disabled':''}></div>
+      <div style="flex:1"><label>Fin (h)</label><input id="m-hfin" type="number" min="8" max="23" value="${r.heure_fin}" ${isCanc?'disabled':''}></div>
+    </div>
+    <div class="modal__field"><label>Nom</label><input id="m-nom" value="${escapeHtml(r.client_nom)}" ${isCanc?'disabled':''}></div>
+    <div class="modal__field"><label>Email</label><input id="m-email" type="email" value="${escapeHtml(r.client_email)}" ${isCanc?'disabled':''}></div>
+    <div class="modal__field"><label>Téléphone</label><input id="m-tel" type="tel" value="${escapeHtml(r.client_tel||'')}" ${isCanc?'disabled':''}></div>
+    <div class="modal__field"><label>Entreprise</label><input id="m-entreprise" value="${escapeHtml(r.client_entreprise||'')}" ${isCanc?'disabled':''}></div>
+    <div class="modal__field"><label>Participants</label><input id="m-participants" type="number" value="${r.nb_participants||''}" min="1" max="60" ${isCanc?'disabled':''}></div>
+    <div class="modal__field"><label>Message</label><textarea id="m-message" ${isCanc?'disabled':''}>${escapeHtml(r.message||'')}</textarea></div>`;
   $('#modal-cancel').style.display=isCanc?'none':'';
   $('#modal-save').style.display=isCanc?'none':'';
   $('#modal-resa').classList.add('open');
@@ -997,7 +1000,9 @@ $('#modal-resa').addEventListener('click',e=>{ if(e.target.id==='modal-resa') $(
 
 $('#modal-save').addEventListener('click',async()=>{
   if(!modalResa) return;
-  const champs={client_nom:$('#m-nom').value.trim(),client_email:$('#m-email').value.trim(),client_tel:$('#m-tel').value.trim()||null,client_entreprise:$('#m-entreprise').value.trim()||null,nb_participants:parseInt($('#m-participants').value,10)||null,message:$('#m-message').value.trim()||null};
+  const hd=parseInt($('#m-hdebut').value,10), hf=parseInt($('#m-hfin').value,10);
+  if(isNaN(hd)||isNaN(hf)||hd<7||hf>23||hf<=hd){ toast('Horaires invalides (début < fin, entre 7h et 23h)','error'); return }
+  const champs={client_nom:$('#m-nom').value.trim(),client_email:$('#m-email').value.trim(),client_tel:$('#m-tel').value.trim()||null,client_entreprise:$('#m-entreprise').value.trim()||null,nb_participants:parseInt($('#m-participants').value,10)||null,message:$('#m-message').value.trim()||null,heure_debut:hd,heure_fin:hf};
   try{ const r=await fetch(API_BASE+'/api/admin/modifier',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,reservationId:modalResa.id,champs})}); if(r.ok){ toast('Réservation mise à jour'); $('#modal-resa').classList.remove('open'); chargerSemaine(currentWeek) } else throw 0 }
   catch{ toast('Erreur (API indisponible en démo)','error') }
 });
