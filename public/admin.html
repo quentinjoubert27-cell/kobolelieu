@@ -788,16 +788,12 @@ async function chargerSemaine(weekStart){
   try {
     const r=await fetch(`${API_BASE}/api/admin/reservations?token=${encodeURIComponent(token)}&du=${du}&au=${au}`);
     if(!r.ok){
-      // API non configurée ou indisponible → mode démo (ne pas déconnecter)
-      const demo=genDemoData(weekStart);
-      appliquerDonnees(demo);
+      appliquerDonnees({reservations:[],stats:{total:0,confirmees:0,en_attente:0,annulees:0,ca_total:0}});
       return;
     }
     appliquerDonnees(await r.json());
   } catch(err){
-    // réseau indisponible → mode démo
-    const demo=genDemoData(weekStart);
-    appliquerDonnees(demo);
+    appliquerDonnees({reservations:[],stats:{total:0,confirmees:0,en_attente:0,annulees:0,ca_total:0}});
   }
 }
 
@@ -812,28 +808,6 @@ function appliquerDonnees(data){
 
 function formatPeriode(w){ const w7=addDays(w,6); return w.getMonth()===w7.getMonth()?`${w.getDate()} – ${w7.getDate()} ${MOIS[w7.getMonth()]} ${w7.getFullYear()}`:`${w.getDate()} ${MOIS[w.getMonth()]} – ${w7.getDate()} ${MOIS[w7.getMonth()]}` }
 
-// Données de démo
-function genDemoData(week){
-  const names=['Sophie Martin','Lucas Bernard','Emma Rousseau','Thomas Leroy','Camille Dubois','Antoine Moreau','Julie Petit','Nicolas Lambert'];
-  const formules=['La matinée','La journée','À l\'heure','La soirée'];
-  const salles=[{id:'canopee',nom:'Canopée',couleur:'#01357b'},{id:'majorelle',nom:'Majorelle',couleur:'#7c3aed'}];
-  const statuts=['confirmee','confirmee','confirmee','en_attente','confirmee'];
-  const resas=[];
-  for(let i=0;i<7;i++){
-    const d=addDays(week,i);
-    if(d.getDay()===0) continue;
-    const n=Math.floor(Math.random()*3);
-    for(let j=0;j<n;j++){
-      const s=salles[j%2], f=formules[j%4];
-      const hd=9+j*3, hf=hd+(f==='À l\'heure'?2:f==='La matinée'?4:f==='La journée'?8:3);
-      const montant=f==='À l\'heure'?4000*2:f==='La matinée'?12000:f==='La journée'?20000:8000;
-      resas.push({id:`r${i}${j}`,date_resa:isoDate(d),heure_debut:hd,heure_fin:Math.min(hf,22),statut:statuts[Math.floor(Math.random()*statuts.length)],client_nom:names[(i*3+j)%names.length],client_email:`client${i*3+j}@example.com`,client_tel:'0612345678',client_entreprise:'Société Exemple',nb_participants:j*3+2,message:'',montant_total:montant,salles:s,formules:{nom:f},created_at:new Date(d.getTime()-86400000).toISOString()});
-    }
-  }
-  const conf=resas.filter(r=>r.statut==='confirmee');
-  const pend=resas.filter(r=>r.statut==='en_attente');
-  return {reservations:resas,stats:{total:resas.length,confirmees:conf.length,en_attente:pend.length,annulees:0,ca_total:conf.reduce((s,r)=>s+r.montant_total,0)}};
-}
 
 /* ═══════════════════════════════════════════════════════
    DASHBOARD
@@ -1237,18 +1211,7 @@ $('#mp-delete').addEventListener('click',()=>{
 function getMsgs(){ try{ return JSON.parse(localStorage.getItem('_msgs')||'[]') }catch(e){ return [] } }
 function saveMsgs(arr){ localStorage.setItem('_msgs',JSON.stringify(arr)) }
 
-function seedDemoMessages(){
-  if(getMsgs().length) return;
-  const demos=[
-    {id:'m1',nom:'Marie Dupont',email:'marie@example.com',sujet:'Disponibilité salle Canopée',message:'Bonjour, je souhaiterais réserver la salle Canopée pour un séminaire de 10 personnes le vendredi 14 juin de 9h à 17h. Est-ce disponible ? Merci.',date:new Date(Date.now()-3600000*2).toISOString(),statut:'nouveau'},
-    {id:'m2',nom:'Paul Renaud',email:'paul.renaud@agence.fr',sujet:'Tarif journée + catering',message:'Bonjour, je représente une agence de com et cherche un espace pour nos réunions mensuelles. Avez-vous des tarifs pour 10 réservations à l\'avance ? Aussi, proposez-vous du catering ?',date:new Date(Date.now()-3600000*26).toISOString(),statut:'lu'},
-    {id:'m3',nom:'Clara Fontaine',email:'clara.f@startup.io',sujet:'Question sur l\'équipement',message:'Bonjour ! J\'aurais besoin d\'un vidéoprojecteur 4K pour une présentation client. Est-ce disponible dans la salle Majorelle ?',date:new Date(Date.now()-3600000*50).toISOString(),statut:'repondu'},
-  ];
-  saveMsgs(demos);
-}
-
 function renderMessages(){
-  seedDemoMessages();
   const msgs=getMsgs();
   const filtered=currentMsgFilter==='all'?msgs:msgs.filter(m=>m.statut===currentMsgFilter);
   const newCount=msgs.filter(m=>m.statut==='nouveau').length;
