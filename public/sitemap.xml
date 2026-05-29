@@ -52,6 +52,49 @@
     <priority>0.70</priority>
   </url>
 
+  <!-- Articles du Journal -->
+  <url>
+    <loc>https://kobo-bdx.com/journal/reunion-productive-bordeaux</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
+  <url>
+    <loc>https://kobo-bdx.com/journal/louer-salle-plutot-que-cafe</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
+  <url>
+    <loc>https://kobo-bdx.com/journal/guide-chartrons-bordeaux</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
+  <url>
+    <loc>https://kobo-bdx.com/journal/checklist-reserver-salle-reunion</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
+  <url>
+    <loc>https://kobo-bdx.com/journal/teletravail-bureau-salle-louee</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
+  <url>
+    <loc>https://kobo-bdx.com/journal/annexe-kobo-bordeaux</loc>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
   <!-- Confirmation réservation (noindex mais présente pour crawlers) -->
   <url>
     <loc>https://kobo-bdx.com/reservation-confirmee.html</loc>
