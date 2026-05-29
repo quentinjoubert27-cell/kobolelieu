@@ -44,6 +44,14 @@
     <priority>0.75</priority>
   </url>
 
+  <!-- Le Journal — blog SEO -->
+  <url>
+    <loc>https://kobo-bdx.com/journal.html</loc>
+    <lastmod>2026-05-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
   <!-- Confirmation réservation (noindex mais présente pour crawlers) -->
   <url>
     <loc>https://kobo-bdx.com/reservation-confirmee.html</loc>

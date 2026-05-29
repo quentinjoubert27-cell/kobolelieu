@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<link rel="icon" type="image/png" href="favicon.png"/>
+<link rel="shortcut icon" href="favicon.png"/>
+<title>Le Journal — Kōbō Le Lieu · Conseils, vie du lieu, Bordeaux</title>
+<meta name="description" content="Le Journal de Kōbō Le Lieu : conseils pour organiser vos réunions à Bordeaux, vie du quartier des Chartrons, astuces travail et inspirations. Salle de réunion à 40€/h.">
+<meta name="keywords" content="blog salle réunion Bordeaux, conseils réunion productive, quartier Chartrons Bordeaux, louer salle réunion, travail Bordeaux, Kōbō Le Lieu journal">
+<link rel="canonical" href="https://kobo-bdx.com/journal.html">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kobo-bdx.com/journal.html">
+<meta property="og:title" content="Le Journal — Kōbō Le Lieu · Bordeaux">
+<meta property="og:description" content="Conseils, inspirations et vie du lieu. Le journal de Kōbō Le Lieu, salle de réunion au cœur des Chartrons à Bordeaux.">
+<meta property="og:image" content="https://kobo-bdx.com/sallecanopee.jpg">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Kōbō Le Lieu">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Le Journal — Kōbō Le Lieu",
+  "description": "Le journal de Kōbō Le Lieu : conseils pour organiser des réunions productives à Bordeaux, vie du quartier des Chartrons, astuces et inspirations.",
+  "url": "https://kobo-bdx.com/journal.html",
+  "publisher": {
+    "@type": "LocalBusiness",
+    "name": "Kōbō Le Lieu",
+    "url": "https://kobo-bdx.com/kobo-lieu.html",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "76 rue Mandron",
+      "addressLocality": "Bordeaux",
+      "postalCode": "33000",
+      "addressCountry": "FR"
+    }
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://kobo-bdx.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Kōbō Le Lieu", "item": "https://kobo-bdx.com/kobo-lieu.html"},
+      {"@type": "ListItem", "position": 3, "name": "Le Journal", "item": "https://kobo-bdx.com/journal.html"}
+    ]
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Caprasimo&family=Instrument+Serif:ital@0;1&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue: #01357b;
+  --blue-deep: #021f4a;
+  --blue-soft: #d8e2f2;
+  --blue-paper: #eef2fa;
+  --cream: #faf3e3;
+  --cream-2: #f5ebd1;
+  --sun: #f4c542;
+  --tomato: #e6543c;
+  --leaf: #4a7c3a;
+  --ink: #1a1612;
+  --display: "Caprasimo", serif;
+  --hand: "Caveat", cursive;
+  --italic: "Instrument Serif", serif;
+  --body: "Familjen Grotesk", system-ui, sans-serif;
+  --line: 2.5px;
+  --r: 24px;
+  --r-pill: 999px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family: var(--body);
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none}
+::selection{background:var(--sun);color:var(--ink)}
+
+/* ============================== NAV ============================== */
+.nav{
+  position: sticky; top: 0; z-index: 50;
+  background: var(--cream);
+  border-bottom: var(--line) solid var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 28px;
+}
+.nav__logo{display: flex; align-items: center; gap: 10px}
+.nav__logo img{height: 36px; width: auto; display: block}
+.nav__logo .dot{
+  width: 11px; height: 11px; background: var(--tomato); border-radius: 50%;
+  flex-shrink: 0; animation: bounce 2s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.nav__links{display: flex; gap: 24px; font-weight: 600; font-size: 14px}
+.nav__links a{color:var(--ink);opacity:.65;padding:6px 0;transition:opacity .2s}
+.nav__links a:hover{opacity:1}
+.nav__links a.active{opacity:1;border-bottom:2px solid var(--blue)}
+.nav__cta{
+  display: flex; align-items: center; gap: 8px;
+  background: var(--blue); color: var(--cream);
+  padding: 10px 22px; border-radius: var(--r-pill);
+  font-weight: 600; font-size: 14px;
+  border: var(--line) solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform .2s, box-shadow .2s;
+}
+.nav__cta:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.nav__burger{display:none;flex-direction:column;gap:5px;padding:6px;cursor:pointer}
+.nav__burger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
+.nav__drawer{display:none}
+
+/* ============================== HERO ============================== */
+.journal-hero{
+  background: var(--blue);
+  color: var(--cream);
+  padding: 80px 28px 72px;
+  text-align: center;
+  border-bottom: var(--line) solid var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+.journal-hero::before{
+  content:"";
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(244,197,66,.15), transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(230,84,60,.1), transparent 50%);
+  pointer-events: none;
+}
+.journal-hero__eyebrow{
+  font-family: var(--hand);
+  font-size: 22px; color: var(--sun);
+  margin-bottom: 12px;
+}
+.journal-hero__title{
+  font-family: var(--display);
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 1; letter-spacing: -.02em;
+  margin-bottom: 20px;
+}
+.journal-hero__title .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--sun); font-weight: 400;
+}
+.journal-hero__sub{
+  font-family: var(--italic); font-style: italic;
+  font-size: 18px; opacity: .75; max-width: 500px; margin: 0 auto;
+}
+
+/* ============================== ARTICLES ============================== */
+.journal-wrap{
+  max-width: 1100px; margin: 0 auto;
+  padding: 72px 28px 100px;
+}
+.journal-filters{
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.journal-filter{
+  padding: 8px 18px;
+  border-radius: var(--r-pill);
+  font-size: 13px; font-weight: 600;
+  border: 2px solid var(--ink);
+  background: transparent; color: var(--ink);
+  cursor: pointer; transition: background .2s, color .2s;
+}
+.journal-filter.active,
+.journal-filter:hover{
+  background: var(--ink); color: var(--cream);
+}
+
+.journal-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+}
+
+/* Article card */
+.article-card{
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform .2s, box-shadow .2s;
+}
+.article-card:hover{
+  transform: translate(-3px,-3px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+.article-card__cover{
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.article-card__cover img{
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+  transition: transform .4s;
+}
+.article-card:hover .article-card__cover img{
+  transform: scale(1.04);
+}
+.article-card__cover-placeholder{
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+}
+.article-card__tag{
+  position: absolute; top: 14px; left: 14px;
+  background: var(--sun); color: var(--ink);
+  font-size: 11px; font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 4px 10px; border-radius: var(--r-pill);
+  border: 1.5px solid var(--ink);
+}
+.article-card__body{
+  padding: 24px; flex: 1; display: flex; flex-direction: column;
+}
+.article-card__meta{
+  font-size: 12px; color: #888; margin-bottom: 10px;
+  display: flex; gap: 8px; align-items: center;
+}
+.article-card__meta span{color:var(--ink);opacity:.4}
+.article-card__title{
+  font-family: var(--display);
+  font-size: 20px; line-height: 1.2;
+  margin-bottom: 12px; color: var(--ink);
+  flex: 1;
+}
+.article-card__excerpt{
+  font-size: 14px; line-height: 1.6; color: #555;
+  margin-bottom: 20px;
+}
+.article-card__link{
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 700; color: var(--blue);
+  border-bottom: 2px solid var(--blue-soft);
+  padding-bottom: 2px;
+  transition: border-color .2s;
+  align-self: flex-start;
+}
+.article-card__link:hover{border-color: var(--blue)}
+
+/* Article hero (featured) */
+.article-card--featured{
+  grid-column: 1 / -1;
+  flex-direction: row;
+  min-height: 320px;
+}
+.article-card--featured .article-card__cover{
+  height: auto; flex: 0 0 45%;
+}
+.article-card--featured .article-card__body{
+  padding: 36px 40px;
+}
+.article-card--featured .article-card__title{
+  font-size: 28px;
+}
+.article-card--featured .article-card__excerpt{
+  font-size: 16px;
+}
+
+/* CTA band */
+.journal-cta{
+  background: var(--blue-paper);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding: 56px 28px;
+  text-align: center;
+}
+.journal-cta h2{
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 48px);
+  margin-bottom: 16px;
+}
+.journal-cta h2 .accent{
+  font-family: var(--italic); font-style: italic;
+  color: var(--blue); font-weight: 400;
+}
+.journal-cta p{
+  font-size: 16px; opacity: .7; margin-bottom: 28px;
+}
+.journal-cta__btn{
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--blue); color: var(--cream);
+  padding: 16px 32px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 15px;
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform .2s, box-shadow .2s;
+}
+.journal-cta__btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+
+/* ============================== FOOTER ============================== */
+.foot{
+  background: var(--ink); color: var(--cream);
+  padding: 60px 28px 32px;
+}
+.foot__inner{max-width: 1280px; margin: 0 auto}
+.foot__grid{
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px; margin-bottom: 40px;
+}
+.foot__brand-name img{height:32px;margin-bottom:12px}
+.foot__brand-desc{font-size:14px;opacity:.6;line-height:1.6}
+.foot__grid h4{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;opacity:.5;margin-bottom:14px}
+.foot__grid ul{list-style:none}
+.foot__grid ul li{margin-bottom:8px;font-size:14px;opacity:.75}
+.foot__grid ul li a:hover{opacity:1;text-decoration:underline}
+.foot__bottom{
+  border-top:1px solid rgba(255,255,255,.1);
+  padding-top:24px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:12px; opacity:.4; flex-wrap:wrap; gap:8px;
+}
+
+/* ============================== RESPONSIVE ============================== */
+@media(max-width:900px){
+  .article-card--featured{flex-direction:column}
+  .article-card--featured .article-card__cover{flex:none;height:240px}
+  .article-card--featured .article-card__body{padding:24px}
+  .article-card--featured .article-card__title{font-size:22px}
+  .foot__grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .nav__links,.nav__cta{display:none}
+  .nav__burger{display:flex}
+  .nav__drawer{
+    display:block; position:fixed; inset:0; background:var(--cream);
+    padding:80px 28px 28px; z-index:40;
+    transform:translateX(100%); transition:transform .3s;
+  }
+  .nav__drawer--open{transform:translateX(0)}
+  .nav__drawer a{
+    display:block; font-size:22px; font-weight:700;
+    padding:16px 0; border-bottom:1px solid rgba(0,0,0,.08);
+  }
+  .foot__grid{grid-template-columns:1fr}
+  .journal-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== NAV ============================== -->
+<nav class="nav" role="navigation">
+  <a class="nav__logo" href="kobo-lieu.html">
+    <img src="kobobleu.png" alt="Kōbō Le Lieu">
+    <span class="dot"></span>
+  </a>
+  <div class="nav__links">
+    <a href="kobo-lieu.html#salles">Les salles</a>
+    <a href="services.html">Services</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <a href="reservation.html" class="nav__cta">
+    Réserver · 40€/h
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+  <button class="nav__burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav__drawer" id="drawer">
+  <a href="kobo-lieu.html">Le Lieu</a>
+  <a href="kobo-lieu.html#salles">Les salles</a>
+  <a href="services.html">Services</a>
+  <a href="contact.html">Contact</a>
+  <a href="reservation.html" style="color:var(--blue);margin-top:12px;">Réserver une salle →</a>
+</div>
+
+<!-- ============================== HERO ============================== -->
+<header class="journal-hero">
+  <p class="journal-hero__eyebrow">— notes, conseils & vie du lieu</p>
+  <h1 class="journal-hero__title">Le <span class="accent">Journal.</span></h1>
+  <p class="journal-hero__sub">Ce qu'on observe, ce qu'on apprend, ce qu'on partage depuis les Chartrons.</p>
+</header>
+
+<!-- ============================== ARTICLES ============================== -->
+<main class="journal-wrap">
+
+  <div class="journal-filters">
+    <button class="journal-filter active">Tout</button>
+    <button class="journal-filter">Réunions</button>
+    <button class="journal-filter">Bordeaux</button>
+    <button class="journal-filter">Travail & orga</button>
+    <button class="journal-filter">Le Lieu</button>
+  </div>
+
+  <div class="journal-grid">
+
+    <!-- Article 1 — Featured -->
+    <article class="article-card article-card--featured">
+      <div class="article-card__cover">
+        <img src="koboannexe6.jpg" alt="Conférence dans l'annexe Kōbō — organiser une réunion productive à Bordeaux">
+        <span class="article-card__tag">Réunions</span>
+      </div>
+      <div class="article-card__body">
+        <div class="article-card__meta">
+          <time datetime="2026-05-20">20 mai 2026</time>
+          <span>·</span>
+          5 min de lecture
+        </div>
+        <h2 class="article-card__title">Comment organiser une réunion vraiment productive à Bordeaux</h2>
+        <p class="article-card__excerpt">Une réunion efficace ne s'improvise pas. Ordre du jour clair, espace adapté, timing respecté — on vous donne les clés pour que vos prochaines réunions au bureau ou en salle louée à Bordeaux se transforment en vraie valeur ajoutée pour votre équipe.</p>
+        <a href="#" class="article-card__link">Lire l'article <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+    <!-- Article 2 -->
+    <article class="article-card">
+      <div class="article-card__cover">
+        <img src="sallecanopee.jpg" alt="Salle de réunion Canopée à Bordeaux — louer une salle plutôt que travailler au café">
+        <span class="article-card__tag">Travail & orga</span>
+      </div>
+      <div class="article-card__body">
+        <div class="article-card__meta">
+          <time datetime="2026-05-12">12 mai 2026</time>
+          <span>·</span>
+          4 min de lecture
+        </div>
+        <h2 class="article-card__title">5 bonnes raisons de louer une salle plutôt que de bosser au café</h2>
+        <p class="article-card__excerpt">Wifi instable, bruit de fond, manque d'écran… Le café, c'est bien pour la pause, pas pour la réunion client. Voici pourquoi réserver une salle de réunion à Bordeaux change vraiment la donne.</p>
+        <a href="#" class="article-card__link">Lire l'article <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+    <!-- Article 3 -->
+    <article class="article-card">
+      <div class="article-card__cover">
+        <div class="article-card__cover-placeholder" style="background:linear-gradient(135deg,#eef2fa,#d8e2f2);">🗺️</div>
+        <span class="article-card__tag">Bordeaux</span>
+      </div>
+      <div class="article-card__body">
+        <div class="article-card__meta">
+          <time datetime="2026-05-05">5 mai 2026</time>
+          <span>·</span>
+          6 min de lecture
+        </div>
+        <h2 class="article-card__title">Guide des Chartrons : le quartier pro de Bordeaux que vous ne connaissez pas encore</h2>
+        <p class="article-card__excerpt">Entre le Jardin Public, les antiquaires et les nouvelles adresses branchées, les Chartrons sont devenus le quartier de référence pour les professionnels bordelais. Notre guide du coin pour avant et après votre réunion.</p>
+        <a href="#" class="article-card__link">Lire l'article <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+    <!-- Article 4 -->
+    <article class="article-card">
+      <div class="article-card__cover">
+        <img src="sallemajorelle.jpg" alt="Salle Majorelle — checklist réservation salle de réunion Bordeaux">
+        <span class="article-card__tag">Réunions</span>
+      </div>
+      <div class="article-card__body">
+        <div class="article-card__meta">
+          <time datetime="2026-04-28">28 avril 2026</time>
+          <span>·</span>
+          3 min de lecture
+        </div>
+        <h2 class="article-card__title">Checklist : tout vérifier avant de réserver une salle de réunion à Bordeaux</h2>
+        <p class="article-card__excerpt">Capacité, équipements, accès, annulation… Avant de cliquer sur "Réserver", voici les 8 points à valider pour ne pas avoir de mauvaise surprise le jour J.</p>
+        <a href="#" class="article-card__link">Lire l'article <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+    <!-- Article 5 -->
+    <article class="article-card">
+      <div class="article-card__cover">
+        <div class="article-card__cover-placeholder" style="background:linear-gradient(135deg,#fef9e7,#f5ebd1);">⚡</div>
+        <span class="article-card__tag">Travail & orga</span>
+      </div>
+      <div class="article-card__body">
+        <div class="article-card__meta">
+          <time datetime="2026-04-15">15 avril 2026</time>
+          <span>·</span>
+          4 min de lecture
+        </div>
+        <h2 class="article-card__title">Télétravail, bureau, salle louée : comment choisir selon le type de journée</h2>
+        <p class="article-card__excerpt">Chaque format de travail a ses avantages. Mais selon que vous avez un brainstorm d'équipe, un entretien client ou une journée de deep work, l'espace que vous choisissez change tout à votre productivité.</p>
+        <a href="#" class="article-card__link">Lire l'article <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+    <!-- Article 6 -->
+    <article class="article-card">
+      <div class="article-card__cover">
+        <img src="koboannexe3.png" alt="Événement pop-up dans l'annexe Kōbō Bordeaux — espaces événementiels Chartrons">
+        <span class="article-card__tag">Le Lieu</span>
+      </div>
+      <div class="article-card__body">
+        <div class="article-card__meta">
+          <time datetime="2026-04-03">3 avril 2026</time>
+          <span>·</span>
+          3 min de lecture
+        </div>
+        <h2 class="article-card__title">L'Annexe : le grand espace événementiel que personne ne connaît encore à Bordeaux</h2>
+        <p class="article-card__excerpt">140 m² au cœur des Chartrons, privatisable pour vos événements, lancements, résidences ou performances. On vous présente l'Annexe Kōbō et tout ce qu'on peut y faire.</p>
+        <a href="#" class="article-card__link">Lire l'article <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<!-- ============================== CTA ============================== -->
+<section class="journal-cta">
+  <h2>Une salle de réunion,<br><span class="accent">c'est par ici.</span></h2>
+  <p>Réservez en ligne en 3 étapes · 40€/h · Chartrons, Bordeaux</p>
+  <a href="reservation.html" class="journal-cta__btn">
+    Réserver une salle
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="foot">
+  <div class="foot__inner">
+    <div class="foot__grid">
+      <div>
+        <div class="foot__brand-name"><img src="kobojaune.png" alt="Kōbō Le Lieu"></div>
+        <p class="foot__brand-desc">Un lieu, deux salles, quatre métiers. Tout part d'ici, depuis Bordeaux.</p>
+      </div>
+      <div>
+        <h4>Le Lieu</h4>
+        <ul>
+          <li><a href="kobo-lieu.html#salles">Canopée</a></li>
+          <li><a href="kobo-lieu.html#salles">Majorelle</a></li>
+          <li><a href="kobo-lieu.html#salles">L'annexe</a></li>
+          <li><a href="services.html">Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>L'Écosystème</h4>
+        <ul>
+          <li><a href="#">PO TECH</a></li>
+          <li><a href="#">Kōbō Design</a></li>
+          <li><a href="#">Kōbō Production</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>76 rue Mandron</li>
+          <li>33000 Bordeaux</li>
+          <li><a href="mailto:hello@kobo-bdx.com">hello@kobo-bdx.com</a></li>
+          <li><a href="#">Instagram</a> · <a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© 2026 Kōbō · Maison commune, Bordeaux</span>
+      <span><a href="journal.html" style="color:var(--sun);font-weight:600;">Le Journal</a> · Mentions · Confidentialité</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Burger menu */
+(function(){
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  if(!burger) return;
+  function closeMenu(){ drawer.classList.remove('nav__drawer--open'); }
+  burger.addEventListener('click', () => {
+    drawer.classList.contains('nav__drawer--open') ? closeMenu() : drawer.classList.add('nav__drawer--open');
+  });
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeMenu(); });
+})();
+
+/* Filters */
+document.querySelectorAll('.journal-filter').forEach(btn => {
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.journal-filter').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
