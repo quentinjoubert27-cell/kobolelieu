@@ -1493,10 +1493,10 @@ async function chargerAffiliation(){
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>
-          <div style="font-weight:600">${escHtml(a.nom)}</div>
-          <div style="font-size:11px;color:var(--muted)">${escHtml(a.email)}</div>
+          <div style="font-weight:600">${escapeHtml(a.nom)}</div>
+          <div style="font-size:11px;color:var(--muted)">${escapeHtml(a.email)}</div>
         </td>
-        <td><code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-size:12px">${escHtml(a.code)}</code></td>
+        <td><code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-size:12px">${escapeHtml(a.code)}</code></td>
         <td>
           <div style="display:flex;align-items:center;gap:6px">
             <input type="number" value="${a.taux_commission}" min="0" max="100" step="0.5" id="aff-taux-${a.code}" style="width:52px;padding:4px 6px;border:1.5px solid var(--rule);border-radius:6px;font-size:12px;font-weight:600;text-align:center;outline:none">
@@ -1512,7 +1512,7 @@ async function chargerAffiliation(){
           : '<span class="badge badge--amber">En attente</span>'}</td>
         <td>
           <div style="display:flex;gap:5px;flex-wrap:wrap">
-            <button onclick="affCopierLien('${escHtml(a.lien_parrainage)}')" style="padding:4px 9px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Lien</button>
+            <button onclick="affCopierLien('${escapeHtml(a.lien_parrainage)}')" style="padding:4px 9px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Lien</button>
             ${!a.stripe_onboarded ? `<button onclick="affOnboarding('${a.code}')" style="padding:4px 9px;background:var(--amber-lt);color:var(--amber);border:1px solid #fbbf24;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Stripe</button>` : ''}
             ${a.statut === 'actif'
               ? `<button onclick="affToggleStatut('${a.code}','suspendu')" style="padding:4px 9px;background:var(--red-lt);color:var(--red);border:1px solid #fca5a5;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Suspendre</button>`
