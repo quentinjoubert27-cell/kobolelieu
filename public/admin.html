@@ -330,6 +330,10 @@ input,select,textarea{font:inherit} svg{display:block}
         <span>Messages</span>
         <span class="sb-badge" id="sb-msg-badge" style="display:none">0</span>
       </div>
+      <div class="sb-item" data-page="affiliation">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>Affiliation</span>
+      </div>
       <div class="sb-divider"></div>
       <a href="kobo-lieu.html" class="sb-item" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -550,6 +554,86 @@ input,select,textarea{font:inherit} svg{display:block}
             <tbody id="messages-rows"></tbody>
           </table>
         </div>
+      </div>
+
+      <!-- ═══════════════ AFFILIATION ═══════════════ -->
+      <div class="page" id="page-affiliation">
+
+        <!-- Taux global -->
+        <div class="card" style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:24px">
+          <div>
+            <div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Taux de commission par défaut</div>
+            <div style="font-family:var(--display);font-size:32px;color:var(--blue)" id="aff-taux-affiche">—%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="number" id="aff-taux-input" min="0" max="100" step="0.5" placeholder="10" style="width:70px;padding:8px 10px;border:1.5px solid var(--rule);border-radius:8px;font-size:15px;font-weight:600;text-align:center;outline:none">
+            <span style="font-weight:700;color:#555">%</span>
+            <button onclick="affSaveTaux()" style="padding:9px 18px;background:var(--blue);color:#fff;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;border:0">Enregistrer</button>
+          </div>
+        </div>
+
+        <!-- Ajouter un affilié -->
+        <div class="card" style="margin-bottom:20px;padding:24px">
+          <div style="font-size:15px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><path d="M16 11l2 2 4-4"/></svg>
+            Ajouter un affilié
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:14px">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Nom complet</label>
+              <input type="text" id="aff-nom" placeholder="Marie Dupont" style="width:100%;padding:9px 11px;border:1.5px solid var(--rule);border-radius:8px;font-size:13px;outline:none">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Email</label>
+              <input type="email" id="aff-email" placeholder="marie@exemple.fr" style="width:100%;padding:9px 11px;border:1.5px solid var(--rule);border-radius:8px;font-size:13px;outline:none">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Code (ex: MARIE)</label>
+              <input type="text" id="aff-code" placeholder="MARIE" style="width:100%;padding:9px 11px;border:1.5px solid var(--rule);border-radius:8px;font-size:13px;text-transform:uppercase;outline:none" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9_-]/g,'')">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Taux perso (optionnel)</label>
+              <input type="number" id="aff-taux-perso" placeholder="10" min="0" max="100" step="0.5" style="width:100%;padding:9px 11px;border:1.5px solid var(--rule);border-radius:8px;font-size:13px;outline:none">
+            </div>
+          </div>
+          <button id="aff-btn-add" onclick="affCreer()" style="padding:10px 22px;background:var(--blue);color:#fff;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;border:0">Créer l'affilié</button>
+          <div id="aff-result" style="display:none;margin-top:14px;padding:18px;background:var(--green-lt);border:1px solid #86efac;border-radius:10px">
+            <div style="color:var(--green);font-weight:700;margin-bottom:12px">✅ Affilié créé !</div>
+            <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span style="font-size:12px;color:#555;min-width:90px">Lien parrainage</span>
+              <code id="aff-res-lien" style="font-size:12px;flex:1;word-break:break-all;background:#fff;padding:4px 8px;border-radius:6px"></code>
+              <button onclick="affCopier('aff-res-lien')" style="padding:4px 10px;background:var(--blue);color:#fff;border-radius:6px;font-size:11px;font-weight:700;border:0;cursor:pointer">Copier</button>
+            </div>
+            <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span style="font-size:12px;color:#555;min-width:90px">Espace affilié</span>
+              <code id="aff-res-portail" style="font-size:12px;flex:1;word-break:break-all;background:#fff;padding:4px 8px;border-radius:6px"></code>
+              <button onclick="affCopier('aff-res-portail')" style="padding:4px 10px;background:var(--blue);color:#fff;border-radius:6px;font-size:11px;font-weight:700;border:0;cursor:pointer">Copier</button>
+            </div>
+            <div id="aff-res-stripe-wrap" style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #86efac;display:none">
+              <div style="font-size:12px;color:#555;margin-bottom:6px">⚠️ À envoyer à l'affilié pour connecter son IBAN :</div>
+              <a id="aff-res-stripe" href="#" target="_blank" style="font-size:12px;color:var(--blue);font-weight:600;word-break:break-all"></a>
+            </div>
+          </div>
+          <div id="aff-err" style="display:none;margin-top:10px;padding:10px 14px;background:var(--red-lt);border:1px solid #fca5a5;border-radius:8px;color:var(--red);font-size:13px"></div>
+        </div>
+
+        <!-- Tableau affiliés -->
+        <div class="card" style="padding:0;overflow:hidden">
+          <div style="padding:18px 20px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-weight:700">Affiliés actifs</span>
+            <span id="aff-nb" style="font-size:12px;color:var(--muted)"></span>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="tbl">
+              <thead><tr>
+                <th>Affilié</th><th>Code</th><th>Taux</th><th>Clics</th><th>Réservations</th><th>En attente</th><th>Versé</th><th>Stripe</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="aff-tbody"></tbody>
+            </table>
+          </div>
+          <div id="aff-empty" style="display:none;text-align:center;padding:40px;color:var(--muted);font-size:13px">Aucun affilié pour l'instant</div>
+        </div>
+
       </div>
 
     </div><!-- /main -->
@@ -788,6 +872,7 @@ const PAGE_META={
   clients:{title:'Clients',sub:'Gestion de la relation client'},
   promos:{title:'Codes promo',sub:'Créez et gérez vos remises'},
   messages:{title:'Messages',sub:'Formulaire de contact et demandes'},
+  affiliation:{title:'Affiliation',sub:'Gérez vos affiliés et leurs commissions'},
 };
 
 function switchPage(id){
@@ -802,6 +887,7 @@ function switchPage(id){
   if(id==='reservations') chargerSemaine(currentWeek, true);
   if(id==='clients') renderClients();
   if(id==='dashboard') renderDashboard();
+  if(id==='affiliation') chargerAffiliation();
 }
 
 $$('.sb-item[data-page]').forEach(b=>b.addEventListener('click',()=>switchPage(b.dataset.page)));
@@ -1376,6 +1462,156 @@ $$('[data-mfilter]').forEach(b=>b.addEventListener('click',()=>{
   $$('[data-mfilter]').forEach(x=>x.classList.remove('active')); b.classList.add('active');
   currentMsgFilter=b.dataset.mfilter; renderMessages();
 }));
+
+/* ═══════════════════════════════════════════════════════
+   AFFILIATION
+═══════════════════════════════════════════════════════ */
+function affEuros(c){ return (c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'}); }
+
+async function chargerAffiliation(){
+  try {
+    const r = await fetch(`/api/affilies?action=liste&token=${encodeURIComponent(token)}`);
+    const data = await r.json();
+    if(!r.ok) throw new Error(data.error);
+
+    $('#aff-taux-affiche').textContent = data.taux_defaut + '%';
+    $('#aff-taux-input').value = data.taux_defaut;
+
+    const tbody = $('#aff-tbody');
+    const empty = $('#aff-empty');
+    tbody.innerHTML = '';
+
+    if(!data.affilies || data.affilies.length === 0){
+      empty.style.display = 'block';
+      $('#aff-nb').textContent = 'Aucun affilié';
+      return;
+    }
+    empty.style.display = 'none';
+    $('#aff-nb').textContent = `${data.affilies.length} affilié${data.affilies.length > 1 ? 's' : ''}`;
+
+    data.affilies.forEach(a => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div style="font-weight:600">${escHtml(a.nom)}</div>
+          <div style="font-size:11px;color:var(--muted)">${escHtml(a.email)}</div>
+        </td>
+        <td><code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-size:12px">${escHtml(a.code)}</code></td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="number" value="${a.taux_commission}" min="0" max="100" step="0.5" id="aff-taux-${a.code}" style="width:52px;padding:4px 6px;border:1.5px solid var(--rule);border-radius:6px;font-size:12px;font-weight:600;text-align:center;outline:none">
+            <button onclick="affSaveTauxAffilie('${a.code}')" style="padding:3px 8px;background:var(--blue);color:#fff;border-radius:5px;font-size:11px;font-weight:700;border:0;cursor:pointer">✓</button>
+          </div>
+        </td>
+        <td>${a.total_clics}</td>
+        <td>${a.nb_reservations}</td>
+        <td style="font-weight:700;color:var(--amber)">${affEuros(a.commission_en_attente)}</td>
+        <td style="font-weight:700;color:var(--green)">${affEuros(a.commission_versee)}</td>
+        <td>${a.stripe_onboarded
+          ? '<span class="badge badge--green">✓ Connecté</span>'
+          : '<span class="badge badge--amber">En attente</span>'}</td>
+        <td>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <button onclick="affCopierLien('${escHtml(a.lien_parrainage)}')" style="padding:4px 9px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Lien</button>
+            ${!a.stripe_onboarded ? `<button onclick="affOnboarding('${a.code}')" style="padding:4px 9px;background:var(--amber-lt);color:var(--amber);border:1px solid #fbbf24;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Stripe</button>` : ''}
+            ${a.statut === 'actif'
+              ? `<button onclick="affToggleStatut('${a.code}','suspendu')" style="padding:4px 9px;background:var(--red-lt);color:var(--red);border:1px solid #fca5a5;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Suspendre</button>`
+              : `<button onclick="affToggleStatut('${a.code}','actif')" style="padding:4px 9px;background:var(--green-lt);color:var(--green);border:1px solid #86efac;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Réactiver</button>`}
+          </div>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+  } catch(err){
+    toast('Affiliation : ' + err.message, 'error');
+  }
+}
+
+async function affSaveTaux(){
+  const val = parseFloat($('#aff-taux-input').value);
+  if(isNaN(val)||val<0||val>100){ toast('Taux invalide','error'); return; }
+  const r = await fetch('/api/affilies?action=settings', {
+    method:'POST', headers:{'Content-Type':'application/json','x-admin-token':token},
+    body: JSON.stringify({ taux_defaut: val }),
+  });
+  if(r.ok){ $('#aff-taux-affiche').textContent = val + '%'; toast('✅ Taux global mis à jour'); }
+  else toast('Erreur','error');
+}
+
+async function affSaveTauxAffilie(code){
+  const input = $('#aff-taux-' + code);
+  const val = parseFloat(input.value);
+  if(isNaN(val)||val<0||val>100){ toast('Taux invalide','error'); return; }
+  const r = await fetch('/api/affilies?action=settings', {
+    method:'POST', headers:{'Content-Type':'application/json','x-admin-token':token},
+    body: JSON.stringify({ affilie_code: code, taux: val }),
+  });
+  if(r.ok) toast(`✅ Taux ${code} → ${val}%`);
+  else toast('Erreur','error');
+}
+
+async function affCreer(){
+  const nom   = $('#aff-nom').value.trim();
+  const email = $('#aff-email').value.trim();
+  const code  = $('#aff-code').value.trim().toUpperCase();
+  const tauxRaw = $('#aff-taux-perso').value.trim();
+  $('#aff-result').style.display = 'none';
+  $('#aff-err').style.display = 'none';
+  if(!nom||!email||!code){ $('#aff-err').textContent='Nom, email et code requis.'; $('#aff-err').style.display='block'; return; }
+  const btn = $('#aff-btn-add');
+  btn.disabled = true; btn.textContent = 'Création…';
+  const body = { nom, email, code };
+  if(tauxRaw) body.taux_commission = parseFloat(tauxRaw);
+  try {
+    const r = await fetch('/api/affilies?action=creer', {
+      method:'POST', headers:{'Content-Type':'application/json','x-admin-token':token},
+      body: JSON.stringify(body),
+    });
+    const data = await r.json();
+    if(!r.ok) throw new Error(data.error);
+    $('#aff-res-lien').textContent    = data.affilie.lien_parrainage;
+    $('#aff-res-portail').textContent = data.portalUrl;
+    if(data.onboardingUrl){
+      $('#aff-res-stripe').href = data.onboardingUrl;
+      $('#aff-res-stripe').textContent = data.onboardingUrl;
+      $('#aff-res-stripe-wrap').style.display = 'block';
+    } else {
+      $('#aff-res-stripe-wrap').style.display = 'none';
+    }
+    $('#aff-result').style.display = 'block';
+    $('#aff-nom').value = ''; $('#aff-email').value = ''; $('#aff-code').value = ''; $('#aff-taux-perso').value = '';
+    chargerAffiliation();
+  } catch(err){
+    $('#aff-err').textContent = err.message || 'Erreur'; $('#aff-err').style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = "Créer l'affilié";
+}
+
+async function affOnboarding(code){
+  const r = await fetch('/api/affilies?action=onboarding', {
+    method:'POST', headers:{'Content-Type':'application/json','x-admin-token':token},
+    body: JSON.stringify({ code }),
+  });
+  const data = await r.json();
+  if(r.ok && data.onboardingUrl) prompt(`Lien Stripe pour ${code} (valable ~5 min) :`, data.onboardingUrl);
+  else toast(data.error||'Erreur','error');
+}
+
+async function affToggleStatut(code, statut){
+  if(!confirm(`Passer ${code} en "${statut}" ?`)) return;
+  const r = await fetch('/api/affilies?action=settings', {
+    method:'POST', headers:{'Content-Type':'application/json','x-admin-token':token},
+    body: JSON.stringify({ affilie_code: code, statut }),
+  });
+  if(r.ok){ toast(`✅ ${code} → ${statut}`); chargerAffiliation(); }
+  else toast('Erreur','error');
+}
+
+function affCopier(id){
+  navigator.clipboard.writeText($('#'+id).textContent).then(()=>toast('Copié !')).catch(()=>{});
+}
+function affCopierLien(url){
+  navigator.clipboard.writeText(url).then(()=>toast('Lien copié !')).catch(()=>{});
+}
 
 /* ═══════════════════════════════════════════════════════
    DÉMARRAGE
