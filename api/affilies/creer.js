@@ -9,7 +9,7 @@
 // ============================================================================
 
 import { supabaseAdmin, stripe, corsHeaders } from '../../lib/clients.js';
-import crypto from 'crypto';
+import { randomBytes } from 'crypto';
 
 function checkAdmin(req) {
   const token = req.headers['x-admin-token'] || req.query.token;
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     }
 
     // Token unique pour l'espace affilié
-    const token = crypto.randomBytes(32).toString('hex');
+    const token = randomBytes(32).toString('hex');
     const siteUrl = process.env.SITE_URL || 'https://kobo-bdx.com';
 
     // Créer le compte Stripe Connect Express
