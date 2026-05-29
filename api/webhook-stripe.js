@@ -24,6 +24,95 @@ function lireCorpsBrut(req) {
   });
 }
 
+// ============================================================================
+// Gestion de la commission affilié
+// ============================================================================
+async function traiterCommission({ affilieCode, resa, session }) {
+  // 1. Trouver l'affilié
+  const { data: affilie, error: errAff } = await supabaseAdmin
+    .from('affilies')
+    .select('id, taux_commission, stripe_account_id, stripe_onboarded, statut')
+    .eq('code', affilieCode.toUpperCase())
+    .single();
+
+  if (errAff || !affilie) {
+    console.warn(`[commission] affilié "${affilieCode}" introuvable`);
+    return;
+  }
+  if (affilie.statut === 'suspendu') {
+    console.warn(`[commission] affilié "${affilieCode}" suspendu`);
+    return;
+  }
+
+  // 2. Calculer la commission (arrondi à l'entier inférieur en centimes)
+  const montantCommission = Math.floor(resa.montant_total * (affilie.taux_commission / 100));
+  if (montantCommission <= 0) return;
+
+  // 3. Insérer la commission en base
+  const { data: commission, error: errComm } = await supabaseAdmin
+    .from('commissions')
+    .insert({
+      affilie_id:          affilie.id,
+      reservation_id:      resa.id,
+      montant_reservation: resa.montant_total,
+      taux:                affilie.taux_commission,
+      montant_commission:  montantCommission,
+      statut:              'en_attente',
+    })
+    .select('id')
+    .single();
+
+  if (errComm) {
+    console.error('[commission] insert :', errComm.message);
+    return;
+  }
+
+  console.log(`[commission] ${montantCommission / 100}€ pour ${affilieCode} (resa ${resa.id})`);
+
+  // 4. Virement Stripe automatique si l'affilié a connecté son compte
+  if (affilie.stripe_onboarded && affilie.stripe_account_id) {
+    try {
+      // On a besoin du charge ID pour lier le virement à la transaction source
+      let sourceTransaction;
+      if (session.payment_intent) {
+        const pi = await stripe.paymentIntents.retrieve(session.payment_intent);
+        sourceTransaction = pi.latest_charge;
+      }
+
+      const transfer = await stripe.transfers.create({
+        amount:      montantCommission,
+        currency:    'eur',
+        destination: affilie.stripe_account_id,
+        ...(sourceTransaction ? { source_transaction: sourceTransaction } : {}),
+        metadata: {
+          commission_id:  commission.id,
+          reservation_id: resa.id,
+          affilie_code:   affilieCode,
+        },
+      });
+
+      // 5. Marquer la commission comme versée
+      await supabaseAdmin
+        .from('commissions')
+        .update({
+          statut:             'verse',
+          stripe_transfer_id: transfer.id,
+          paid_at:            new Date().toISOString(),
+        })
+        .eq('id', commission.id);
+
+      console.log(`[commission] Virement ${transfer.id} créé (${montantCommission / 100}€ → ${affilieCode})`);
+
+    } catch (stripeErr) {
+      // Le virement a échoué → la commission reste "en_attente", à réessayer depuis l'admin
+      console.error('[commission] virement Stripe :', stripeErr.message);
+    }
+  } else {
+    // Pas de compte Stripe connecté → commission en attente de règlement manuel
+    console.log(`[commission] ${affilieCode} pas encore onboardé — commission en attente`);
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Méthode non autorisée' });
@@ -89,6 +178,13 @@ export default async function handler(req, res) {
               .catch(e => console.error('[webhook] email admin :', e.message)),
           ];
           await Promise.allSettled(taches);
+
+          // ---- Commission affilié ----
+          const affilieCode = resa.affilie_code || session.metadata?.affilie_code;
+          if (affilieCode) {
+            traiterCommission({ affilieCode, resa, session })
+              .catch(e => console.error('[webhook] commission :', e.message));
+          }
         }
         break;
       }

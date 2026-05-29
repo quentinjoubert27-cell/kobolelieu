@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="favicon.png"/>
+<title>Mon espace affilié — Kōbō Le Lieu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Caprasimo&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#01357b;--blue-soft:#d8e2f2;--blue-paper:#eef2fa;
+  --cream:#faf3e3;--cream-2:#f5ebd1;
+  --sun:#f4c542;--tomato:#e6543c;--leaf:#4a7c3a;
+  --ink:#1a1612;
+  --green:#16a34a;--green-lt:#dcfce7;
+  --amber:#d97706;--amber-lt:#fef3c7;
+  --red:#dc2626;--red-lt:#fee2e2;
+  --display:"Caprasimo",serif;
+  --italic:"Instrument Serif",serif;
+  --body:"Familjen Grotesk",system-ui,sans-serif;
+  --line:2.5px;--r:20px;--r-pill:999px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+svg{display:block}::selection{background:var(--sun);color:var(--ink)}
+
+/* LOADING / ERROR */
+.state-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center}
+.state-screen__icon{font-size:48px;margin-bottom:16px}
+.state-screen h2{font-family:var(--display);font-size:28px;margin-bottom:10px}
+.state-screen p{color:#777;font-size:15px;line-height:1.6;max-width:400px}
+.spinner{width:32px;height:32px;border:3px solid var(--blue-soft);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HEADER */
+.portal-header{
+  background:var(--blue);color:var(--cream);
+  padding:32px 28px 28px;
+  border-bottom:var(--line) solid var(--ink);
+}
+.portal-header__inner{max-width:860px;margin:0 auto}
+.portal-header__logo{height:28px;margin-bottom:20px;filter:brightness(0) invert(1);opacity:.7}
+.portal-header__eyebrow{
+  font-family:var(--italic);font-style:italic;
+  color:var(--sun);font-size:14px;margin-bottom:6px;opacity:.85
+}
+.portal-header h1{
+  font-family:var(--display);
+  font-size:clamp(26px,4vw,42px);margin-bottom:6px
+}
+.portal-header__welcome{font-size:15px;opacity:.6}
+
+/* MAIN */
+.portal-main{max-width:860px;margin:0 auto;padding:36px 28px 80px}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:36px}
+.stat-card{
+  background:#fff;border:2px solid var(--ink);border-radius:var(--r);
+  box-shadow:4px 4px 0 var(--ink);padding:20px;
+}
+.stat-card__icon{font-size:24px;margin-bottom:8px}
+.stat-card__value{font-family:var(--display);font-size:28px;color:var(--blue);margin-bottom:2px}
+.stat-card__label{font-size:12px;color:#888;font-weight:600}
+
+/* LIEN */
+.link-card{
+  background:#fff;border:2px solid var(--ink);border-radius:var(--r);
+  box-shadow:4px 4px 0 var(--ink);padding:24px;margin-bottom:24px
+}
+.link-card h3{font-family:var(--display);font-size:18px;margin-bottom:6px}
+.link-card p{font-size:13px;color:#777;margin-bottom:16px}
+.link-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.link-display{
+  flex:1;min-width:0;
+  background:var(--cream-2);border:2px solid var(--ink);border-radius:12px;
+  padding:12px 16px;font-size:14px;font-weight:600;
+  font-family:monospace;word-break:break-all;
+}
+.copy-btn{
+  display:flex;align-items:center;gap:8px;
+  background:var(--blue);color:var(--cream);
+  padding:12px 20px;border-radius:var(--r-pill);
+  font-weight:700;font-size:13px;
+  border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
+  white-space:nowrap;
+  transition:transform .15s,box-shadow .15s;
+}
+.copy-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.copy-btn.copied{background:var(--leaf)}
+
+/* TAUX */
+.taux-banner{
+  background:var(--blue-paper);border:2px solid var(--ink);border-radius:var(--r);
+  padding:16px 20px;margin-bottom:24px;
+  display:flex;align-items:center;gap:14px;
+}
+.taux-banner__pct{
+  font-family:var(--display);font-size:32px;color:var(--blue);white-space:nowrap
+}
+.taux-banner p{font-size:14px;line-height:1.5;color:#555}
+.taux-banner strong{color:var(--ink)}
+
+/* HISTORIQUE */
+.hist-title{font-family:var(--display);font-size:20px;margin-bottom:16px}
+.hist-table-wrap{background:#fff;border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;box-shadow:4px 4px 0 var(--ink)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--cream-2);padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;border-bottom:2px solid var(--ink)}
+tbody td{padding:13px 16px;border-bottom:1px solid #f0ece3;font-size:13px;vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.badge--attente{background:var(--amber-lt);color:var(--amber)}
+.badge--verse{background:var(--green-lt);color:var(--green)}
+.badge--annule{background:var(--red-lt);color:var(--red)}
+
+/* EMPTY HIST */
+.empty-hist{text-align:center;padding:40px 20px;color:#aaa}
+.empty-hist svg{width:36px;height:36px;margin:0 auto 10px;stroke:#ccc}
+
+/* FOOTER */
+.portal-foot{text-align:center;padding-bottom:40px;font-size:12px;color:#aaa}
+.portal-foot a{color:var(--blue);font-weight:600}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:opacity .25s;pointer-events:none;z-index:100}
+.toast.show{opacity:1}
+
+@media(max-width:600px){
+  .portal-header,.portal-main{padding-left:16px;padding-right:16px}
+  thead th:nth-child(3),tbody td:nth-child(3),
+  thead th:nth-child(4),tbody td:nth-child(4){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="state-screen" id="screen-load">
+  <div class="spinner"></div>
+  <p>Chargement de votre espace…</p>
+</div>
+
+<!-- ERROR -->
+<div class="state-screen" id="screen-err" style="display:none">
+  <div class="state-screen__icon">🔒</div>
+  <h2>Lien invalide</h2>
+  <p>Ce lien n'est pas valide ou a expiré. Contactez-nous pour obtenir votre lien personnel.</p>
+  <a href="mailto:hello@kobo-bdx.com" style="margin-top:20px;background:var(--blue);color:var(--cream);padding:12px 24px;border-radius:99px;font-weight:700;font-size:14px;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink)">
+    hello@kobo-bdx.com
+  </a>
+</div>
+
+<!-- PORTAL -->
+<div id="portal" style="display:none">
+
+  <header class="portal-header">
+    <div class="portal-header__inner">
+      <img src="koboblanc.png" alt="Kōbō Le Lieu" class="portal-header__logo">
+      <div class="portal-header__eyebrow">Espace affilié</div>
+      <h1 id="portal-title">Bonjour —</h1>
+      <div class="portal-welcome" id="portal-welcome"></div>
+    </div>
+  </header>
+
+  <div class="portal-main">
+
+    <!-- Taux -->
+    <div class="taux-banner">
+      <div class="taux-banner__pct" id="taux-pct">—%</div>
+      <p>C'est votre taux de commission sur chaque réservation générée via votre lien.<br><strong>Chaque client que vous amenez vous rapporte automatiquement ce pourcentage.</strong></p>
+    </div>
+
+    <!-- Lien affilié -->
+    <div class="link-card">
+      <h3>Votre lien de parrainage</h3>
+      <p>Partagez ce lien. Toute réservation faite dans les 30 jours suivant un clic vous est attribuée.</p>
+      <div class="link-row">
+        <div class="link-display" id="lien-affilie">—</div>
+        <button class="copy-btn" id="copy-btn" onclick="copierLien()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copier
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card__icon">👆</div>
+        <div class="stat-card__value" id="stat-clics">—</div>
+        <div class="stat-card__label">Clics sur votre lien</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon">📅</div>
+        <div class="stat-card__value" id="stat-resas">—</div>
+        <div class="stat-card__label">Réservations générées</div>
+      </div>
+      <div class="stat-card" style="border-color:var(--amber);box-shadow:4px 4px 0 var(--amber)">
+        <div class="stat-card__icon">⏳</div>
+        <div class="stat-card__value" id="stat-attente" style="color:var(--amber)">—</div>
+        <div class="stat-card__label">En cours de versement</div>
+      </div>
+      <div class="stat-card" style="border-color:var(--leaf);box-shadow:4px 4px 0 var(--leaf)">
+        <div class="stat-card__icon">✅</div>
+        <div class="stat-card__value" id="stat-verse" style="color:var(--leaf)">—</div>
+        <div class="stat-card__label">Déjà versé</div>
+      </div>
+    </div>
+
+    <!-- Historique -->
+    <div class="hist-title">Historique des commissions</div>
+    <div class="hist-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date réservation</th>
+            <th>Salle</th>
+            <th>Montant résa</th>
+            <th>Commission</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody id="hist-body">
+          <tr><td colspan="5" style="padding:0">
+            <div class="empty-hist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6M9 16h6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>
+              Aucune commission pour l'instant
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:24px;padding:16px 20px;background:var(--blue-paper);border-radius:16px;font-size:13px;color:#555;line-height:1.6">
+      💡 <strong>Comment ça marche ?</strong> Partagez votre lien avec vos contacts. Si l'un d'eux réserve une salle dans les 30 jours, la commission est automatiquement calculée et virée sur votre compte Stripe. Les commissions "En cours" correspondent à des paiements récents en cours de traitement.
+    </div>
+
+  </div>
+
+  <div class="portal-foot">
+    Questions ? <a href="mailto:hello@kobo-bdx.com">hello@kobo-bdx.com</a>
+    · <a href="kobo-lieu.html">Kōbō Le Lieu</a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(async function() {
+  const params = new URLSearchParams(location.search);
+  const token = params.get('token') || sessionStorage.getItem('kobo_affilie_token');
+
+  if (!token) {
+    document.getElementById('screen-load').style.display = 'none';
+    document.getElementById('screen-err').style.display = 'flex';
+    return;
+  }
+
+  // Persister le token en session
+  sessionStorage.setItem('kobo_affilie_token', token);
+
+  try {
+    const r = await fetch(`/api/affilies/stats?token=${encodeURIComponent(token)}`);
+    const data = await r.json();
+
+    if (!r.ok) throw new Error(data.error || 'Erreur');
+
+    // Afficher le portail
+    document.getElementById('screen-load').style.display = 'none';
+    document.getElementById('portal').style.display = 'block';
+
+    // En-tête
+    document.getElementById('portal-title').textContent = `Bonjour, ${data.nom} 👋`;
+    document.getElementById('taux-pct').textContent = data.taux + '%';
+
+    // Lien
+    document.getElementById('lien-affilie').textContent = data.lien;
+
+    // Stats
+    document.getElementById('stat-clics').textContent  = data.total_clics;
+    document.getElementById('stat-resas').textContent  = data.nb_reservations;
+    document.getElementById('stat-attente').textContent = euros(data.montant_en_attente);
+    document.getElementById('stat-verse').textContent   = euros(data.montant_verse);
+
+    // Historique
+    const tbody = document.getElementById('hist-body');
+    if (data.historique && data.historique.length > 0) {
+      tbody.innerHTML = data.historique.map(c => `
+        <tr>
+          <td>${dateFr(c.date_resa)}</td>
+          <td>${esc(c.salle)}</td>
+          <td>${euros(c.montant_resa)}</td>
+          <td style="font-weight:700;color:var(--blue)">${euros(c.commission)}</td>
+          <td>
+            ${c.statut === 'verse'     ? '<span class="badge badge--verse">Versé</span>' : ''}
+            ${c.statut === 'en_attente'? '<span class="badge badge--attente">En cours</span>' : ''}
+            ${c.statut === 'annule'    ? '<span class="badge badge--annule">Annulé</span>' : ''}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+  } catch (err) {
+    document.getElementById('screen-load').style.display = 'none';
+    document.getElementById('screen-err').style.display = 'flex';
+  }
+})();
+
+function euros(c) {
+  return (c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+}
+function dateFr(iso) {
+  if (!iso) return '—';
+  return new Date(iso+'T00:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'});
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copierLien() {
+  const lien = document.getElementById('lien-affilie').textContent;
+  navigator.clipboard.writeText(lien).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copié !`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copier`;
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>

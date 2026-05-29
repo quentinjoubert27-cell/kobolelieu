@@ -970,6 +970,10 @@ $('#pay-btn').addEventListener('click', async () => {
     message: $('#f-message').value.trim(),
   };
 
+  // Récupérer le code affilié depuis le cookie/localStorage
+  const refCode = localStorage.getItem('kobo_ref') || '';
+  if (refCode) payload.refCode = refCode;
+
   try {
     const r = await fetch(API_BASE + '/api/creer-reservation', {
       method: 'POST',
@@ -995,6 +999,35 @@ if (new URLSearchParams(location.search).get('annule') === '1'){
 }
 
 chargerSalles();
+
+/* ============================================================================
+   TRACKING AFFILIÉ — capture le ?ref= et le conserve 30 jours
+   ============================================================================ */
+(function(){
+  const params = new URLSearchParams(location.search);
+  const ref = params.get('ref');
+  if (ref) {
+    const code = ref.toUpperCase().trim();
+    // Stocker dans localStorage (persiste 30 j via expiry manuel) ET cookie
+    localStorage.setItem('kobo_ref', code);
+    localStorage.setItem('kobo_ref_ts', Date.now());
+    // Enregistrer le clic côté serveur (une seule fois par session)
+    if (!sessionStorage.getItem('kobo_ref_tracked_' + code)) {
+      sessionStorage.setItem('kobo_ref_tracked_' + code, '1');
+      fetch('/api/affilies/clic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      }).catch(() => {}); // silencieux
+    }
+  }
+  // Expiration 30 jours
+  const ts = parseInt(localStorage.getItem('kobo_ref_ts') || '0', 10);
+  if (ts && Date.now() - ts > 30 * 86400 * 1000) {
+    localStorage.removeItem('kobo_ref');
+    localStorage.removeItem('kobo_ref_ts');
+  }
+})();
 </script>
 </body>
 </html>

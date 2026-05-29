@@ -35,6 +35,7 @@ export default async function handler(req, res) {
       salleId, formuleSlug, date,
       heureDebut, heureFin,
       nom, email, tel, entreprise, participants, message,
+      refCode,                            // code affilié (optionnel)
     } = req.body || {};
 
     // ----------------------------------------------------------------
@@ -145,6 +146,7 @@ export default async function handler(req, res) {
         message: message || null,
         montant_total: montantTotal,
         statut: 'en_attente',
+        affilie_code: refCode ? refCode.toUpperCase().trim() : null,
       })
       .select()
       .single();
@@ -187,6 +189,7 @@ export default async function handler(req, res) {
         formule: formule.nom,
         date,
         creneau: `${hDebut}h-${hFin}h`,
+        affilie_code: refCode ? refCode.toUpperCase().trim() : '',
       },
       payment_intent_data: {
         metadata: { reservation_id: resa.id },
