@@ -1014,7 +1014,7 @@ chargerSalles();
     // Enregistrer le clic côté serveur (une seule fois par session)
     if (!sessionStorage.getItem('kobo_ref_tracked_' + code)) {
       sessionStorage.setItem('kobo_ref_tracked_' + code, '1');
-      fetch('/api/affilies/clic', {
+      fetch('/api/affilies?action=clic', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code }),

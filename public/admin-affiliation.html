@@ -308,7 +308,7 @@ if (ADMIN_TOKEN) {
 // ---- DONNÉES ----
 async function chargerDonnees() {
   try {
-    const r = await fetch(`/api/affilies/liste?token=${ADMIN_TOKEN}`);
+    const r = await fetch(`/api/affilies?action=liste&token=${ADMIN_TOKEN}`);
     const data = await r.json();
     if (!r.ok) throw new Error(data.error);
 
@@ -376,7 +376,7 @@ async function chargerDonnees() {
 async function saveTaux() {
   const val = parseFloat(document.getElementById('taux-input').value);
   if (isNaN(val) || val < 0 || val > 100) { toast('Taux invalide'); return; }
-  const r = await fetch('/api/affilies/settings', {
+  const r = await fetch('/api/affilies?action=settings', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-admin-token': ADMIN_TOKEN },
     body: JSON.stringify({ taux_defaut: val }),
@@ -390,7 +390,7 @@ async function saveTauxAffilie(code) {
   const input = document.getElementById('taux-' + code);
   const val = parseFloat(input.value);
   if (isNaN(val) || val < 0 || val > 100) { toast('Taux invalide'); return; }
-  const r = await fetch('/api/affilies/settings', {
+  const r = await fetch('/api/affilies?action=settings', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-admin-token': ADMIN_TOKEN },
     body: JSON.stringify({ affilie_code: code, taux: val }),
@@ -417,7 +417,7 @@ async function creerAffilie() {
   if (tauxRaw) body.taux_commission = parseFloat(tauxRaw);
 
   try {
-    const r = await fetch('/api/affilies/creer', {
+    const r = await fetch('/api/affilies?action=creer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-admin-token': ADMIN_TOKEN },
       body: JSON.stringify(body),
@@ -454,7 +454,7 @@ async function creerAffilie() {
 
 // ---- ONBOARDING ----
 async function regenOnboarding(code) {
-  const r = await fetch('/api/affilies/onboarding', {
+  const r = await fetch('/api/affilies?action=onboarding', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-admin-token': ADMIN_TOKEN },
     body: JSON.stringify({ code }),
@@ -468,7 +468,7 @@ async function regenOnboarding(code) {
 }
 
 async function marquerOnboarded(code) {
-  await fetch('/api/affilies/settings', {
+  await fetch('/api/affilies?action=settings', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-admin-token': ADMIN_TOKEN },
     // On marque via un endpoint dédié — pour l'instant on recharge juste
@@ -482,7 +482,7 @@ async function marquerOnboarded(code) {
 // ---- STATUT ----
 async function toggleStatut(code, statut) {
   if (!confirm(`Passer ${code} en "${statut}" ?`)) return;
-  const r = await fetch('/api/affilies/settings', {
+  const r = await fetch('/api/affilies?action=settings', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-admin-token': ADMIN_TOKEN },
     body: JSON.stringify({ affilie_code: code, statut }),
